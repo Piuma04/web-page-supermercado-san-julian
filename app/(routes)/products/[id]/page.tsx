@@ -1,6 +1,7 @@
 import { fetchProduct } from "@/app/lib/data";
 
 export default async function Page({params}: {params: {id: String}}) {
+    const {id} = await params
     const product = await fetchProduct(params.id);
 
     return (

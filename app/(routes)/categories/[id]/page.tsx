@@ -1,7 +1,8 @@
 import { fetchCategory } from "@/app/lib/data";
 
-export default async function Page({ params }: { params: { id: String } }) {
-  const category = await fetchCategory(params.id);
+export default async function Page({ params }: { params: { id: string } }) {
+  const {id} = await params
+  const category = await fetchCategory(id);
 
   return (
     <main className="p-6">

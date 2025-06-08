@@ -1,3 +1,5 @@
+import prisma from "@/app/lib/prisma";
+
 export async function fetchCategories() {
     const categories = await prisma.category.findMany({
     include: {
@@ -17,6 +19,15 @@ export async function fetchCategory(id: String) {
     })
         
     return category
+}
+
+export async function fetchProducts() {
+    const products = await prisma.product.findMany({
+        include: {
+            category: true
+        }
+    });
+    return products
 }
 
 export async function fetchProduct(id: String) {

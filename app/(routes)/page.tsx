@@ -1,9 +1,7 @@
-export default async function ProductsPage() {
-  const products = await prisma.product.findMany({
-    include: {
-      category: true,
-    },
-  });
+import { fetchProducts } from "@/app/lib/data";
+
+export default async function Page() {
+  const products = await fetchProducts();
 
   return (
     <main className="p-6">
