@@ -25,7 +25,7 @@
 
   /lib
     auth.ts             ← Config de NextAuth
-    db.ts               ← Conexión a la base de datos (Prisma o `pg`)
+    prisma.ts               ← Conexión a la base de datos (Prisma o `pg`)
     mercadoPago.ts      ← SDK y helpers de integración con Mercado Pago
     utils.ts            ← Funciones generales
     constants.ts        ← Constantes globales
