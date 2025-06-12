@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
   passwd      String  
@@ -50,7 +50,7 @@ model Category {
 model Cart {
   id       Int        @id @default(autoincrement())
   userId   Int        @unique
-  user     user       @relation(fields: [userId], references: [id])
+  user     User       @relation(fields: [userId], references: [id])
   items    CartItem[]
 
   createdAt DateTime   @default(now())
