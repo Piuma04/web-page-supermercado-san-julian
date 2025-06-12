@@ -7,12 +7,10 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnUserProfile = nextUrl.pathname.startsWith('/userSettings');
+      const isOnUserProfile = nextUrl.pathname.startsWith('/cart');     //podria ser cart, historial, etc.
       if (isOnUserProfile) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL('/userSettings', nextUrl));
       }
       return true;
     },
