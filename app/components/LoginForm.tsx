@@ -13,6 +13,7 @@ export default function LoginForm() {
   );
 
   return (
+    <>
     <form action={formAction} className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h1 className="mb-6 text-3xl font-bold text-black">
@@ -55,6 +56,9 @@ export default function LoginForm() {
         </div>
         <input type="hidden" name="redirectTo" value={callbackUrl} />
         <button
+          type="submit"
+          name='action'
+          value="credentials"
           className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           aria-disabled={isPending}
         >
@@ -73,6 +77,19 @@ export default function LoginForm() {
         </div>
       </div>
     </form>
+    <form action={formAction} className="space-y-6">
+      <input type="hidden" name="redirectTo" value={callbackUrl} />
+      <button
+        type="submit"
+        name='action'
+        value="google"
+        className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        aria-disabled={isPending}
+      >
+        Log in with Google
+      </button>
+    </form>
+    </>
   );
 }
 

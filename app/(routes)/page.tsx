@@ -18,6 +18,16 @@ export default function Page() {
             Ver todas las categorías
           </Link>
         </li>
+        <li>
+          <Link href="/login" className="text-blue-500 hover:text-blue-700 underline">
+            Ingresar
+          </Link>
+        </li>
+        <li>
+          <Link href="/cart" className="text-blue-500 hover:text-blue-700 underline">
+            Ver carrito de compras
+          </Link>
+        </li>
       </ul>
     </main>
   );

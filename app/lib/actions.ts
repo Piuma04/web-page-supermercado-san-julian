@@ -7,7 +7,17 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    await signIn('credentials', formData);
+    const action = formData.get('action');
+    switch (action) {
+      case 'credentials':
+        await signIn(action, formData);
+      case 'google':{
+        await signIn(action, formData);
+      }
+      default:
+        return 'Invalid action.';
+    }
+    
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

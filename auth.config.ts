@@ -11,10 +11,9 @@ export const authConfig = {
       if (isOnUserProfile) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
-      }
+      } 
       return true;
     },
   },
-  providers: [], // aca iria google y esas cosas
-
+  providers: []
 } satisfies NextAuthConfig;
