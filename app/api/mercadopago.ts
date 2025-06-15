@@ -4,6 +4,7 @@ import prisma from '../lib/prisma';
 
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN || '' });
 const preference = new Preference(client);
+const payment = new Payment(client);
 
 export async function createPreference(items: Item[]) {
   try {
@@ -25,15 +26,20 @@ export async function createPreference(items: Item[]) {
 }
 
 export async function add(id: string) {
-  const payment = await new Payment(client).get({ id});
-  if (payment.status === 'approved') {
+  const purchase = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
+    }
+  }).then(res => res.json());
+  if (purchase.status === 'approved') {
     const user = await prisma.user.findUnique({
-      where: { email: payment.payer?.email }
+      where: { email: purchase.payer?.email }
     });
     await prisma.purchase.create({
       data: {
-        total: payment.transaction_amount!,
-        description: payment.description!,
+        total: purchase.transaction_amount!,
+        description: purchase.description!,
         address: '', // TODO: Replace with actual address
         addressNumber: 111, // TODO: Replace with actual address number
         user: { connect: { id: user?.id } }
