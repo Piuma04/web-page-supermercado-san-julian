@@ -11,9 +11,9 @@ export async function createPreference(items: Item[]) {
       body: {
         items,
         back_urls: {
-          success: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1',
-          failure: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1',
-          pending: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'
+          success: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa',
+          failure: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa',
+          pending: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa'
         },
         auto_return: 'approved'
       }
