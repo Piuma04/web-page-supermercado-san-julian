@@ -1,14 +1,8 @@
 
 
-
-import { fetchCategories } from "@/app/lib/data"
-
-
-
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -19,11 +13,18 @@ import {
 import Link from "next/link"
 
 
-const categories = await fetchCategories()
+const categories =  [
+  { id: 1, name: "Technology" },
+  { id: 2, name: "Science" },
+  { id: 3, name: "Health" },
+  { id: 4, name: "Sports" },
+  { id: 5, name: "Entertainment" }
+]
+// const categories = await fetchCategories()
 
-export function AppSidebar() {
+export function CartSidebar() {
   return (
-    <Sidebar variant="sidebar">
+    <Sidebar variant="sidebar" side = "right">
       <SidebarHeader> Categorias </SidebarHeader>
       <SidebarContent>
         <SidebarGroup> 
