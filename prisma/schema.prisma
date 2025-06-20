@@ -16,7 +16,7 @@ datasource db {
 model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
-  passwd      String  
+  passwd      String?  
   role        userRole @default(CLIENT)  
   createdAt   DateTime @default(now())
   cart        Cart?

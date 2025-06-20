@@ -11,9 +11,10 @@ export async function authenticate(
     switch (action) {
       case 'credentials':
         await signIn(action, formData);
-      case 'google':{
+      break;
+      case 'google':
         await signIn(action, formData);
-      }
+      break;
       default:
         return 'Invalid action.';
     }
