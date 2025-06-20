@@ -15,7 +15,7 @@ export async function createPreference(items: Item[]) {
           failure: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1',
           pending: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'
         },
-        auto_return: 'approved'
+        auto_return: 'approved',
       }
     });
     return response.init_point;
@@ -39,8 +39,8 @@ export async function add(id: string) {
       data: {
         total: purchase.transaction_amount!,
         description: purchase.description!,
-        address: '', // TODO: Replace with actual address
-        addressNumber: 111, // TODO: Replace with actual address number
+        status: purchase.status,
+        mercadoPagoId: purchase.id,
         user: { connect: { id: user?.id } }
       }
     });
