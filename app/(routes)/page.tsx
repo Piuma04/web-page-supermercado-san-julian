@@ -1,17 +1,19 @@
 
 
 import Link from "next/link";
+import FeaturedPromosCarousel from "../components/FeaturedPromosCarousel";
 
 
 export default function Page() {
   return (
     
-      <main className="p-6">
+      <main className="p-2">
       
-        <h1 className="text-2xl font-bold mb-4">Bienvenido a tu tienda online</h1>
-        <p className="text-md font-medium mb-4">
-          En nuestra tienda online puedes encontrar una gran variedad de productos a precios competitivos.
-        </p>
+        
+
+        <FeaturedPromosCarousel/>
+
+
         <ul className="space-y-4">
           <li>
             <Link href="/products" className="text-blue-500 hover:text-blue-700 underline">
@@ -24,6 +26,7 @@ export default function Page() {
               Ingresar
             </Link>
           </li>
+
           <li>
             <Link href="/cart" className="text-blue-500 hover:text-blue-700 underline">
               Ver carrito de compras
