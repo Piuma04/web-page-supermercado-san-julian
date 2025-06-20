@@ -78,7 +78,7 @@ model Purchase{
   addressNumber Int?
   phoneNumber   Int?
   status        String?
-  mercadoPagoId Int?
+  mercadoPagoId BigInt?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
