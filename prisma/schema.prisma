@@ -74,9 +74,11 @@ model Purchase{
   user          User    @relation(fields:[userId], references:[id])
   total         Int
   description   String
-  address       String
-  addressNumber Int
+  address       String?
+  addressNumber Int?
   phoneNumber   Int?
+  status        String?
+  mercadoPagoId Int?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
