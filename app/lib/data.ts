@@ -44,13 +44,22 @@ export async function fetchProduct(id: String) {
 
 
 //terminar
-export async function fetchCartByUserID(userId:string){
+export async function fetchCartByUserID(email:string){
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    })
     const cart = await prisma.cart.findUnique({
         where: {
-            userId: Number(userId)
+            userId: user?.id
         },
         include: {
-            items: true
+            items: {
+                include: {
+                    product: true
+                }
+            }
         }
     })
     return cart
