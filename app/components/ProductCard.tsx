@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
-import React from "react";
+import {useState} from "react";
+import { addToCart } from "../lib/data";
+import { useSession } from "next-auth/react";
 
 type ProductCardProps =  {
     id:number;     
@@ -14,7 +16,8 @@ type ProductCardProps =  {
 };
 
 export default function ProductCard({ id, name, description, price, imageUrl }: ProductCardProps) {
-  const [quantity, setQuantity] = React.useState(1);
+  const [quantity, setQuantity] = useState(1);
+  const { data: session } = useSession();
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="space-y-4">
@@ -40,7 +43,7 @@ export default function ProductCard({ id, name, description, price, imageUrl }: 
             </Button>
             </div>
             <div>
-            <Button className="bg-red-600 hover:bg-red-700 px-2 py-1 h-7 text-xs gap-1" size="sm" onClick={() => {}}>
+            <Button className="bg-red-600 hover:bg-red-700 px-2 py-1 h-7 text-xs gap-1" size="sm" onClick={() => addToCart(session!.user!.email!, id, quantity)}>
               <ShoppingCart size={16} />
               <span>Agregar</span>
             </Button>

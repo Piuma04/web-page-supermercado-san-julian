@@ -1,3 +1,4 @@
+"use server"
 import prisma from "@/app/lib/prisma";
 
 export async function fetchCategories() {
@@ -47,7 +48,7 @@ export async function fetchProduct(id: String) {
 export async function fetchCartByUserID(email:string){
     const user = await prisma.user.findUnique({
         where: {
-            email: email
+            email
         }
     })
     const cart = await prisma.cart.findUnique({
@@ -63,4 +64,55 @@ export async function fetchCartByUserID(email:string){
         }
     })
     return cart
+}
+
+export async function addToCart(email: string, productId: number, quantity: number) {
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    })
+
+    if (!user) {
+        throw new Error("User not found.");
+    }
+
+    const cart = await prisma.cart.findUnique({
+        where: {
+            userId: user?.id
+        },
+        include: {
+            items: {
+            }
+        }
+    })
+
+    if (cart?.id === undefined) {
+            throw new Error("Cart not found for user.");
+        }
+    
+    const existingItem = cart?.items.find(item => item.productId === productId);
+    if(existingItem)
+    {
+        // Update existing item quantity
+        await prisma.cartItem.update({
+            where: {
+                id: existingItem.id
+            },
+            data: {
+                quantity: existingItem.quantity + quantity
+            }
+        });
+    }
+    else {
+        // Add new item to cart
+        await prisma.cartItem.create({
+            data: {
+                cartId: cart.id,
+                productId: productId,
+                quantity: quantity
+            }
+        });
+    }
+    return cart;
 }
