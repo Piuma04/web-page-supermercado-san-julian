@@ -1,9 +1,12 @@
-
-
-
+"use client"
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
+import React from "react";
 
 type ProductCardProps =  {
-  id:number;     
+    id:number;     
     name:string;  
     description: string;
     price: number;
@@ -11,18 +14,48 @@ type ProductCardProps =  {
 };
 
 export default function ProductCard({ id, name, description, price, imageUrl }: ProductCardProps) {
+  const [quantity, setQuantity] = React.useState(1);
   return (
-    <div className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
-      <img
-        src={imageUrl}
-        alt={name}
-        className="w-full h-48 object-cover rounded-t-lg"
-      />
-      <h3 className="text-lg font-semibold mt-2">{name}</h3>
-      <p className="text-gray-600 mt-1">${price.toFixed(2)}</p>
-      <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300">
-        Add to Cart
-      </button>
+    <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div className="space-y-4">
+        <Link href={`/products/${id}`}>
+          <Image
+            src={imageUrl}
+            alt={name}
+            width={400}
+            height={400}
+            className="w-full h-40 sm:h-56 md:h-64 object-cover rounded-lg"
+          />
+        </Link>
+
+        <div className="flex flex-col sm:flex-row space-x-4 space-y-2">
+            <div className="flex items-center space-x-1">
+            <Button variant="outline" size="sm" className="p-1 h-7 w-7" onClick={() => setQuantity(quantity - 1)} disabled={quantity === 1}
+            >
+              <Minus size={16} />
+            </Button>
+            <span className="w-6 text-center text-sm font-medium">{quantity}</span>
+            <Button variant="outline" size="sm" className="p-1 h-7 w-7" onClick={() => setQuantity(quantity + 1)}>
+              <Plus size={16} />
+            </Button>
+            </div>
+            <div>
+            <Button className="bg-red-600 hover:bg-red-700 px-2 py-1 h-7 text-xs gap-1" size="sm" onClick={() => {}}>
+              <ShoppingCart size={16} />
+              <span>Agregar</span>
+            </Button>
+            </div>
+        </div>
+
+        <div className="text-sm text-gray-600">
+          <p>
+            {quantity} Producto{quantity > 1 ? "s" : ""}:{" "}
+            <span className="font-bold text-red-600">
+            ${(price * quantity).toFixed(2)}
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
