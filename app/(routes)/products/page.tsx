@@ -1,7 +1,6 @@
-import ProductCard from "@/app/components/ProductCard";
+
 import ProductTable from "@/app/components/ProductTable";
-import { fetchProducts } from "@/app/lib/data";
-import Link from "next/link";
+
 
 export default async function Page(
   props: {

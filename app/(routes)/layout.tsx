@@ -5,6 +5,7 @@ import "../styles/globals.css";
 import HeaderServer from "../components/HeaderServer";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import {CategoriesSidebar} from "../components/categoriesSidebar/CategoriesSidebar";
+import { SessionProvider } from "next-auth/react";
 
 
 const geistSans = Geist({
@@ -32,9 +33,8 @@ export default function RootLayout({
     <html lang="en" >
       <link rel="icon" href="/images/favicon.ico" />
       <body className="">
+        <SessionProvider>
         <SidebarProvider defaultOpen={false}>
-
-         
             <CategoriesSidebar />
 
             <SidebarInset>
@@ -45,6 +45,7 @@ export default function RootLayout({
             </SidebarInset>
       
         </SidebarProvider>
+        </SessionProvider>
       </body>
 
     </html>

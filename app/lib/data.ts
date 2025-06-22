@@ -41,3 +41,17 @@ export async function fetchProduct(id: String) {
     })
     return product
 }
+
+
+//terminar
+export async function fetchCartByUserID(userId:string){
+    const cart = await prisma.cart.findUnique({
+        where: {
+            userId: Number(userId)
+        },
+        include: {
+            items: true
+        }
+    })
+    return cart
+}

@@ -2,7 +2,8 @@ import Link from 'next/link';
 import CategoriesSidebarTrigger from './categoriesSidebar/CategoriesSidebarTrigger';
 import Image from 'next/image';
 import { ShoppingCart } from 'lucide-react';
-
+import AdministerUserSession from './AdministerUserSession';
+import { Suspense } from 'react';
 
 
 export default function HeaderServer() {
@@ -25,9 +26,9 @@ export default function HeaderServer() {
               <Link href="/cart">
                 <ShoppingCart/>
               </Link>
-              <Link className="text-gray-500 hover:text-gray-700" href="/login">
-                Iniciar Sesión
-              </Link>
+              <Suspense>
+                <AdministerUserSession/>
+              </Suspense>
           </div>
         </div>
       
