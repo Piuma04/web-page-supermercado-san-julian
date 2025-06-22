@@ -1,7 +1,7 @@
 import { fetchCategory } from "@/app/lib/data";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const {id} = await params
+  const {id} =  await params
   const category = await fetchCategory(id);
 
   return (
