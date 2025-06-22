@@ -1,4 +1,4 @@
-import CartItems from "@/app/components/CartItems";
+import CartItems from "@/app/components/cart/CartItems";
 import { signOut } from "@/auth";
 import { Suspense } from "react";
 export default function Page(){

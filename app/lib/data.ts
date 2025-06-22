@@ -1,4 +1,7 @@
+'use server'
+
 import prisma from "@/app/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function fetchCategories() {
     const categories = await prisma.category.findMany({
@@ -43,7 +46,7 @@ export async function fetchProduct(id: String) {
 }
 
 
-//terminar
+
 export async function fetchCartByUserID(email:string){
     const user = await prisma.user.findUnique({
         where: {
@@ -64,3 +67,29 @@ export async function fetchCartByUserID(email:string){
     })
     return cart
 }
+
+
+
+export async function addItemToCart(cartItemId:number) {
+    await prisma.cartItem.update({
+        where: { id: cartItemId },
+        data: { quantity: { increment: 1 } },
+    });
+    revalidatePath("/(routes)/cart"); 
+}
+
+export async function substractItemFromCart(cartItemId:number) {
+    await prisma.cartItem.update({
+        where: { id: cartItemId },
+        data: { quantity: { decrement: 1 } },
+    });
+    revalidatePath("/(routes)/cart");
+}
+
+export async function deleteItemFromCart(cartItemId:number) {
+    await prisma.cartItem.delete({
+        where: { id: cartItemId },
+    });
+    revalidatePath("/(routes)/cart");
+}
+
