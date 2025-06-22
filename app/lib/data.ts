@@ -50,7 +50,7 @@ export async function fetchProduct(id: String) {
 export async function fetchCartByUserID(email:string){
     const user = await prisma.user.findUnique({
         where: {
-            email: email
+            email
         }
     })
     const cart = await prisma.cart.findUnique({
