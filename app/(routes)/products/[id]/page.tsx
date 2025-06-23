@@ -1,22 +1,23 @@
 import { fetchProduct } from "@/app/lib/data";
+import ProductFullView from "@/app/components/ProductFullView";
+import { Suspense } from "react";
 
-export default async function Page({params}: {params: {id: String}}) {
-    const {id} = await params
+export default async function ProductDetailPage({ params }: { params: { id: string } }) {
+    const {id} =  await params
     const product = await fetchProduct(id);
 
+    if (!product) {
+        throw new Error("Product not found");
+    }
+
     return (
-        <main className="p-6">
-            <h1 className="text-2xl font-bold mb-4">{product?.name}</h1>
-            <p className="text-md font-medium">${product?.price}</p>
-            <p className="text-sm text-gray-500">Categoría: {product?.category.name}</p>
-            <p className="text-md font-medium">Descripción: {product?.description}</p>
-            {product?.imageUrl && (
-                <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-40 h-auto mt-2 rounded"
-                />
-            )}
-        </main>
-    );
+        <ProductFullView
+            id={product.id}
+            name={product.name}
+            description={product.description}
+            price={product.price}
+            imageUrl={product.imageUrl ?? ""}
+            category={product.category.name}
+        />
+    )
 }

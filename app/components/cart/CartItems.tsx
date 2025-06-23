@@ -2,7 +2,11 @@
 import { auth } from "@/auth";
 import { fetchCartByUserID } from "../../lib/data";
 import CartItem from "./CartItem";
+import { Item } from "@/app/lib/types";
 import { AddItemButton, DeleteButton, SubstractItemButton } from "./CartButtons";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
+import { checkout } from "@/app/lib/actions";
 
 export default async function CartItems() {
     const session = await auth();
@@ -47,6 +51,23 @@ export default async function CartItems() {
                                 0
                             )}
                     </p>
+                    <form action={checkout}>
+                        <input
+                            type="hidden"
+                            name="items"
+                            value={JSON.stringify(
+                            cartItems.items.map((item) => ({
+                                id: item.id.toString(),
+                                quantity: item.quantity,
+                                title: item.product.name,
+                                unit_price: item.product.price,
+                            }))
+                            )}
+                        />
+                        <Button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Checkout
+                        </Button>
+                    </form>
                 </div>
             ) : (
                 <div>No items in cart.</div>

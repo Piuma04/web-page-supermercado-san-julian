@@ -4,15 +4,25 @@ import { createPreference } from "@/app/api/mercadopago";
 import { Item } from "@/app/lib/types";
 import { signIn } from "@/auth"
 import { AuthError } from "next-auth"
+import { redirect } from "next/navigation";
 
-export async function checkout(items:Item[]) {
-    try {
-        const preferenceUrl = await createPreference(items);
-        return preferenceUrl!
-    } catch (error) {
-        console.error("Error creating preference:", error);
-        throw new Error("Failed to create payment preference");
+export async function checkout(formData: FormData){
+  let preferenceUrl: string | undefined = undefined;
+  try{
+    const itemsJson = formData.get('items');
+    if (!itemsJson || typeof itemsJson !== 'string') {
+      throw new Error("Items not provided or invalid");
     }
+    const items: Item[] = JSON.parse(itemsJson);
+    preferenceUrl = await createPreference(items);
+  } catch (error) {
+    console.error("Error creating payment preference:", error);
+    throw new Error("Failed to create payment preference");
+  }
+  if (!preferenceUrl) {
+    throw new Error("Failed to create payment url");
+  }
+  redirect(preferenceUrl);
 }
 
 export async function authenticate(

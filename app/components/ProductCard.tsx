@@ -30,16 +30,26 @@ export default function ProductCard({ id, name, description, price, imageUrl }: 
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-      <div className="space-y-4">
-        <Link href={`/products/${id}`}>
-          <Image
-            src={imageUrl}
-            alt={name}
-            width={400}
-            height={400}
-            className="w-full h-40 sm:h-56 md:h-64 object-cover rounded-lg"
-          />
-        </Link>
+      <div className="space-y-3">
+        
+        <div className="w-full flex justify-center items-center">
+          <Link href={`/products/${id}`} className="block w-full">
+            <div className="relative w-full aspect-square max-w-xs mx-auto">
+              <Image
+                src={imageUrl}
+                alt={name}
+                fill
+                className="object-contain rounded-lg"
+                sizes="(max-width: 640px) 100vw, 400px"
+                priority
+              />
+            </div>
+          </Link>
+        </div>
+
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800 truncate">{name}</h2>
+        </div>
 
         <div className="flex flex-col sm:flex-row space-x-4 space-y-2">
             <div className="flex items-center space-x-1">
