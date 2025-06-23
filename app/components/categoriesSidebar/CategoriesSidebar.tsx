@@ -23,7 +23,7 @@ const categories = await fetchCategories()
 
 export function CategoriesSidebar() {
   return (
-    <Sidebar variant="inset" side = "left">
+    <Sidebar variant="floating" side = "left">
       <SidebarHeader> Categorias </SidebarHeader>
       <SidebarContent>
         <SidebarGroup> 

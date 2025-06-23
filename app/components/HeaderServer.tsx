@@ -10,8 +10,8 @@ export default function HeaderServer() {
 
 
   return (
-    <header className="sticky top-0 w-full bg-white shadow-md">
-        <div className="flex justify-between items-center w-full p-4">
+    <header className="sticky top-0 w-full bg-white shadow-md z-30">
+        <div className="flex justify-between items-center w-full ">
           <CategoriesSidebarTrigger />
           <Link href="/" >
             <Image
