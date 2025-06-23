@@ -17,7 +17,7 @@ type ProductFullViewProps =  {
 };
 
 
-export default function ProductCard({ id, name, description, price, imageUrl, category }: ProductFullViewProps) {
+export default function ProductFullView({ id, name, description, price, imageUrl, category }: ProductFullViewProps) {
   const [quantity, setQuantity] = useState(1);
   const { data: session } = useSession();
 
