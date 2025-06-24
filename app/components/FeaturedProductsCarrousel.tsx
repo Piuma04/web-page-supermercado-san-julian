@@ -6,7 +6,7 @@ export default async function FeaturedProductsCarousel() {
     const featuredProducts = await fetchProducts();
 
     return (
-        <section className="w-full my-4">
+        <section className="w-full mt-7 ">
             <h2 className="text-xl font-bold mb-2 text-center">Productos Destacados</h2>
             <Carousel
                 opts={{
@@ -25,15 +25,15 @@ export default async function FeaturedProductsCarousel() {
                                 md:basis-1/3
                                 lg:basis-1/4
                                 xl:basis-1/5
+                                h-72
+                                sm:h-72
+                                md:h-80
+                                lg:h-96
+                                flex items-center justify-center
                                 px-2
-                                
-                                h-48
-                                sm:h-56
-                                md:h-64
-                                lg:h-72
                             "
                         >
-                            <div className="h-full flex items-center justify-center">
+                            <div className="h-full w-full flex items-center justify-center overflow-hidden">
                                 <ProductCard
                                     key={product.id}
                                     id={product.id}
@@ -41,7 +41,6 @@ export default async function FeaturedProductsCarousel() {
                                     description={product.description ?? ""}
                                     price={product.price}
                                     imageUrl={product.imageUrl ?? ""}
-                                    
                                 />
                             </div>
                         </CarouselItem>

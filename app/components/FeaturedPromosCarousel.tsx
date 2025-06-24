@@ -20,13 +20,15 @@ export default async function FeaturedPromosCarousel() {
                 align: "start",
                 loop: true,
             }}
-            className="w-full  my-2"
+             
+            className="w-full  my-2 "
         >
             <CarouselContent>
                 {featuredPromos.map((fp) => (
                     <CarouselItem
                         key={fp.id}
                         className="relative h-48 md:h-64 w-full overflow-hidden shadow-lg"
+                        
                     >
                         <Image
                             src={fp.url}
