@@ -4,10 +4,11 @@ import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-900 text-white ">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo and Description */}
+          
+          
           <div className="space-y-4">
               <Image
                 src="/images/favicon.ico"
@@ -18,7 +19,6 @@ export function Footer() {
                 </Image>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="font-semibold mb-4">Enlaces Rápidos</h3>
             <ul className="space-y-2 text-sm">
@@ -45,7 +45,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
           <div>
             <h3 className="font-semibold mb-4">Categorías</h3>
             <ul className="space-y-2 text-sm">
@@ -72,7 +71,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h3 className="font-semibold mb-4">Contacto</h3>
             <div className="space-y-3 text-sm">
@@ -90,7 +88,6 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Social Media */}
             <div className="flex space-x-4 mt-4">
               <Link href="https://www.facebook.com/sanjulian.supermercado/" className="text-gray-400 hover:text-white transition-colors">
                 <Facebook className="h-5 w-5" />

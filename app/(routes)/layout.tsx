@@ -33,19 +33,16 @@ export default function RootLayout({
   return (
     <html lang="en" >
       <link rel="icon" href="/images/favicon.ico" />
-      <body>
+      <body className="flex flex-col min-h-screen">
         <SessionProvider>
-        <SidebarProvider defaultOpen={false}>
+          <SidebarProvider defaultOpen={false}>
             <CategoriesSidebar />
-
             <SidebarInset>
-
               <HeaderServer />
-              <main className="pt-4">{children}</main>
+              <main className="flex-1 pt-4">{children}</main>
               <Footer />
             </SidebarInset>
-      
-        </SidebarProvider>
+          </SidebarProvider>
         </SessionProvider>
       </body>
 
