@@ -20,7 +20,7 @@ export default async function ProductTable({
             key ={product.id}
             id={product.id}
             name={product.name}
-            description={ "Descripción no disponible"}
+            description={ product.description ?? ""}
             price={product.price}
             imageUrl={product.imageUrl ?? ""}
 

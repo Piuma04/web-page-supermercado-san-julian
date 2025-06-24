@@ -1,3 +1,4 @@
+import ProductCard from "@/app/components/ProductCard";
 import { fetchCategory } from "@/app/lib/data";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -9,23 +10,15 @@ export default async function Page({ params }: { params: { id: string } }) {
       <h1 className="text-2xl font-bold mb-4">{category?.name}</h1>
       <ul className="space-y-4">
         {category?.products.map((product) => (
-          <li
-            key={product.id}
-            className="border p-4 rounded-xl shadow flex flex-col gap-1"
-          >
-            <h2 className="text-xl font-semibold">{product.name}</h2>
-            <p className="text-sm text-gray-500">
-              Categoría: {category?.name}
-            </p>
-            <p className="text-md font-medium">${product.price}</p>
-            {product.imageUrl && (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-40 h-auto mt-2 rounded"
-              />
-            )}
-          </li>
+          <ProductCard 
+                      key ={product.id}
+                      id={product.id}
+                      name={product.name}
+                      description={ "Descripción no disponible"}
+                      price={product.price}
+                      imageUrl={product.imageUrl ?? ""}
+          
+                  />
         ))}
       </ul>
     </main>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import FeaturedPromosCarousel from "../components/FeaturedPromosCarousel";
+import FeaturedProductsCarousel from "../components/FeaturedProductsCarrousel";
 
 
 export default function Page() {
@@ -12,6 +13,7 @@ export default function Page() {
         
 
         <FeaturedPromosCarousel/>
+        <FeaturedProductsCarousel/>
 
 
         <ul className="space-y-4">
