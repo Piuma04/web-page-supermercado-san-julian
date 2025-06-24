@@ -20,9 +20,14 @@ export const authConfig = {
       where: { email: user.email! }
       });
       if (!existingUser) {
-      await prisma.user.create({
+      const dbUser = await prisma.user.create({
         data: {
         email: user.email!,
+        }
+      });
+      await prisma.cart.create({
+        data: {
+          userId: dbUser.id,
         }
       });
       }
