@@ -30,19 +30,19 @@ export default function ProductCard({ id, name, description, price, imageUrl }: 
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-      <div className="space-y-3">
-        
-        <div className="w-full flex justify-center items-center">
-          <Link href={`/products/${id}`} className="block w-full">
-            <div className="relative w-full aspect-square max-w-xs mx-auto">
+      <div className="space-y-3">        {/* Product Image Section */}
+        <div className="relative w-full aspect-square overflow-hidden rounded-lg bg-gray-50/50 group">
+          <Link href={`/products/${id}`} className="block w-full h-full">
+            <div className="relative w-full h-full p-2">
               <Image
                 src={imageUrl}
                 alt={name}
                 fill
-                className="object-contain rounded-lg"
-                sizes="(max-width: 640px) 100vw, 400px"
-                priority
+                className="object-contain hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 300px"
               />
+              {/* Subtle overlay on hover */}
+              <div className="absolute inset-0 bg-black/0 hover:bg-black/5 transition-colors duration-300 rounded-lg"></div>
             </div>
           </Link>
         </div>

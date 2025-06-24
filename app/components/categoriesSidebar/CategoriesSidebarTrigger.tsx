@@ -23,10 +23,7 @@ export default function CategoriesSidebarTrigger({
       }}
       {...props}
     >
-      
-      <span className="text-sm hidden sm:inline">Categorías</span>
-      <Menu className="sm:hidden" aria-label="Menú" size={28} />
-      
+      <Menu className="size-4 lg:size-8" aria-label="Menú" size={32} />
     </Button>
   )
 }

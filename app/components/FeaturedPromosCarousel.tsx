@@ -41,8 +41,8 @@ export default async function FeaturedPromosCarousel() {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious variant="ghost" className="left-2 top-1/2 -translate-y-1/2 z-10" />
-            <CarouselNext variant="ghost" className="right-2 top-1/2 -translate-y-1/2 z-10" />
+            <CarouselPrevious variant="ghost" className="left-2 top-1/2 -translate-y-1/2" />
+            <CarouselNext variant="ghost" className="right-2 top-1/2 -translate-y-1/2" />
         </Carousel>
     );
 }
