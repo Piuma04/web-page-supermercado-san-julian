@@ -13,7 +13,7 @@ export default async function FeaturedProductsCarousel() {
                     align: "start",
                     loop: true,
                 }}
-                className="w-full"
+               
             >
                 <CarouselContent>
                     {featuredProducts.map((product) => (
@@ -25,25 +25,17 @@ export default async function FeaturedProductsCarousel() {
                                 md:basis-1/3
                                 lg:basis-1/4
                                 xl:basis-1/5
-                                h-72
-                                sm:h-72
-                                md:h-80
-                                lg:h-96
+                                h-81
                                 flex items-center justify-center
-                                px-2
                             "
                         >
-                            <div className="h-full w-full flex items-center justify-center overflow-hidden">
                                 <ProductCard
                                     key={product.id}
                                     id={product.id}
                                     name={product.name}
-                                    description={product.description ?? ""}
                                     price={product.price}
                                     imageUrl={product.imageUrl ?? ""}
-                                    layout="horizontal"
                                 />
-                            </div>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
