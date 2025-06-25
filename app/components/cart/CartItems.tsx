@@ -1,76 +1,95 @@
-
 import { auth } from "@/auth";
 import { fetchCartByUserID } from "../../lib/data";
 import CartItem from "./CartItem";
-import { Item } from "@/app/lib/types";
-import { AddItemButton, DeleteButton, SubstractItemButton } from "./CartButtons";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 import { checkout } from "@/app/lib/actions";
+import { ShoppingCart, CreditCard } from "lucide-react";
+import Link from "next/link";
 
 export default async function CartItems() {
     const session = await auth();
-
-    const userEmail = session!.user!.email!;
-
-    const cartItems = await fetchCartByUserID(userEmail);
+    
+    const cartItems = await fetchCartByUserID(session!.user!.email!);
+    
+    // Calculate total
+    const totalAmount = cartItems && cartItems.items 
+        ? cartItems.items.reduce((total, item) => total + item.quantity * item.product.price, 0)
+        : 0;
     
     return (
-        <div>
+        <div className="bg-gray-50 p-4 rounded-lg">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+                <ShoppingCart className="text-red-600" />
+                Mi Carrito
+            </h2>
+            
             {cartItems && cartItems.items && cartItems.items.length > 0 ? (
-                <div className="mb-4">
-                    <h2 className="text-xl font-bold mb-2">Cart Items:</h2>
-                    
-                    <ul>
+                <div>
+                    {/* Cart Items */}
+                    <div className="space-y-2 mb-8">
                         {cartItems.items.map((item) => (
-                            <li key={item.id}>
-                                    
-                                    <div className="flex items-center gap-4 border-b py-2">
-                                        {item.product.imageUrl && (
-                                            <img src={item.product.imageUrl} alt={item.product.name} className="w-16 h-16 object-cover rounded" />
-                                        )}
-                                        <div className="flex-1">
-                                            <div className="font-semibold">{item.product.name}</div>
-                                            <div className="text-gray-600">Precio: ${item.product.price}</div>
-                                            <div className="text-gray-600">Cantidad: {item.quantity}</div>
-                                            <div className="text-gray-600">Subtotal: ${item.quantity * item.product.price}</div>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <SubstractItemButton cartItemId={item.id} quantity = {item.quantity} />
-                                            <AddItemButton cartItemId={item.id} />
-                                            <DeleteButton cartItemId={item.id} />
-                                        </div>
-                                    </div>
-                            </li>
+                            <CartItem 
+                                key={item.id}
+                                id={item.id}
+                                product={item.product}
+                                quantity={item.quantity}
+                            />
                         ))}
-                    </ul>
-                    <p>
-                            Precio Total:{" "}
-                            {cartItems.items.reduce(
-                                (total, item) => total + item.quantity * item.product.price,
-                                0
-                            )}
-                    </p>
-                    <form action={checkout}>
+                    </div>
+                    
+                    {/* Order Summary */}
+                    <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+                        <h3 className="text-lg font-semibold mb-2 border-b pb-2">Resumen de la compra</h3>
+                        <div className="flex justify-between py-2">
+                            <span className="text-gray-600">Subtotal:</span>
+                            <span className="font-medium">${totalAmount.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between py-2 border-b">
+                            <span className="text-gray-600">Envío:</span>
+                            <span className="font-medium text-green-700">Gratis</span>
+                        </div>
+                        <div className="flex justify-between py-3 text-lg font-bold">
+                            <span>Total:</span>
+                            <span className="text-red-600">${totalAmount.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    {/* Checkout Button */}
+                    <form action={checkout} className="text-center">
                         <input
                             type="hidden"
                             name="items"
                             value={JSON.stringify(
-                            cartItems.items.map((item) => ({
-                                id: item.id.toString(),
-                                quantity: item.quantity,
-                                title: item.product.name,
-                                unit_price: item.product.price,
-                            }))
+                                cartItems.items.map((item) => ({
+                                    id: item.id.toString(),
+                                    quantity: item.quantity,
+                                    title: item.product.name,
+                                    unit_price: item.product.price,
+                                }))
                             )}
                         />
-                        <Button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Checkout
+                        <Button 
+                            type="submit" 
+                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg w-full sm:w-auto text-base flex items-center justify-center gap-2 shadow-md"
+                        >
+                            <CreditCard size={18} />
+                            Finalizar Compra
                         </Button>
                     </form>
                 </div>
             ) : (
-                <div>No items in cart.</div>
+                <div className="bg-white rounded-lg p-8 text-center shadow-md">
+                    <div className="flex justify-center mb-4">
+                        <ShoppingCart size={64} className="text-gray-300" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-700 mb-2">Tu carrito está vacío</h3>
+                    <p className="text-gray-500 mb-6">Agrega algunos productos para comenzar tu compra</p>
+                    <Link href="/products">
+                        <Button className="bg-red-600 hover:bg-red-700 text-white">
+                            Explorar Productos
+                        </Button>
+                    </Link>
+                </div>
             )}
         </div>
     );
