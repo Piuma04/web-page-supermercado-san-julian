@@ -10,11 +10,3 @@ export type Item = {
   quantity: number;
   unit_price: number;
 }
-
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  description: string;
-};
