@@ -29,7 +29,7 @@ export default async function AdministerUserSession() {
             <span className="block sm:hidden">
                 <LogIn size={25} />
             </span>
-            <span className="hidden sm:block text-sm">
+            <span className="hidden sm:block text-sm text-black">
                 Iniciar sesión
             </span>
         </Link>
