@@ -12,31 +12,10 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { 
-  Tag, 
-  ShoppingBag, 
-  Apple, 
-  Beef, 
-  Milk, 
-  Cookie, 
-  Coffee,
-  UtensilsCrossed,
-  Package
+  ShoppingBag
 } from "lucide-react"
 
 const categories = await fetchCategories()
-
-// Icon mapping for supermarket categories
-const getCategoryIcon = (categoryName: string) => {
-  const name = categoryName.toLowerCase()
-  if (name.includes('fruta') || name.includes('verdura') || name.includes('produce')) return Apple
-  if (name.includes('carne') || name.includes('meat') || name.includes('pollo')) return Beef
-  if (name.includes('lacteo') || name.includes('dairy') || name.includes('leche')) return Milk
-  if (name.includes('panaderia') || name.includes('bakery') || name.includes('pan')) return Cookie
-  if (name.includes('bebida') || name.includes('drink') || name.includes('cafe')) return Coffee
-  if (name.includes('congelado') || name.includes('frozen') || name.includes('helado')) return Package
-  if (name.includes('comida') || name.includes('food') || name.includes('preparada')) return UtensilsCrossed
-  return ShoppingBag
-}
 
 export function CategoriesSidebar() {
   return (
@@ -64,7 +43,6 @@ export function CategoriesSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="px-2">
               {categories.map((category) => {
-                const IconComponent = getCategoryIcon(category.name)
                 
                 return (
                   <SidebarMenuItem key={category.id}>
@@ -76,7 +54,6 @@ export function CategoriesSidebar() {
                         href={`/categories/${category.id}`}
                         className="flex items-center gap-3 px-3 py-2.5 text-gray-700"
                       >
-                        <IconComponent className="h-4 w-4 text-red-600" />
                         <span className="text-sm font-medium">{category.name}</span>
                       </Link>
                     </SidebarMenuButton>
