@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
 import  prisma  from '@/app/lib/prisma';
+
  
 export const authConfig = {
   pages: {
@@ -8,8 +9,9 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnUserProfile = nextUrl.pathname.startsWith('/cart');     //podria ser cart, historial, etc.
-      if (isOnUserProfile) {
+      const isOnUserProfile = nextUrl.pathname.startsWith('/profile');
+      const isOnCart =     nextUrl.pathname.startsWith('/cart');
+      if (isOnUserProfile || isOnCart) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } 
@@ -33,6 +35,8 @@ export const authConfig = {
       }
       return true;
     },
+
+      
 
 
     

@@ -1,8 +1,8 @@
 
 
 import Link from "next/link";
-import FeaturedPromosCarousel from "../components/FeaturedPromosCarousel";
-import FeaturedProductsCarousel from "../components/FeaturedProductsCarrousel";
+import FeaturedPromosCarousel from "../components/carousel/FeaturedPromosCarousel";
+import FeaturedProductsCarousel from "../components/carousel/FeaturedProductsCarrousel";
 
 
 export default function Page() {

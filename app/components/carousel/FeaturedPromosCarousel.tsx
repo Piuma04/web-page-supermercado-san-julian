@@ -20,22 +20,31 @@ export default async function FeaturedPromosCarousel() {
                 align: "start",
                 loop: true,
             }}
-             
-            className="w-full  my-2 "
+            className="w-full my-2"
         >
             <CarouselContent>
                 {featuredPromos.map((fp) => (
                     <CarouselItem
                         key={fp.id}
-                        className="relative h-48 md:h-64 w-full overflow-hidden shadow-lg"
-                        
+                        className="
+                            relative 
+                            w-full 
+                            h-40 
+                            sm:h-56 
+                            md:h-72 
+                            lg:h-96 
+                            overflow-hidden 
+                            shadow-lg
+                            transition-all
+                            duration-300
+                        "
                     >
                         <Image
                             src={fp.url}
                             alt="Promoción destacada"
                             fill
                             className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
                             priority
                         />
                     </CarouselItem>

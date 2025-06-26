@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, LogIn } from "lucide-react";
 
 export default async function AdministerUserSession() {
     const session = await auth();
@@ -8,24 +8,19 @@ export default async function AdministerUserSession() {
     if (session?.user?.email) {
         // Show logout icon on mobile, text on larger screens
         return (
-            <form
-                action={async () => {
-                    'use server';
-                    await signOut({ redirectTo: '/' });
-                }}
-            >
+            <Link href="/profile">
                 <button
                     type="submit"
                     className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
                 >
                     <span className="block sm:hidden">
-                        <LogOut size={20} />
+                        <User size={20} />
                     </span>
                     <span className="hidden sm:block">
-                        Cerrar sesión
+                        Perfil
                     </span>
                 </button>
-            </form>
+            </Link>
         );
     }
 
@@ -36,7 +31,7 @@ export default async function AdministerUserSession() {
             href="/login"
         >
             <span className="block sm:hidden">
-                <User size={20} />
+                <LogIn size={20} />
             </span>
             <span className="hidden sm:block">
                 Iniciar sesión

@@ -1,6 +1,6 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { fetchProducts } from "../lib/data";
-import ProductCard from "./ProductCard";
+import { fetchProducts } from "../../lib/data";
+import ProductCard from "../ProductCard";
 
 export default async function FeaturedProductsCarousel() {
     const featuredProducts = await fetchProducts();

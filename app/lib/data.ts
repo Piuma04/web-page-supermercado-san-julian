@@ -144,3 +144,10 @@ export async function addToCart(email: string, productId: number, quantity: numb
     return cart;
 }
 
+export async function fetchUserByEmail(email: string) {
+    const user = await prisma.user.findUnique({
+        where: { email }
+    });
+    return user;
+}
+
