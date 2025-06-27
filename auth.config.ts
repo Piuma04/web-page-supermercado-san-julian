@@ -11,12 +11,14 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnUserProfile = nextUrl.pathname.startsWith('/profile');
       const isOnCart =     nextUrl.pathname.startsWith('/cart');
-      if (isOnUserProfile || isOnCart) {
+      const isOnAdmin =     nextUrl.pathname.startsWith('/cart');
+      if (isOnUserProfile || isOnCart || isOnAdmin) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } 
       return true;
     },
+    
     async signIn({ user, account, profile }) {
       const existingUser = await prisma.user.findUnique({
       where: { email: user.email! }
@@ -35,9 +37,6 @@ export const authConfig = {
       }
       return true;
     },
-
-      
-
 
     
   },

@@ -8,7 +8,7 @@ import { LogOut } from "lucide-react";
 export default async function Profile(){
 
     const session  = await auth();
-    const user = await fetchUserByEmail(session?.user?.email!)
+    
 
     return(
     
@@ -17,9 +17,11 @@ export default async function Profile(){
         <main>
             {
                 
-                (user?.role == userRole.ADMIN) 
+                (session?.user?.role == userRole.ADMIN) 
                 ?
                 <div>PERFIL ADMIN</div>
+
+                
                 :
                 <div>PERFIL USER</div>
 

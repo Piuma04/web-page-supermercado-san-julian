@@ -40,4 +40,22 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
       },
     }), Google
   ],
+
+  callbacks : {
+     async jwt({ token, user }) {
+      if (user) {
+        token.role = await prisma.user.findUnique({
+          where: { email: user.email! },
+          select: { role: true }
+        });
+      
+      }
+      return token
+    },
+    async session({ session, token }) {
+      session.user.role = token.role
+      return session
+    },
+
+  },
 });

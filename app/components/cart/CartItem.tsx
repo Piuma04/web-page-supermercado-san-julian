@@ -1,10 +1,3 @@
-/*
-
-Usar este si se queiren usar trancisiones en el server
-
-
-*/
-
 
 
 import { AddItemButton, SubstractItemButton, DeleteButton } from "./CartButtons";
