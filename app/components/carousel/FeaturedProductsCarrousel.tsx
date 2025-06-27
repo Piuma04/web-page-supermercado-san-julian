@@ -34,7 +34,7 @@ export default async function FeaturedProductsCarousel() {
                                     id={product.id}
                                     name={product.name}
                                     price={product.price}
-                                    imageUrl={product.imageUrl ?? ""}
+                                    imageUrl={product.imageUrl}
                                 />
                         </CarouselItem>
                     ))}

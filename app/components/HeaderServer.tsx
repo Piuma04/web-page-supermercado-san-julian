@@ -42,8 +42,14 @@ export default function HeaderServer() {
         </div>
         {/* Cart and user session */}
         <div className="flex flex-row items-center gap-6 sm:gap-8 mt-2 sm:mt-0 justify-end mr-1 sm:mr-3 mb-2 sm:mb-0">
-          <Link href="/cart">
-            <ShoppingCart />
+          <Link href="/cart" className="flex flex-col items-center justify-center pt-3"> 
+            <span className="block sm:hidden">
+              <ShoppingCart size={25} />
+            </span>
+            <span className="hidden sm:flex flex-col items-center text-sm">
+                <ShoppingCart size={25} />
+                Carrito
+            </span>
           </Link>
           <Suspense>
             <AdministerUserSession />

@@ -16,7 +16,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
             name={product.name}
             description={product.description}
             price={product.price}
-            imageUrl={product.imageUrl ?? ""}
+            imageUrl={product.imageUrl}
             category={product.category.name}
         />
     )

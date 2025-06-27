@@ -6,20 +6,16 @@ export default async function AdministerUserSession() {
     const session = await auth();
 
     if (session?.user?.email) {
-        // Show logout icon on mobile, text on larger screens
+        // Show Profile icon on mobile, text on larger screens
         return (
-            <Link href="/profile">
-                <button
-                    type="submit"
-                    className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
-                >
-                    <span className="block sm:hidden">
-                        <User size={20} />
-                    </span>
-                    <span className="hidden sm:block">
-                        Perfil
-                    </span>
-                </button>
+            <Link className="flex flex-col items-center justify-center pt-3" href="/profile">
+            <span className="block sm:hidden">
+                <User size={25} />
+            </span>
+            <span className="hidden sm:flex flex-col items-center text-sm">
+                <User size={25} />
+                Perfil
+            </span>
             </Link>
         );
     }
@@ -31,9 +27,9 @@ export default async function AdministerUserSession() {
             href="/login"
         >
             <span className="block sm:hidden">
-                <LogIn size={20} />
+                <LogIn size={25} />
             </span>
-            <span className="hidden sm:block">
+            <span className="hidden sm:block text-sm text-black">
                 Iniciar sesión
             </span>
         </Link>
