@@ -1,4 +1,4 @@
-// app/dashboard/products/ProductGrid.tsx
+
 
 import { getFilteredProducts } from "@/app/lib/data";
 import AdminProductCard from "./AdminProductCard";
