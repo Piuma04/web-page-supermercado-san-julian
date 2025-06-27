@@ -1,7 +1,14 @@
 import { fetchProducts } from "../lib/data";
-import ProductCard from "./ProductCard";
+
 import ProductGrid from "./ProductGrid";
 
+
+/*
+
+
+Deberia tenerse en cuenta query y current page para saber que produt fetchear
+
+*/
 
 export default async function ProductTable({
     query,

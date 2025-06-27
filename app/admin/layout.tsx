@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
+import AdminPanelSidenav from "../components/admin/adminSidenav/AdminPanelSidenav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Iniciar sesión - Supermercado San Julian",
-  description: "Pantalla de inicio de sesión del supermercado San Julian",
+  title: "Pagina de Administración - Supermercado San Julian",
+  description: "Administra tu supermercado con facilidad",
+  
+
 };
 
 export default function AdminLayout({
@@ -28,7 +31,12 @@ export default function AdminLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main>{children}</main>
+        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+          <div className="w-full flex-none md:w-64">
+            <AdminPanelSidenav />
+          </div>
+          <div className="flex-grow md:overflow-y-auto ">{children}</div>
+        </div>
       </body>
     </html>
   );

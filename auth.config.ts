@@ -11,10 +11,10 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnUserProfile = nextUrl.pathname.startsWith('/profile');
       const isOnCart =  nextUrl.pathname.startsWith('/cart');
-      const isOnAdmin = nextUrl.pathname.startsWith('/cart');
+      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
       if (isOnUserProfile || isOnCart || isOnAdmin) {
         if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
+        return false; 
       } 
       return true;
     },
