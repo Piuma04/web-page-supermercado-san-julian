@@ -18,8 +18,8 @@ export function UpdateProduct({ id }: { id: string }) {
   return (
     <Link
       
-      href={`/admin/crud/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
+      href={`/admin/crud/${id}/update`}
+      className="text-red-700 border-red-300 hover:bg-red-100"
     >
       <PencilIcon className="w-5" />
     </Link>
@@ -31,7 +31,7 @@ export function DeleteProduct({ id }: { id: string }) {
    const deleteInvoiceWithId = deleteInvoice.bind(null, id);
   return (
      <form action={deleteInvoiceWithId}>
-      <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
+      <button type="submit" className="flex items-center gap-1 text-sm bg-red-600 text-white px-3 py-1.5 rounded-xl hover:bg-red-700">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
       </button>

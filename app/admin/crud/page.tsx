@@ -1,4 +1,5 @@
 import { CreateProduct } from "@/app/components/admin/AdminButtons";
+import AdminProductTable from "@/app/components/admin/AdminProductTable";
 import Pagination from "@/app/components/admin/Pagination";
 import Search from "@/app/components/admin/Search";
 
@@ -28,7 +29,7 @@ export default async function PageCrud(
         <CreateProduct />
       </div>
       <Suspense key={query + currentPage} >
-        <Table query={query} currentPage={currentPage} />
+        <AdminProductTable query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
