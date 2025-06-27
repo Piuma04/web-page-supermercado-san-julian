@@ -49,7 +49,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
           where: { email: token.email! },
           select: { role: true }
         });
-        token.role = userDB?.role
+        token.role = userDB?.role!
       
       return token
     },
