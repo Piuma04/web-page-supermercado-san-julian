@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ShoppingCart, Menu, Search } from 'lucide-react';
 import AdministerUserSession from './AdministerUserSession';
 import { Suspense } from 'react';
+import SearchBar from './SearchBar';
 
 export default function HeaderServer() {
   return (
@@ -28,16 +29,14 @@ export default function HeaderServer() {
           {/* Dummy searchbar on mobile */}
           <div className="flex-1 flex justify-end sm:hidden">
             <div className="flex items-center bg-gray-100 rounded-md px-2 py-1 ml-2 w-32">
-              <Search size={18} className="text-gray-400" />
-              <span className="ml-1 text-gray-400 text-sm">Buscar...</span>
+              <SearchBar placeholder="Buscar.." />
             </div>
           </div>
         </div>
         {/* Dummy searchbar on desktop */}
         <div className="hidden sm:flex flex-1 justify-center">
           <div className="flex items-center bg-gray-100 rounded-md px-3 py-2 w-80 max-w-xs">
-            <Search size={20} className="text-gray-400" />
-            <span className="ml-2 text-gray-400 text-base">Buscar productos...</span>
+              <SearchBar placeholder="Buscar productos..." />
           </div>
         </div>
         {/* Cart and user session */}

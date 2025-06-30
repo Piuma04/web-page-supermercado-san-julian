@@ -1,23 +1,13 @@
-import { fetchProduct } from "@/app/lib/data";
-import ProductFullView from "@/app/components/ProductFullView";
 import { Suspense } from "react";
+import ProductContentSkeleton from "@/app/components/ProductContentSkeleton";
+import ProductContent from "@/app/components/ProductContent";
 
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {
-    const {id} =  await params
-    const product = await fetchProduct(id);
-
-    if (!product) {
-        throw new Error("Product not found");
-    }
+    const { id } = await params;
 
     return (
-        <ProductFullView
-            id={product.id}
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            imageUrl={product.imageUrl}
-            category={product.category.name}
-        />
-    )
+        <Suspense fallback={<ProductContentSkeleton />}>
+            <ProductContent id={id} />
+        </Suspense>
+    );
 }

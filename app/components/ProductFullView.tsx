@@ -1,9 +1,9 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
-import {useState} from "react";
-import { addToCart } from "../lib/data";
+import { Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { addToCart } from "../lib/actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
@@ -19,15 +19,23 @@ type ProductFullViewProps =  {
 
 export default function ProductFullView({ id, name, description, price, imageUrl, category }: ProductFullViewProps) {
   const [quantity, setQuantity] = useState(1);
+  const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
   if (!session || !session.user || !session.user.email) {
     redirect("/api/auth/signin");
   }
-  else
-    addToCart(session.user.email, id, quantity);
-  };
+  
+  setIsPending(true);
+  try {
+    await addToCart(session.user.email, id, quantity);
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+  } finally {
+    setIsPending(false);
+  }
+};
 
   return (
       <main className="flex flex-col items-center min-h-screen bg-white py-8 px-2">
@@ -64,7 +72,7 @@ export default function ProductFullView({ id, name, description, price, imageUrl
                     size="sm"
                     className="p-1 h-7 w-7"
                     onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                    disabled={quantity === 1}
+                    disabled={quantity === 1 || isPending}
                   >
                     <Minus size={16} />
                   </Button>
@@ -74,18 +82,28 @@ export default function ProductFullView({ id, name, description, price, imageUrl
                     size="sm"
                     className="p-1 h-7 w-7"
                     onClick={() => setQuantity(q => q + 1)}
+                    disabled={isPending}
                   >
                     <Plus size={16} />
                   </Button>
                 </div>
                 <div>
                   <Button
-                    className="bg-red-600 hover:bg-red-700 px-2 py-1 h-10 text-base gap-1 font-bold flex items-center justify-center"
+                    className="bg-red-600 hover:bg-red-700 px-2 py-1 h-10 text-base gap-1 font-bold flex items-center justify-center min-w-[120px]"
                     size="sm"
                     onClick={handleAddToCart}
+                    disabled={isPending}
                   >
-                    <ShoppingCart size={20} />
-                    <span>Agregar</span>
+                    {isPending ? (
+                      <>
+                        <Loader2 size={20} className="mr-1 animate-spin" />
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart size={20} />
+                        <span>Agregar</span>
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

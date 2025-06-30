@@ -4,6 +4,81 @@ import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+
+const ITEMS_PER_PAGE = 10;
+export async function fetchFilteredProducts(
+    query: string,
+    currentPage: number,
+    categoryId?: number,
+) {
+        const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+        const products = await prisma.product.findMany({
+                where: {
+                AND: [
+                        categoryId ? { categoryId } : {},
+                        {
+                        OR: [
+                                {
+                                name: {
+                                        contains: query,
+                                        mode: 'insensitive',
+                                },
+                                },
+                                {
+                                description: {
+                                        contains: query,
+                                        mode: 'insensitive',
+                                },
+                                },
+                        ],
+                        }
+                ]
+                },
+                include: {
+                category: true,
+                },
+                skip: offset,
+                take: ITEMS_PER_PAGE,
+        });
+        return products;
+}
+
+
+export async function fetchFilteredProductsPages(
+    query: string,
+    categoryId?: number,
+) {
+    const totalCount = await prisma.product.count({
+        where: {
+            AND: [
+                categoryId ? { categoryId } : {},
+                {
+                    OR: [
+                        {
+                            name: {
+                                contains: query,
+                                mode: 'insensitive',
+                            },
+                        },
+                        {
+                            description: {
+                                contains: query,
+                                mode: 'insensitive',
+                            },
+                        },
+                    ],
+                }
+            ]
+        },
+    });
+    return Math.ceil(totalCount / ITEMS_PER_PAGE);
+}
+
+
+
+
+
+
 export async function fetchCategories() {
     const categories = await prisma.category.findMany({
     include: {
@@ -94,56 +169,6 @@ export async function deleteItemFromCart(cartItemId:number) {
     revalidatePath("/(routes)/cart");
 }
 
-export async function addToCart(email: string, productId: number, quantity: number) {
-    const user = await prisma.user.findUnique({
-        where: {
-            email
-        }
-    })
-
-    if (!user) {
-        throw new Error("User not found.");
-    }
-
-    const cart = await prisma.cart.findUnique({
-        where: {
-            userId: user?.id
-        },
-        include: {
-            items: {
-            }
-        }
-    })
-
-    if (cart?.id === undefined) {
-            throw new Error("Cart not found for user.");
-        }
-    
-    const existingItem = cart?.items.find(item => item.productId === productId);
-    if(existingItem)
-    {
-        // Update existing item quantity
-        await prisma.cartItem.update({
-            where: {
-                id: existingItem.id
-            },
-            data: {
-                quantity: existingItem.quantity + quantity
-            }
-        });
-    }
-    else {
-        // Add new item to cart
-        await prisma.cartItem.create({
-            data: {
-                cartId: cart.id,
-                productId: productId,
-                quantity: quantity
-            }
-        });
-    }
-    return cart;
-}
 
 export async function fetchUserByEmail(email: string) {
     const user = await prisma.user.findUnique({

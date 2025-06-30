@@ -2,30 +2,40 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
-import {useState} from "react";
-import { addToCart } from "../lib/data";
+import { Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { addToCart } from "../lib/actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-type ProductCardProps =  {
-    id:number;     
-    name:string;  
-    price: number;
-    imageUrl: string | null;
-};
 
+type ProductCardProps = {
+  id: number;     
+  name: string;  
+  price: number;
+  imageUrl: string | null;
+};
 
 export default function ProductCard({ id, name, price, imageUrl }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
+  const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
 
-  const handleAddToCart = () => {
-  if (!session || !session.user || !session.user.email) {
-    redirect("/api/auth/signin");
-  }
-  else
-    addToCart(session.user.email, id, quantity);
+  const handleAddToCart = async () => {
+    if (!session || !session.user || !session.user.email) {
+      redirect("/api/auth/signin");
+    }
+    
+    setIsPending(true);
+    
+    try {
+      await addToCart(session.user.email, id, quantity);
+      setQuantity(1);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -53,19 +63,43 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
         {/* Product Cart Menu */}
         <div className="flex flex-col space-y-3 items-center">
             <div className="flex items-center space-x-1">
-            <Button variant="outline" size="sm" className="p-1 h-8 w-8 rounded-md" onClick={() => setQuantity(quantity - 1)} disabled={quantity === 1}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="p-1 h-8 w-8 rounded-md" 
+              onClick={() => setQuantity(Math.max(1, quantity - 1))} 
+              disabled={quantity === 1 || isPending}
             >
               <Minus size={16} />
             </Button>
             <span className="w-6 text-center text-sm font-medium">{quantity}</span>
-            <Button variant="outline" size="sm" className="p-1 h-8 w-8 rounded-md" onClick={() => setQuantity(quantity + 1)}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="p-1 h-8 w-8 rounded-md" 
+              onClick={() => setQuantity(quantity + 1)}
+              disabled={isPending}
+            >
               <Plus size={16} />
             </Button>
             </div>
             <div>
-            <Button className="bg-red-600 hover:bg-red-700 text-xs rounded-md" size="sm" onClick={handleAddToCart}>
-              <ShoppingCart size={16} />
-              <span>Agregar</span>
+            <Button 
+              className="bg-red-600 hover:bg-red-700 text-xs rounded-md min-w-[100px]" 
+              size="sm" 
+              onClick={handleAddToCart}
+              disabled={isPending || quantity === 0}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 size={16} className="mr-1 animate-spin" />
+                </>
+              ) : (
+                <>
+                  <ShoppingCart size={16} className="mr-1" />
+                  <span>Agregar</span>
+                </>
+              )}
             </Button>
             </div>
         </div>
