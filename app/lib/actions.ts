@@ -4,6 +4,7 @@ import { createPreference } from "@/app/api/mercadopago";
 import { Item } from "@/app/lib/types";
 import { signIn } from "@/auth"
 import { AuthError } from "next-auth"
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function checkout(formData: FormData){
@@ -53,4 +54,95 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function createProduct(formData: FormData) {
+      const name = formData.get('name') as string;
+      const description = formData.get('description') as string | null;
+      const price = Number(formData.get('price'));
+      const categoryId = Number(formData.get('categoryId'));
+      const imageUrl="";
+
+
+      /*
+        // Subida de imagen (opcional)
+        if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
+            // 👇 Si usás Cloudinary o similar, reemplazá por tu función
+            // imageUrl = await uploadImage(imageFile);
+
+            // TEMPORAL: por ahora tiramos error si querés subir imagen pero no está implementado
+            throw new Error('Subida de imagen no implementada aún');
+        }
+    */
+
+
+      await prisma.product.create({
+        data: {
+          name,
+          description: description === '' ? null : description,
+          price,
+          categoryId,
+          imageUrl,
+        },
+      });
+
+      revalidatePath('/admin/crud')
+      revalidatePath('/(routes)/products')
+      revalidatePath('/(routes)/') 
+      revalidatePath('/(routes)/categories')
+      redirect('/admin/crud');
+}
+
+
+export async function updateProduct(id: number, formData: FormData){
+      const name = formData.get('name') as string;
+      const description = formData.get('description') as string | null;
+      const price = Number(formData.get('price'));
+      const categoryId = Number(formData.get('categoryId'));
+      const imageFile = formData.get('image') as File;
+
+      let imageUrl: string | null = null;
+
+      
+      /*
+      if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
+        // imageUrl = await uploadImage(imageFile);
+        throw new Error('Subida de imagen no implementada todavía');
+      }*/
+
+      await prisma.product.update({
+        where: { id },
+        data: {
+          name,
+          description: description === '' ? null : description,
+          price,
+          categoryId,
+          ...(imageUrl ? { imageUrl } : {}), // Solo actualiza image si se subió una nueva
+        },
+      });
+
+      revalidatePath('/admin/crud')
+      revalidatePath('/(routes)/products')
+      revalidatePath('/(routes)/') 
+      revalidatePath('/(routes)/categories')
+      redirect('/admin/crud');
+}
+
+
+
+export async function deleteProduct(id: number){
+  
+
+
+      await prisma.product.delete({
+        where: { id },
+       
+      });
+
+      revalidatePath('/admin/crud')
+      revalidatePath('/(routes)/products')
+      revalidatePath('/(routes)/')
+      revalidatePath('/(routes)/cart')  
+      revalidatePath('/(routes)/categories')
+      redirect('/admin/crud');
 }

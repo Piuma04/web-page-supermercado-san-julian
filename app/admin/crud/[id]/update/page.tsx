@@ -1,7 +1,34 @@
-export default function UpdateProduct(){
+import { fetchCategories, fetchProduct } from "@/app/lib/data";
+import UpdateProductForm from "@/app/components/admin/UpdateProductForm";
+import { notFound } from "next/navigation";
+
+
+
+
+export default async function UpdateProduct(props: { params: Promise<{ id: string }> }){
+
+
+    const params = await props.params;
+    const id = params.id;
+
+ 
+
+    const [product, categories] = await Promise.all ([
+
+        fetchProduct(id),
+        fetchCategories(),
+    ])
+
+    if (!product) {
+        notFound();
+    }
+
+    const simpleCategories = categories.map(({ id, name }) => ({ id, name }))
 
     return(
-        <div>dummy</div>
+        <main>
+            <UpdateProductForm categories={simpleCategories} product={product} />
+        </main>
     );
 
 }

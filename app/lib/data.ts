@@ -199,36 +199,8 @@ export async function getFilteredProducts(query: string, page: number) {
 }
 
 
-export async function createProduct(formData: FormData) {
-  const name = formData.get('name') as string;
-  const description = formData.get('description') as string | null;
-  const price = Number(formData.get('price'));
-  const categoryId = Number(formData.get('categoryId'));
-  const imageUrl="";
 
 
-  /*
-    // Subida de imagen (opcional)
-    if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
-        // 👇 Si usás Cloudinary o similar, reemplazá por tu función
-        // imageUrl = await uploadImage(imageFile);
-
-        // TEMPORAL: por ahora tiramos error si querés subir imagen pero no está implementado
-        throw new Error('Subida de imagen no implementada aún');
-    }
-*/
 
 
-  await prisma.product.create({
-    data: {
-      name,
-      description: description === '' ? null : description,
-      price,
-      categoryId,
-      imageUrl,
-    },
-  });
 
-  revalidatePath('/admin/crud')
-  redirect('/admin/crud');
-}
