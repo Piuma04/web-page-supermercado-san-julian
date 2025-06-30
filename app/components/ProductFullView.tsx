@@ -37,6 +37,7 @@ export default function ProductFullView({ id, name, description, price, imageUrl
   }
 };
 
+  const imageUrlParsed = (imageUrl === "" || imageUrl === null) ? "https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=2048x2048&w=is&k=20&c=pOl6SlMTFYgl2568V8ALEd7Gz7nE07ECPZOu2e7VHr4=" : imageUrl;
   return (
       <main className="flex flex-col items-center min-h-screen bg-white py-8 px-2">
         <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
@@ -45,7 +46,7 @@ export default function ProductFullView({ id, name, description, price, imageUrl
             <div className="flex-1 flex flex-col items-center">
               <div className="relative w-full aspect-square max-w-xs mx-auto">
                 <Image
-                  src={imageUrl ?? "https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=2048x2048&w=is&k=20&c=pOl6SlMTFYgl2568V8ALEd7Gz7nE07ECPZOu2e7VHr4="}
+                  src={imageUrlParsed}
                   alt={name}
                   fill
                   className="object-contain rounded-lg"

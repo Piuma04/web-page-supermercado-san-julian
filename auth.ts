@@ -1,62 +1,86 @@
 import NextAuth from 'next-auth';
-import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
-import prisma from './app/lib/prisma';
-import { z } from 'zod';
-import type { User } from '@/app/lib/types';
-import bcrypt from 'bcryptjs';
 import Google from 'next-auth/providers/google';
-  
-async function getUser(email: string): Promise<User | null> {
+import prisma from '@/app/lib/prisma';
+import { z } from 'zod';
+import bcrypt from 'bcryptjs';
+
+async function getUser(email: string) {
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-    return user;
+    return await prisma.user.findUnique({ where: { email } });
   } catch (error) {
     console.error('Failed to fetch user:', error);
-    throw new Error('Failed to fetch user.');
+    return null;
   }
 }
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
-  ...authConfig, 
+  
   providers: [
-      Credentials({
+    Credentials({
       async authorize(credentials) {
-        const parsedCredentials = z
+        const parsed = z
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
-        if (parsedCredentials.success) {
-          const { email, password } = parsedCredentials.data;
-          const user = await getUser(email);
-          if (!user) return null;
-          if (!user.passwd) return null;
-          const passwordMatch = await bcrypt.compare(password, user.passwd);
-          if (passwordMatch) return {...user, id: user.id.toString()};
-        }
-        return null;
-        
+        if (!parsed.success) return null;
+
+        const { email, password } = parsed.data;
+        const user = await getUser(email);
+        if (!user || !user.passwd) return null;
+
+        const passwordMatch = await bcrypt.compare(password, user.passwd);
+        if (!passwordMatch) return null;
+
+        return { ...user, id: user.id.toString() };
       },
-    }), Google
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    }),
   ],
 
-  callbacks : {
-     async jwt({ token, user }) {
-   
+  callbacks: {
+    async signIn({ user }) {
+      if (!user?.email) return false;
 
-        const userDB = await prisma.user.findUnique({
-          where: { email: token.email! },
-          select: { role: true }
+      try {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email },
         });
-        token.role = userDB?.role!
-      
-      return token
-    },
-    session({ session, token }) {
-      session.user.role = token.role
-      return session
+        if (!existingUser) {
+          const dbUser = await prisma.user.create({ data: { email: user.email } });
+          await prisma.cart.create({ data: { userId: dbUser.id } });
+        }
+        return true;
+      } catch (error) {
+        console.error('Error in signIn callback:', error);
+        return false;
+      }
     },
 
+    async jwt({ token, user }) {
+      try {
+        if (user?.email) {
+          const userDB = await prisma.user.findUnique({
+            where: { email: user.email },
+            select: { role: true },
+          });
+          if (userDB) token.role = userDB.role;
+        }
+      } catch (error) {
+        console.error('Error in jwt callback:', error);
+      }
+      return token;
+    },
+
+    session({ session, token }) {
+      try {
+        if (token.role) session.user.role = token.role;
+      } catch (error) {
+        console.error('Error in session callback:', error);
+      }
+      return session;
+    },
   },
 });

@@ -1,8 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
-import  prisma  from '@/app/lib/prisma';
 
- 
-export const authConfig = {
+export const authConfig: NextAuthConfig = {
   pages: {
     signIn: '/login',
   },
@@ -10,35 +8,13 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnUserProfile = nextUrl.pathname.startsWith('/profile');
-      const isOnCart =  nextUrl.pathname.startsWith('/cart');
+      const isOnCart = nextUrl.pathname.startsWith('/cart');
       const isOnAdmin = nextUrl.pathname.startsWith('/admin');
       if (isOnUserProfile || isOnCart || isOnAdmin) {
-        if (isLoggedIn) return true;
-        return false; 
-      } 
-      return true;
-    },
-    
-    async signIn({ user, account, profile }) {
-      const existingUser = await prisma.user.findUnique({
-      where: { email: user.email! }
-      });
-      if (!existingUser) {
-      const dbUser = await prisma.user.create({
-        data: {
-        email: user.email!,
-        }
-      });
-      await prisma.cart.create({
-        data: {
-          userId: dbUser.id,
-        }
-      });
+        return isLoggedIn;
       }
       return true;
     },
-
-    
   },
-  providers: []
-} satisfies NextAuthConfig;
+  providers: [], // Se agregan en el auth.ts
+};

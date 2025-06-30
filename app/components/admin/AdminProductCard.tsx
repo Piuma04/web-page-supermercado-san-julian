@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { UpdateProduct } from './AdminButtons';
+import { DeleteProduct, UpdateProduct } from './AdminButtons';
 
 
 type Product = {
@@ -51,7 +51,7 @@ export default function AdminProductCard({ product}: Props) {
         <div className="flex justify-between gap-2">
           <UpdateProduct id = {product.id.toString()}/>
 
-          {/*<DeleteProductid={product.id} />*/}
+          <DeleteProduct id={product.id} />
         </div>
       </CardContent>
     </Card>
