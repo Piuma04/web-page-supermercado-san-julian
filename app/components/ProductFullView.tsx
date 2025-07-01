@@ -29,7 +29,7 @@ export default function ProductFullView({ id, name, description, price, imageUrl
   
   setIsPending(true);
   try {
-    await addToCart(session.user.email, id, quantity);
+    await addToCart(id, quantity);
   } catch (error) {
     console.error("Error adding to cart:", error);
   } finally {

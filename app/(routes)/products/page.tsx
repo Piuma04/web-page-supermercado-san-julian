@@ -26,7 +26,9 @@ export default async function Page(
       <Suspense fallback={<ProductGridSkeleton/>}>
       <ProductGrid query={query} currentPage={currentPage}/>
       </Suspense>
-      <Pagination totalPages={totalPages} />
+      {totalPages > 1 && (
+        <Pagination totalPages={totalPages} />
+      )}
     </main>
   );
 }

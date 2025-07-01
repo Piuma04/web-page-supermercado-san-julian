@@ -32,9 +32,9 @@ export default async function Page(props: {
       <Suspense fallback={<ProductGridSkeleton/>}>
         <ProductGrid query={query} categoryId={categoryId} currentPage={currentPage}/>
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        {<Pagination totalPages={totalPages} />}
-      </div>
+      {totalPages > 1 && (
+        <Pagination totalPages={totalPages} />
+      )}
     </main>
   );
 }

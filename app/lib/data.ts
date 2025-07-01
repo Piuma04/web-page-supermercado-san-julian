@@ -1,8 +1,10 @@
 'use server'
 
 import prisma from "@/app/lib/prisma";
+import { auth } from "@/auth";
 
 const ITEMS_PER_PAGE = 10;
+const PURCHASES_PER_PAGE = 3;
 export async function fetchFilteredProducts(
     query: string,
     currentPage: number,
@@ -131,9 +133,68 @@ export async function fetchCartByUserID(email:string){
     return cart
 }
 
-export async function fetchUserByEmail(email: string) {
+export async function fetchUser() {
+    const session = await auth();
+    
+    if (!session?.user?.email) {
+        throw new Error("User not authenticated");
+    }
     const user = await prisma.user.findUnique({
-        where: { email }
+        where: {
+            email: session.user.email
+        }
+    })
+
+    return user
+}
+
+export async function fetchPurchases(
+    currentPage: number,
+) {
+    const session = await auth();
+    
+    if (!session?.user?.email) {
+        throw new Error("User not authenticated");
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            email: session.user.email
+        }
     });
-    return user;
+
+    const offset = (currentPage - 1) * PURCHASES_PER_PAGE;
+    const purchases = await prisma.purchase.findMany({
+        where: {
+            userId: user?.id ,
+        },
+        orderBy: {
+            createdAt: 'desc'
+        },
+        skip: offset,
+        take: PURCHASES_PER_PAGE,
+    });
+    return purchases;
+}
+
+export async function fetchPurchasesPages() {
+    const session = await auth();
+    
+    if (!session?.user?.email) {
+        throw new Error("User not authenticated");
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            email: session.user.email
+        }
+    });
+
+    const totalCount = await prisma.purchase.count({
+        where: {
+                userId: user?.id ,
+        },
+    });
+
+    return Math.ceil(totalCount / PURCHASES_PER_PAGE);
 }

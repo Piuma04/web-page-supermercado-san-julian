@@ -29,7 +29,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
     setIsPending(true);
     
     try {
-      await addToCart(session.user.email, id, quantity);
+      await addToCart(id, quantity);
       setQuantity(1);
     } catch (error) {
       console.error("Error adding to cart:", error);
