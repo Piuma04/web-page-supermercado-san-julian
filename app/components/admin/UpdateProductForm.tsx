@@ -1,4 +1,7 @@
-import { updateProduct } from '@/app/lib/actions';
+'use client';
+
+import { useActionState } from 'react';
+import { updateProduct, State } from '@/app/lib/actions';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -9,9 +12,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-
-
-
 
 type Category = {
   id: number;
@@ -30,16 +30,13 @@ type Props = {
   categories: Category[];
 };
 
-
-
-
-
 export default function UpdateProductForm({ categories, product }: Props) {
-
-    const updateProductWithID = updateProduct.bind(null, product.id)
+  const initialState: State = { message: null, errors: {} };
+  const updateProductWithID = updateProduct.bind(null, product.id);
+  const [state, formAction] = useActionState(updateProductWithID, initialState);
 
   return (
-    <form action={updateProductWithID}>
+    <form action={formAction}>
       <input type="hidden" name="id" value={product.id} />
       <Card className="border-red-300 shadow">
         <CardHeader>
@@ -54,7 +51,16 @@ export default function UpdateProductForm({ categories, product }: Props) {
               name="name"
               defaultValue={product.name}
               required
+              aria-describedby="name-error"
             />
+            <div id="name-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.name &&
+                state.errors.name.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
           {/* Descripción */}
           <div className="space-y-2">
@@ -63,7 +69,16 @@ export default function UpdateProductForm({ categories, product }: Props) {
               id="description"
               name="description"
               defaultValue={product.description ?? ''}
+              aria-describedby="description-error"
             />
+            <div id="description-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.description &&
+                state.errors.description.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
           {/* Precio */}
           <div className="space-y-2">
@@ -75,15 +90,32 @@ export default function UpdateProductForm({ categories, product }: Props) {
               min="0"
               defaultValue={product.price}
               required
+              aria-describedby="price-error"
             />
+            <div id="price-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.price &&
+                state.errors.price.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
           {/* Imagen */}
           <div className="space-y-2">
             <Label htmlFor="image" className="text-red-800">Imagen</Label>
-            <Input id="image" name="image" type="file" accept="image/*" />
+            <Input id="image" name="image" type="file" accept="image/*" aria-describedby="image-error" />
             {product.imageUrl && (
               <img src={product.imageUrl} alt="Imagen actual" className="mt-2 h-20" />
             )}
+            <div id="image-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.image &&
+                state.errors.image.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
           {/* Categoría */}
           <div className="space-y-2">
@@ -94,6 +126,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
               required
               className="block w-full rounded-md border border-gray-300 p-2 text-sm"
               defaultValue={product.categoryId}
+              aria-describedby="category-error"
             >
               <option value="" disabled>
                 Seleccioná una categoría
@@ -104,11 +137,19 @@ export default function UpdateProductForm({ categories, product }: Props) {
                 </option>
               ))}
             </select>
+            <div id="category-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.categoryId &&
+                state.errors.categoryId.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">
             <Link href="/dashboard/products">
-              <Button variant="outline">Cancelar</Button>
+              <Button variant="outline" type="button">Cancelar</Button>
             </Link>
             <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">
               Guardar cambios

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import AdminPanelSidenav from "../components/admin/adminSidenav/AdminPanelSidenav";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,15 +19,21 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Pagina de Administración - Supermercado San Julian",
   description: "Administra tu supermercado con facilidad",
-  
-
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const session = await auth();
+
+
+  if (!session?.user || session.user.role !== "ADMIN") {
+    redirect("/");
+  }
+
   return (
     <html lang="en">
       <body
