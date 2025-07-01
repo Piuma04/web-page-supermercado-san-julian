@@ -50,24 +50,12 @@ export default async function CartItems() {
                         </div>
                         <div className="flex justify-between py-3 text-lg font-bold">
                             <span>Total:</span>
-                            <span className="text-red-600">${totalAmount.toFixed(2)}</span>
+                            <span className="text-red-600">${totalAmount.toFixed(2)}</span> {/* No delivery fee nor taxes for now */}
                         </div>
                     </div>
                     
                     {/* Checkout Button */}
                     <form action={checkout} className="text-center">
-                        <input
-                            type="hidden"
-                            name="items"
-                            value={JSON.stringify(
-                                cartItems.items.map((item) => ({
-                                    id: item.id.toString(),
-                                    quantity: item.quantity,
-                                    title: item.product.name,
-                                    unit_price: item.product.price,
-                                }))
-                            )}
-                        />
                         <Button 
                             type="submit" 
                             className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg w-full sm:w-auto text-base flex items-center justify-center gap-2 shadow-md"

@@ -18,9 +18,11 @@ export default async function Page(props: {
   const currentPage = Number(searchParams?.page) || 1;
   const {id} = await props.params;
   const categoryId = Number(id);
-  
-  const category = await fetchCategory(id);
-  const totalPages = await fetchFilteredProductsPages(query, categoryId);
+
+  const [category, totalPages] = await Promise.all([
+    fetchCategory(id),
+    fetchFilteredProductsPages(query, categoryId)
+  ]);
 
   return (
     <main className="p-6">
