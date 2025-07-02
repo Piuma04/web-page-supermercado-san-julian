@@ -3,11 +3,13 @@ import { fetchFilteredProductsPages, fetchCategory } from "@/app/lib/data";
 import { Suspense } from "react";
 import Pagination from "@/app/components/Pagination";
 import ProductGridSkeleton from "@/app/components/ProductGridSkeleton";
+import OrderByBar from "@/app/components/OrderByBar";
 
 export default async function Page(props: {
     searchParams?: Promise<{
     query?: string;
     page?: string;
+    sort?: string;
     }>,
     params: Promise<{
     id: string;
@@ -15,6 +17,7 @@ export default async function Page(props: {
 }) {
   const searchParams = await props.searchParams;
   const query = searchParams?.query ?? "";
+  const sort = searchParams?.sort;
   const currentPage = Number(searchParams?.page) || 1;
   const {id} = await props.params;
   const categoryId = Number(id);
@@ -29,8 +32,11 @@ export default async function Page(props: {
       <h1 className="text-2xl font-bold mb-4">
         {category?.name}
       </h1>
+      {totalPages >= 1 && (
+        <OrderByBar/>
+        )}
       <Suspense fallback={<ProductGridSkeleton/>}>
-        <ProductGrid query={query} categoryId={categoryId} currentPage={currentPage}/>
+        <ProductGrid query={query} categoryId={categoryId} currentPage={currentPage} sort={sort}/>
       </Suspense>
       {totalPages > 1 && (
         <Pagination totalPages={totalPages} />

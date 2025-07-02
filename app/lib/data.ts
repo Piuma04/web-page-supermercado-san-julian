@@ -9,37 +9,49 @@ export async function fetchFilteredProducts(
     query: string,
     currentPage: number,
     categoryId?: number,
+    sort?: string
 ) {
-        const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-        const products = await prisma.product.findMany({
-                where: {
-                AND: [
-                        categoryId ? { categoryId } : {},
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+    const orderBy = () => {
+        switch (sort) {
+            case 'price_desc':
+                return { price: 'desc' as const };
+            case 'price_asc':
+                return { price: 'asc' as const };
+            default:
+                return { createdAt: 'desc' as const}; // Por defecto, ordenar por mas nuevo
+        }
+    };
+    const products = await prisma.product.findMany({
+        where: {
+            AND: [
+                categoryId ? { categoryId } : {},
+                {
+                    OR: [
                         {
-                        OR: [
-                                {
-                                name: {
-                                        contains: query,
-                                        mode: 'insensitive',
-                                },
-                                },
-                                {
-                                description: {
-                                        contains: query,
-                                        mode: 'insensitive',
-                                },
-                                },
-                        ],
-                        }
-                ]
-                },
-                include: {
-                category: true,
-                },
-                skip: offset,
-                take: ITEMS_PER_PAGE,
-        });
-        return products;
+                            name: {
+                                contains: query,
+                                mode: 'insensitive',
+                            },
+                        },
+                        {
+                            description: {
+                                contains: query,
+                                mode: 'insensitive',
+                            },
+                        },
+                    ],
+                }
+            ]
+        },
+        orderBy: orderBy(),
+        include: {
+            category: true,
+        },
+        skip: offset,
+        take: ITEMS_PER_PAGE,
+    });
+    return products;
 }
 
 
