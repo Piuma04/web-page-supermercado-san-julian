@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "./prisma";
 import { auth } from "@/auth";
+import { z } from 'zod';
 
 export async function checkout(){
   let preferenceUrl: string | undefined = undefined;
@@ -68,71 +69,123 @@ export async function authenticate(
   }
 }
 
-export async function createProduct(formData: FormData) {
-      const name = formData.get('name') as string;
-      const description = formData.get('description') as string | null;
-      const price = Number(formData.get('price'));
-      const categoryId = Number(formData.get('categoryId'));
-      const imageUrl="";
 
 
-      /*
-        // Subida de imagen (opcional)
-        if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
-            // 👇 Si usás Cloudinary o similar, reemplazá por tu función
-            // imageUrl = await uploadImage(imageFile);
-
-            // TEMPORAL: por ahora tiramos error si querés subir imagen pero no está implementado
-            throw new Error('Subida de imagen no implementada aún');
-        }
-    */
 
 
-      await prisma.product.create({
-        data: {
-          name,
-          description: description === '' ? null : description,
-          price,
-          categoryId,
-          imageUrl,
-        },
-      });
 
-      revalidatePath('/admin/crud')
-      revalidatePath('/(routes)') 
-      redirect('/admin/crud');
+const productFormSchema = z.object({
+  name: z.string().min(1,"El nombre no debe ser vacío"),
+  description: z.string().optional(),
+  price: z.coerce.number().positive('El precio debe ser positivo'),
+  categoryId: z.coerce.number().positive('Categoría es requerida'),
+  image: z.any().optional(),
+});
+
+const CreateInvoice = productFormSchema;
+
+export type State = {
+  
+  errors?: {
+    name?: string[];
+    description?: string[];
+    price?: string[];
+    categoryId?: string[];
+    image?: string[];
+  };
+
+  message?: string | null;
+};
+
+export async function createProduct(prevState: State, formData: FormData) {
+
+  const validatedFields = productFormSchema.safeParse({
+    name: formData.get('name'),
+    description: formData.get('description'),
+    price: formData.get('price'),
+    categoryId: formData.get('categoryId'),
+    image: formData.get('image'),
+  });
+
+
+  if (!validatedFields.success) {
+    return {
+      message: null,
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { name, description, price, categoryId } = validatedFields.data;
+  const imageUrl = ""; //poner lo de cloudinary aca
+
+  try {
+    await prisma.product.create({
+      data: {
+        name,
+        description: description === '' ? null : description,
+        price,
+        categoryId,
+        imageUrl,
+      },
+    });
+
+    revalidatePath('/admin/crud');
+    revalidatePath('/(routes)');
+
+    
+  } catch (error) {
+    return {
+      message: "Error al crear el producto",
+      
+    };
+  }
+
+  revalidatePath('/admin/crud');
+  revalidatePath('/(routes)');
+  redirect('/admin/crud');
 }
 
-
-export async function updateProduct(id: number, formData: FormData){
-      const name = formData.get('name') as string;
-      const description = formData.get('description') as string | null;
-      const price = Number(formData.get('price'));
-      const categoryId = Number(formData.get('categoryId'));
-      const imageFile = formData.get('image') as File;
-
-      let imageUrl: string | null = null;
-
-      
-      /*
-      if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
-        // imageUrl = await uploadImage(imageFile);
-        throw new Error('Subida de imagen no implementada todavía');
-      }*/
-
-      await prisma.product.update({
-        where: { id },
-        data: {
-          name,
-          description: description === '' ? null : description,
-          price,
-          categoryId,
-          ...(imageUrl ? { imageUrl } : {}), // Solo actualiza image si se subió una nueva
-        },
+export async function updateProduct(id: number,prevState: State, formData: FormData){
+      const validatedFields = productFormSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description'),
+        price: formData.get('price'),
+        categoryId: formData.get('categoryId'),
+        image: formData.get('image'),
       });
 
-      revalidatePath('/admin/crud')
-      revalidatePath('/(routes)') 
+
+      if (!validatedFields.success) {
+        return {
+          message: null,
+          errors: validatedFields.error.flatten().fieldErrors,
+        };
+      }
+
+      const { name, description, price, categoryId } = validatedFields.data;
+      const imageUrl = ""; // poner lo de cloudinary aca
+
+      try{
+        await prisma.product.update({
+          where: { id },
+          data: {
+            name,
+            description: description === '' ? null : description,
+            price,
+            categoryId,
+            ...(imageUrl ? { imageUrl } : {}), 
+          },
+        });
+
+        revalidatePath('/admin/crud')
+        revalidatePath('/(routes)') 
+      }catch(error){
+        return {
+          message:"No se pudo actualizar el producto",
+        };
+      }
+
+      
       redirect('/admin/crud');
 }
 
@@ -140,8 +193,6 @@ export async function updateProduct(id: number, formData: FormData){
 
 export async function deleteProduct(id: number){
   
-
-
       await prisma.product.delete({
         where: { id },
        

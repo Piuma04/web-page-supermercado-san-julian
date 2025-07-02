@@ -1,6 +1,7 @@
 import { deleteProduct } from "@/app/lib/actions";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, Trash2, TrashIcon } from "lucide-react";
 import Link from "next/link";
 
 
@@ -31,12 +32,33 @@ export function UpdateProduct({ id }: { id: string }) {
 export function DeleteProduct({ id }: { id: number }) {
    const deleteProductWithId = deleteProduct.bind(null, id);
   return (
-     <form action={deleteProductWithId}>
-      <button type="submit" className="flex items-center gap-1 text-sm bg-red-600 text-white px-3 py-1.5 rounded-xl hover:bg-red-700">
-        <span className="sr-only">Delete</span>
-        <TrashIcon className="w-4" />
-      </button>
-    </form>
+       <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">
+          <Trash2 className="mr-2 h-4 w-4" />
+          Eliminar
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <form
+          action={deleteProductWithId}
+        
+        >
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción eliminará el producto permanentemente y no se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel type="button">Cancelar</AlertDialogCancel>
+            <Button type="submit" variant="destructive">
+              Confirmar eliminación
+            </Button>
+          </AlertDialogFooter>
+        </form>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
   
