@@ -8,7 +8,7 @@ import Link from "next/link";
 export function CreateProduct() {
   return (
     <Button asChild className="bg-red-600 hover:bg-red-700 focus-visible:outline-red-600">
-      <Link href="/admin/crud/create" className="flex items-center gap-2 px-4 py-2">
+      <Link href="/admin/crudProducts/create" className="flex items-center gap-2 px-4 py-2">
         <span className="hidden md:block">Crear producto</span>
         <PlusIcon className="h-5 w-5" />
       </Link>
@@ -20,7 +20,7 @@ export function UpdateProduct({ id }: { id: string }) {
   return (
     <Link
       
-      href={`/admin/crud/${id}/update`}
+      href={`/admin/crudProducts/${id}/update`}
       className="text-red-700 border-red-300 hover:bg-red-100"
     >
       <PencilIcon className="w-5" />

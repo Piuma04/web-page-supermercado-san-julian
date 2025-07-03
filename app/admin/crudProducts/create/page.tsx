@@ -2,7 +2,7 @@
 
 import {  fetchCategories } from '@/app/lib/data';
 
-import CreateProductForm from '@/app/components/admin/CreateProductForm';
+import CreateProductForm from '@/app/components/admin/ProductsForms/CreateProductForm';
 
 export default async function AddProductPage() {
 

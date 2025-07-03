@@ -1,5 +1,5 @@
 import { fetchCategories, fetchProduct } from "@/app/lib/data";
-import UpdateProductForm from "@/app/components/admin/UpdateProductForm";
+import UpdateProductForm from "@/app/components/admin/ProductsForms/UpdateProductForm";
 import { notFound } from "next/navigation";
 
 

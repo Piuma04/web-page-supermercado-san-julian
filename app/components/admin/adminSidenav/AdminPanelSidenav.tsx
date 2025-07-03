@@ -10,7 +10,7 @@ export default function AdminSidenav() {
         className="mb-2 flex h-20 items-end justify-start rounded-md bg-red-600 p-4 md:h-40"
         href="/admin"
       >
-        <div className="w-32 text-white md:w-40 font-bold">
+        <div className="w-full text-white md:w-40 font-bold">
           <ShoppingCart /> Supermercado San Julian
         </div>
       </Link>

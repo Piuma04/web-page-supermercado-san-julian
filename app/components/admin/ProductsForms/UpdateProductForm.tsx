@@ -1,5 +1,7 @@
 'use client';
 
+import { useActionState } from 'react';
+import { updateProduct, productState } from '@/app/lib/actions';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,8 +12,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { createProduct, State } from '@/app/lib/actions';
-import { useActionState } from 'react';
 
 type Category = {
   id: number;
@@ -19,27 +19,48 @@ type Category = {
 };
 
 type Props = {
+  product: {
+    id: number;
+    name: string;
+    description: string | null;
+    price: number;
+    categoryId: number;
+    imageUrl: string | null;
+  };
   categories: Category[];
 };
 
-export default function CreateProductForm({ categories }: Props) {
+export default function UpdateProductForm({ categories, product }: Props) {
+  const initialState: productState = { message: null, errors: {} };
+  const updateProductWithID = updateProduct.bind(null, product.id);
+  const [state, formAction] = useActionState(updateProductWithID, initialState);
 
-
-  const initialState: State = { message: null, errors: {} };
-  const [state, formAction] = useActionState(createProduct, initialState);
-  
   return (
-    <form action={formAction} >
+    <form action={formAction}>
+      <input type="hidden" name="id" value={product.id} />
       <Card className="border-red-300 shadow">
         <CardHeader>
-          <CardTitle className="text-red-700 text-xl">Agregar producto</CardTitle>
+          <CardTitle className="text-red-700 text-xl">Modificar producto</CardTitle>
         </CardHeader>
-
         <CardContent className="space-y-6">
+
+          
+          {state.message && (
+            <div className="mb-4 text-center text-red-600 font-semibold" aria-live="polite">
+              {state.message}
+            </div>
+          )}
+
           {/* Nombre */}
           <div className="space-y-2">
             <Label htmlFor="name" className="text-red-800">Nombre</Label>
-            <Input id="name" name="name" placeholder="Ej: Coca Cola" required />
+            <Input
+              id="name"
+              name="name"
+              defaultValue={product.name}
+              required
+              aria-describedby="name-error"
+            />
             <div id="name-error" aria-live="polite" aria-atomic="true">
               {state.errors?.name &&
                 state.errors.name.map((error: string) => (
@@ -49,11 +70,15 @@ export default function CreateProductForm({ categories }: Props) {
                 ))}
             </div>
           </div>
-
           {/* Descripción */}
           <div className="space-y-2">
             <Label htmlFor="description" className="text-red-800">Descripción</Label>
-            <Input id="description" name="description" placeholder="Breve descripción" />
+            <Input
+              id="description"
+              name="description"
+              defaultValue={product.description ?? ''}
+              aria-describedby="description-error"
+            />
             <div id="description-error" aria-live="polite" aria-atomic="true">
               {state.errors?.description &&
                 state.errors.description.map((error: string) => (
@@ -63,16 +88,16 @@ export default function CreateProductForm({ categories }: Props) {
                 ))}
             </div>
           </div>
-
           {/* Precio */}
           <div className="space-y-2">
             <Label htmlFor="price" className="text-red-800">Precio (ARS)</Label>
-            <Input 
-              id="price" 
-              name="price" 
-              type="number" 
-              min="0" 
-              required 
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              min="0"
+              defaultValue={product.price}
+              required
               aria-describedby="price-error"
             />
             <div id="price-error" aria-live="polite" aria-atomic="true">
@@ -84,17 +109,13 @@ export default function CreateProductForm({ categories }: Props) {
                 ))}
             </div>
           </div>
-
           {/* Imagen */}
           <div className="space-y-2">
             <Label htmlFor="image" className="text-red-800">Imagen</Label>
-            <Input 
-              id="image" 
-              name="image" 
-              type="file" 
-              accept="image/*"
-              aria-describedby="image-error"
-            />
+            <Input id="image" name="image" type="file" accept="image/*" aria-describedby="image-error" />
+            {product.imageUrl && (
+              <img src={product.imageUrl} alt="Imagen actual" className="mt-2 h-20" />
+            )}
             <div id="image-error" aria-live="polite" aria-atomic="true">
               {state.errors?.image &&
                 state.errors.image.map((error: string) => (
@@ -104,7 +125,6 @@ export default function CreateProductForm({ categories }: Props) {
                 ))}
             </div>
           </div>
-
           {/* Categoría */}
           <div className="space-y-2">
             <Label htmlFor="categoryId" className="text-red-800">Categoría</Label>
@@ -113,7 +133,7 @@ export default function CreateProductForm({ categories }: Props) {
               name="categoryId"
               required
               className="block w-full rounded-md border border-gray-300 p-2 text-sm"
-              defaultValue=""
+              defaultValue={product.categoryId}
               aria-describedby="category-error"
             >
               <option value="" disabled>
@@ -134,16 +154,13 @@ export default function CreateProductForm({ categories }: Props) {
                 ))}
             </div>
           </div>
-
-          
-
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">
-            <Link href="/dashboard/products">
+            <Link href="/admin/crud">
               <Button variant="outline" type="button">Cancelar</Button>
             </Link>
             <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">
-              Crear producto
+              Guardar cambios
             </Button>
           </div>
         </CardContent>

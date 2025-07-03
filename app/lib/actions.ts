@@ -10,6 +10,8 @@ import prisma from "./prisma";
 import { auth } from "@/auth";
 import { z } from 'zod';
 
+
+
 export async function checkout(){
   let preferenceUrl: string | undefined = undefined;
   const session = await auth();
@@ -72,7 +74,11 @@ export async function authenticate(
 
 
 
+/*
 
+PRODUCT CRUD ACTIONS
+
+*/
 
 const productFormSchema = z.object({
   name: z.string().min(1,"El nombre no debe ser vacío"),
@@ -84,7 +90,7 @@ const productFormSchema = z.object({
 
 const CreateInvoice = productFormSchema;
 
-export type State = {
+export type productState = {
   
   errors?: {
     name?: string[];
@@ -97,7 +103,7 @@ export type State = {
   message?: string | null;
 };
 
-export async function createProduct(prevState: State, formData: FormData) {
+export async function createProduct(prevState: productState, formData: FormData) {
 
   const validatedFields = productFormSchema.safeParse({
     name: formData.get('name'),
@@ -110,7 +116,7 @@ export async function createProduct(prevState: State, formData: FormData) {
 
   if (!validatedFields.success) {
     return {
-      message: null,
+      message: "Failed to create product",
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
@@ -129,9 +135,9 @@ export async function createProduct(prevState: State, formData: FormData) {
       },
     });
 
-    revalidatePath('/admin/crud');
+    revalidatePath('/admin', 'layout');
     revalidatePath('/(routes)');
-
+    redirect('/admin/crudProducts');
     
   } catch (error) {
     return {
@@ -140,12 +146,11 @@ export async function createProduct(prevState: State, formData: FormData) {
     };
   }
 
-  revalidatePath('/admin/crud');
-  revalidatePath('/(routes)');
-  redirect('/admin/crud');
+  
+ 
 }
 
-export async function updateProduct(id: number,prevState: State, formData: FormData){
+export async function updateProduct(id: number,prevState: productState, formData: FormData){
       const validatedFields = productFormSchema.safeParse({
         name: formData.get('name'),
         description: formData.get('description'),
@@ -157,7 +162,7 @@ export async function updateProduct(id: number,prevState: State, formData: FormD
 
       if (!validatedFields.success) {
         return {
-          message: null,
+          message: "Failed to update product",
           errors: validatedFields.error.flatten().fieldErrors,
         };
       }
@@ -177,8 +182,9 @@ export async function updateProduct(id: number,prevState: State, formData: FormD
           },
         });
 
-        revalidatePath('/admin/crud')
+        revalidatePath('/admin', 'layout');
         revalidatePath('/(routes)') 
+        redirect('/admin/crudProducts');
       }catch(error){
         return {
           message:"No se pudo actualizar el producto",
@@ -186,7 +192,7 @@ export async function updateProduct(id: number,prevState: State, formData: FormD
       }
 
       
-      redirect('/admin/crud');
+      
 }
 
 
@@ -198,10 +204,113 @@ export async function deleteProduct(id: number){
        
       });
 
-      revalidatePath('/admin/crud')
+      revalidatePath('/admin', 'layout');
       revalidatePath('/(routes)')
-      redirect('/admin/crud');
+      redirect('/admin/crudProducts');
 }
+
+
+/*
+
+CATEGORY CRUD ACTIONS
+
+*/
+
+
+export type categoryState = {
+  errors?: {
+    name?: string[];
+  };
+  message?: string | null;
+};
+
+
+export const categoryFormSchema = z.object({
+  name: z.string().min(1, "El nombre no debe ser vacío"),
+});
+
+export async function addCategory(prevState: categoryState, formData: FormData) {
+  const validatedFields = categoryFormSchema.safeParse({
+    name: formData.get('name'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: "Failed to create category",
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { name } = validatedFields.data;
+
+  try {
+    await prisma.category.create({
+      data: { name },
+    });
+
+    revalidatePath('/admin', 'layout');
+    revalidatePath('/(routes)');
+  } catch (error) {
+    return {
+      message: "Error al crear la categoría",
+    };
+  }
+
+  
+  redirect('/admin/crudCategories');
+}
+
+export async function updateCategory(
+  id: number,
+  prevState: categoryState,
+  formData: FormData
+) {
+  const validatedFields = categoryFormSchema.safeParse({
+    name: formData.get('name'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: "Failed to update category",
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { name } = validatedFields.data;
+
+  try {
+    await prisma.category.update({
+      where: { id },
+      data: { name },
+    });
+
+    revalidatePath('/admin', 'layout');
+    revalidatePath('/(routes)');
+  } catch (error) {
+    return {
+      message: "No se pudo actualizar la categoría",
+    };
+  }
+
+  redirect('/admin/crudCategories');
+}
+
+export async function deleteCategory(id: number) {
+  await prisma.category.delete({
+    where: { id },
+  });
+
+  revalidatePath('/admin', 'layout');
+  revalidatePath('/(routes)');
+  redirect('/admin/crudCategories');
+}
+
+
+/*
+
+CART RELATED ACTIONS
+
+*/
 
 export async function addToCart(productId:number, quantity: number) {
 
