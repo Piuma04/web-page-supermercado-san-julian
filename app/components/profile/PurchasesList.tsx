@@ -62,18 +62,9 @@ export default async function PurchasesList({ currentPage }: { currentPage: numb
               <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
                 <h4 className="font-medium text-gray-900 mb-2">Productos comprados:</h4>
                 <div className="text-sm text-gray-700">
-                  {purchase.description ? (
-                    <ul className="space-y-1">
-                      {purchase.description.split(' | ').map((item, index) => (
-                        <li key={index} className="flex items-start">
-                          <span className="text-gray-500 mr-2">•</span>
-                          <span>{item.replace('• ', '')}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>Sin descripción</p>
-                  )}
+                  {purchase.description.split('\n').map((line, index) => (
+                    <p key={index} className="mb-1">{line}</p>
+                  ))}
                 </div>
               </div>
             </details>
