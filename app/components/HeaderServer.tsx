@@ -29,14 +29,18 @@ export default function HeaderServer() {
           {/* Dummy searchbar on mobile */}
           <div className="flex-1 flex justify-end sm:hidden">
             <div className="flex items-center bg-gray-100 rounded-md px-2 py-1 ml-2 w-32">
-              <SearchBar placeholder="Buscar.." />
+              <Suspense>
+                <SearchBar placeholder="Buscar.." />
+              </Suspense>
             </div>
           </div>
         </div>
         {/* Dummy searchbar on desktop */}
         <div className="hidden sm:flex flex-1 justify-center">
           <div className="flex items-center bg-gray-100 rounded-md px-3 py-2 w-80 max-w-xs">
+            <Suspense>
               <SearchBar placeholder="Buscar productos..." />
+            </Suspense>
           </div>
         </div>
         {/* Cart and user session */}

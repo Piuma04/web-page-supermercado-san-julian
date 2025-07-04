@@ -31,14 +31,14 @@ export default async function CartItems() {
                     {/* Cart Items */}
                     <div className="space-y-2 mb-8">
                         {cartItems.items.map((item) => (
-                            <Suspense key={item.id}>
+                      
                                 <CartItem 
                                     key={item.id}
                                     id={item.id}
                                     product={item.product}
                                     quantity={item.quantity}
                                 />
-                            </Suspense>
+                          
                         ))}
                     </div>
                     
