@@ -21,18 +21,16 @@ export const metadata: Metadata = {
   description: "Administra tu supermercado con facilidad",
 };
 
-export default async function AdminLayout({
+export default  function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
 
-  const session = await auth();
 
 
-  if (!session?.user || session.user.role !== "ADMIN") {
-    redirect("/");
-  }
+
+  
 
   return (
     <html lang="en">
