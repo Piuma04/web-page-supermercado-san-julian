@@ -62,7 +62,7 @@ export default function UpdateCategoryForm({ category }: Props) {
 
   
           <div className="flex justify-end gap-4 pt-4">
-            <Link href="/admin/crud">
+            <Link href="/admin/crudCategories">
               <Button variant="outline" type="button">Cancelar</Button>
             </Link>
             <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">

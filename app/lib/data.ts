@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 
 const ITEMS_PER_PAGE = 10;
 const PURCHASES_PER_PAGE = 3;
+const CATEGORIES_PER_PAGE = 12;
 export async function fetchFilteredProducts(
     query: string,
     currentPage: number,
@@ -210,3 +211,34 @@ export async function fetchPurchasesPages() {
 
     return Math.ceil(totalCount / PURCHASES_PER_PAGE);
 }
+
+
+export async function fetchAdminPageCategoriesPages() {
+
+    const totalCount = await prisma.category.count();
+    return Math.ceil(totalCount / CATEGORIES_PER_PAGE);
+
+}
+
+export async function fetchFilteredCategories(currentPage: number) {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+    const categories = await prisma.category.findMany({
+        include: {
+            products: {
+                take: 1 // Only fetch one product per category (if any)
+            }
+        },
+        skip: offset,
+        take: ITEMS_PER_PAGE,
+    });
+
+    return categories;
+}
+
+
+
+
+
+
+

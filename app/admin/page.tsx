@@ -16,8 +16,13 @@ export default function AdminPage(){
 
       <div className="flex flex-col md:flex-row justify-center gap-4 mt-8 w-full max-w-lg">
         <Button asChild className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto">
-          <Link href="/admin/crud" className="w-full text-center px-4 py-2">
+          <Link href="/admin/crudProducts" className="w-full text-center px-4 py-2">
             Hacer altas, bajas o modificaciones de productos
+          </Link>
+        </Button>
+        <Button asChild className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto">
+          <Link href="/admin/crudCategories" className="w-full text-center px-4 py-2">
+            Hacer altas, bajas o modificaciones de categorias
           </Link>
         </Button>
         <Button asChild className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto">

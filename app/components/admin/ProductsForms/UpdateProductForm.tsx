@@ -156,7 +156,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
           </div>
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">
-            <Link href="/admin/crud">
+            <Link href="/admin/crudProducts">
               <Button variant="outline" type="button">Cancelar</Button>
             </Link>
             <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">
