@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductGridSkeleton() {
-  // Array de 12 elementos (ITEMS_PER_PAGE) para mostrar los skeletons
+  
   const skeletonItems = Array.from({ length: 10 }, (_, i) => i);
 
   return (

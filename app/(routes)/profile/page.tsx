@@ -1,14 +1,13 @@
 import { fetchPurchasesPages, fetchUser } from "@/app/lib/data";
 import { auth, signOut } from "@/auth";
 import { userRole } from "@prisma/client";
-import { LogOut, User, ShoppingBag, Settings, Calendar, ChevronRight } from "lucide-react";
+import { LogOut, User, Calendar } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Pagination from "@/app/components/Pagination";
 import { Suspense } from "react";
 import PurchasesList from "@/app/components/profile/PurchasesList";
 import PurchasesListSkeleton from "@/app/components/profile/PurchasesListSkeleton";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Profile(
