@@ -12,10 +12,10 @@ export default function NotFound() {
         <AlertTriangle className="w-16 h-16 text-red-600" />
         <h1 className="text-4xl font-bold">¡Página no encontrada!</h1>
         <p className="text-lg max-w-md">
-          Lo sentimos, no pudimos encontrar el producto que se quiere modificar
+          Lo sentimos, no pudimos encontrar la categoria que se quiere modificar
         </p>
         <Button asChild className="bg-red-600 hover:bg-red-700 text-white">
-          <Link href="/admin/crud">Volver al panel</Link>
+          <Link href="/admin/crudCategories">Volver al panel</Link>
         </Button>
       </div>
     </main>

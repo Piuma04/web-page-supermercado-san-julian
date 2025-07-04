@@ -1,5 +1,5 @@
 import { fetchPurchasesPages, fetchUser } from "@/app/lib/data";
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { userRole } from "@prisma/client";
 import { LogOut, User, ShoppingBag, Settings, Calendar, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,8 @@ import Pagination from "@/app/components/Pagination";
 import { Suspense } from "react";
 import PurchasesList from "@/app/components/profile/PurchasesList";
 import PurchasesListSkeleton from "@/app/components/profile/PurchasesListSkeleton";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Profile(
   props: {
@@ -22,6 +24,8 @@ export default async function Profile(
     fetchUser(),
     fetchPurchasesPages()
     ]);
+
+    const session = await auth();
 
   return (
     <main className="container mx-auto py-8 px-4">
@@ -51,31 +55,45 @@ export default async function Profile(
             
             <CardContent>
               <div className="space-y-4 mt-4">
+                
                 <div className="flex items-center text-sm text-gray-600">
                   <Calendar className="mr-2 h-4 w-4 text-gray-400" />
                   <span>Se unió {user?.createdAt.toLocaleDateString()}</span>
                 </div>
                 
-                <hr className="my-4" />
                 
-                <nav className="space-y-2">
+                
+
+                
+                <hr className="my-4" />
+
+   
                   
-                  <form
-                    action={async () => {
-                      'use server';
-                      await signOut({ redirectTo: '/' });
-                    }}
-                    className="w-full"
-                  >
-                    <button
-                      type="submit"
-                      className="w-full flex items-center px-3 py-2 text-sm rounded-md text-red-600 hover:bg-red-50 transition-colors"
+                  <nav className="space-y-4 ">  
+                    <form
+                      action={async () => {
+                        'use server';
+                        await signOut({ redirectTo: '/' });
+                      }}
+                      className="w-full"
                     >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Cerrar sesión
-                    </button>
-                  </form>
-                </nav>
+                      <button
+                        type="submit"
+                        className="w-full flex items-center px-3 py-2 text-sm rounded-md text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Cerrar sesión
+                      </button>
+                    </form>
+                    
+                    {session?.user.role == userRole.ADMIN && (<Link href = "/admin" className=" w-full  items-center md:mt-0 px-3 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                     
+                          Acceder al panel de administración
+                      
+                    </Link>)}
+                  </nav>
+
+                
               </div>
             </CardContent>
           </Card>

@@ -2,11 +2,12 @@ import { CreateProduct } from "@/app/components/admin/AdminButtons";
 import AdminProductTable from "@/app/components/admin/AdminProductTable";
 import Pagination from "@/app/components/admin/Pagination";
 import Search from "@/app/components/admin/Search";
+import { fetchFilteredProductsPages } from "@/app/lib/data";
 
 import { Suspense } from "react";
 
 
-export default async function PageCrud(
+export default async function PageCrudProducts(
   props: {
     searchParams?: Promise<{
       query?: string;
@@ -17,7 +18,7 @@ export default async function PageCrud(
   const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = 1; //hardcodeado, deberia buscar todas las paginas posibles en la db
+  const totalPages = await fetchFilteredProductsPages(query,currentPage);
  
   return (
     <div className="w-full">

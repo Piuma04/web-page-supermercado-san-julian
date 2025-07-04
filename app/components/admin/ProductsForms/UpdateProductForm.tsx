@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { updateProduct, State } from '@/app/lib/actions';
+import { updateProduct, productState } from '@/app/lib/actions';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -31,7 +31,7 @@ type Props = {
 };
 
 export default function UpdateProductForm({ categories, product }: Props) {
-  const initialState: State = { message: null, errors: {} };
+  const initialState: productState = { message: null, errors: {} };
   const updateProductWithID = updateProduct.bind(null, product.id);
   const [state, formAction] = useActionState(updateProductWithID, initialState);
 
@@ -43,6 +43,14 @@ export default function UpdateProductForm({ categories, product }: Props) {
           <CardTitle className="text-red-700 text-xl">Modificar producto</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
+
+          
+          {state.message && (
+            <div className="mb-4 text-center text-red-600 font-semibold" aria-live="polite">
+              {state.message}
+            </div>
+          )}
+
           {/* Nombre */}
           <div className="space-y-2">
             <Label htmlFor="name" className="text-red-800">Nombre</Label>
@@ -148,7 +156,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
           </div>
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">
-            <Link href="/dashboard/products">
+            <Link href="/admin/crudProducts">
               <Button variant="outline" type="button">Cancelar</Button>
             </Link>
             <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">

@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { createProduct, State } from '@/app/lib/actions';
+import { createProduct, productState } from '@/app/lib/actions';
 import { useActionState } from 'react';
 
 type Category = {
@@ -24,8 +24,7 @@ type Props = {
 
 export default function CreateProductForm({ categories }: Props) {
 
-
-  const initialState: State = { message: null, errors: {} };
+  const initialState: productState = { message: null, errors: {} };
   const [state, formAction] = useActionState(createProduct, initialState);
   
   return (
@@ -36,7 +35,15 @@ export default function CreateProductForm({ categories }: Props) {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {/* Nombre */}
+     
+
+          {state.message && (
+            <div className="mb-4 text-center text-red-600 font-semibold" aria-live="polite">
+              {state.message}
+            </div>
+          )}
+
+         
           <div className="space-y-2">
             <Label htmlFor="name" className="text-red-800">Nombre</Label>
             <Input id="name" name="name" placeholder="Ej: Coca Cola" required />
@@ -139,7 +146,7 @@ export default function CreateProductForm({ categories }: Props) {
 
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">
-            <Link href="/dashboard/products">
+            <Link href="/admin/crudProducts">
               <Button variant="outline" type="button">Cancelar</Button>
             </Link>
             <Button type="submit" className="bg-red-600 text-white hover:bg-red-700">
