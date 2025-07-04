@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { updateProduct, productState } from '@/app/lib/actions';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
+import { CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo, CldUploadButton } from 'next-cloudinary';
 
 type Category = {
   id: number;
@@ -34,9 +35,27 @@ export default function UpdateProductForm({ categories, product }: Props) {
   const initialState: productState = { message: null, errors: {} };
   const updateProductWithID = updateProduct.bind(null, product.id);
   const [state, formAction] = useActionState(updateProductWithID, initialState);
+  const [imageUrl, setImageUrl] = useState<string>((product.imageUrl != null) ? product.imageUrl : "");
+
+  const handleUploadSuccess = (results: CloudinaryUploadWidgetResults) => {
+    
+    const info = results.info as CloudinaryUploadWidgetInfo | undefined;
+    if (info && typeof info === 'object' && 'secure_url' in info) {
+      const url = info.secure_url as string;
+      setImageUrl(url);
+      console.log('Imagen subida:', url);
+    }
+  };
+
+  const handleFormSubmit = async (formData: FormData) => {
+    const result = await formAction(formData);
+    setImageUrl("");
+    return result;
+  };
+
 
   return (
-    <form action={formAction}>
+    <form action={handleFormSubmit}>
       <input type="hidden" name="id" value={product.id} />
       <Card className="border-red-300 shadow">
         <CardHeader>
@@ -97,6 +116,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
               type="number"
               min="0"
               defaultValue={product.price}
+              step = "0.01"
               required
               aria-describedby="price-error"
             />
@@ -109,22 +129,32 @@ export default function UpdateProductForm({ categories, product }: Props) {
                 ))}
             </div>
           </div>
+
+
+
+
           {/* Imagen */}
-          <div className="space-y-2">
-            <Label htmlFor="image" className="text-red-800">Imagen</Label>
-            <Input id="image" name="image" type="file" accept="image/*" aria-describedby="image-error" />
-            {product.imageUrl && (
-              <img src={product.imageUrl} alt="Imagen actual" className="mt-2 h-20" />
-            )}
-            <div id="image-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.image &&
-                state.errors.image.map((error: string) => (
-                  <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
-                  </p>
-                ))}
+          <div>
+              <CldUploadButton
+                uploadPreset="upload_products"
+                onSuccess={handleUploadSuccess}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-semibold"
+              >
+                Subir Imagen
+              </CldUploadButton>
+              
+              <input type="hidden" name="image" value={imageUrl} />
+              {imageUrl && (
+                <div>
+                  <p>Imagen actual:</p>
+                  <img src={imageUrl} alt="Imagen subida" width="300" />
+                  <p>URL: {imageUrl}</p>
+                </div>
+              )}
             </div>
-          </div>
+
+
+
           {/* Categoría */}
           <div className="space-y-2">
             <Label htmlFor="categoryId" className="text-red-800">Categoría</Label>

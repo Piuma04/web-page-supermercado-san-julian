@@ -52,7 +52,12 @@ export async function fetchFilteredProducts(
         skip: offset,
         take: ITEMS_PER_PAGE,
     });
-    return products;
+    
+   
+    return products.map(product => ({
+        ...product,
+        price: product.price / 100
+    }));
 }
 
 
@@ -108,7 +113,10 @@ export async function fetchProducts() {
             category: true
         }
     });
-    return products
+    return products.map(product => ({
+        ...product,
+        price: product.price / 100
+    }));
 }
 
 export async function fetchProduct(id: String) {
@@ -120,17 +128,23 @@ export async function fetchProduct(id: String) {
             category: true
         }
     })
-    return product
+
+    if (!product) return null;
+
+    return {
+        ...product,
+        price: product.price / 100
+    };
 }
 
 
 
-export async function fetchCartByUserID(email:string){
+export async function fetchCartByUserID(email: string) {
     const user = await prisma.user.findUnique({
         where: {
             email
         }
-    })
+    });
     const cart = await prisma.cart.findUnique({
         where: {
             userId: user?.id
@@ -142,8 +156,18 @@ export async function fetchCartByUserID(email:string){
                 }
             }
         }
-    })
-    return cart
+    });
+
+    if (!cart) return null;
+
+    return {
+        ...cart,
+        items: cart.items.map(item => ({
+            ...item,
+            product: { ...item.product, price: item.product.price / 100 }
+             
+        }))
+    };
 }
 
 export async function fetchUser() {
@@ -236,6 +260,16 @@ export async function fetchFilteredCategories(currentPage: number) {
     return categories;
 }
 
+
+export async function getTotalRevenue() {
+  const result = await prisma.purchase.aggregate({
+    _sum: {
+      total: true,
+    },
+  });
+
+  return result._sum.total ?? 0; 
+}
 
 
 

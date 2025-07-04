@@ -1,9 +1,10 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { fetchProducts } from "../../lib/data";
+import { fetchFilteredProducts, fetchProducts } from "../../lib/data";
 import ProductCard from "../ProductCard";
+import { Suspense } from "react";
 
 export default async function FeaturedProductsCarousel() {
-    const featuredProducts = await fetchProducts();
+    const featuredProducts = await fetchFilteredProducts("",1);
 
     return (
         <section className="w-full mt-7 ">
@@ -29,6 +30,7 @@ export default async function FeaturedProductsCarousel() {
                                 flex items-center justify-center
                             "
                         >
+                         
                                 <ProductCard
                                     key={product.id}
                                     id={product.id}
@@ -36,6 +38,7 @@ export default async function FeaturedProductsCarousel() {
                                     price={product.price}
                                     imageUrl={product.imageUrl}
                                 />
+                       
                         </CarouselItem>
                     ))}
                 </CarouselContent>

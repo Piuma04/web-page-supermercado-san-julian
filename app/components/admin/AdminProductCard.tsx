@@ -1,10 +1,9 @@
 
 
-import Image from 'next/image';
-import { PencilIcon, TrashIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { DeleteProduct, UpdateProduct } from './AdminButtons';
+import { CldImage } from 'next-cloudinary';
+import Image from 'next/image';
 
 
 type Product = {

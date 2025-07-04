@@ -1,9 +1,12 @@
+import { getTotalRevenue } from "@/app/lib/data";
 
 
-export default function PageDatos(){
+export default async function PageDatos(){
 
 
+
+    const totalRevenue = await getTotalRevenue();
     return(
-        <h1>Aca deberian poder visualizarse datos relevantes a las ventas</h1>
+        <h1>Ganacias totales hasta la fecha: {totalRevenue}</h1>
     );
 }
