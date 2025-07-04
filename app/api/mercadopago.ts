@@ -10,16 +10,22 @@ export async function createPreference(items: Item[]) {
   try {
     const user = await fetchUser();
 
+    const metadata: { user_id: number, items: Item[] } = {
+      user_id: user!.id,
+      items: items
+    };
+
     const response = await preference.create({
       body: {
         items,
-        external_reference: String(user!.id), // Guardamos el ID del usuario que inicia la compra
+        metadata: metadata, // Guardamos el ID del usuario que inicia la compra, y datos de los items comprados
         back_urls: {
           success: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa',
           failure: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa',
           pending: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa'
         },
         auto_return: 'approved',
+        notification_url: process.env.NOTIFICATION_URL_MP, // URL para recibir notificaciones
       }
     });
     return response.init_point;
@@ -38,13 +44,18 @@ export async function add(id: string) {
     }
   }).then(res => res.json());
 
+  const metadata: { user_id: number, items: Item[] } = purchase.metadata;
+  const description = metadata.items.map(({ title, quantity, unit_price }) => (
+    `Producto: ${title}, Cantidad: ${quantity}, Precio: ${unit_price.toFixed(2)} ARS`
+  )).join('\n');
+
   await prisma.purchase.create({
     data: {
       total: purchase.transaction_amount!,
-      description: purchase.description!,
+      description,
       status: purchase.status,
       mercadoPagoId: purchase.id,
-      user: { connect: { id: Number(purchase.external_reference) } }
+      user: { connect: { id: metadata.user_id } }
     }
   });
 

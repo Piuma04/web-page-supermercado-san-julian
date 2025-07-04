@@ -14,7 +14,8 @@ export const authConfig: NextAuthConfig = {
         return isLoggedIn;
       }
       return true;
-    },
+    }
   },
+
   providers: [], // Se agregan en el auth.ts
 };
