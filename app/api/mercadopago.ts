@@ -35,7 +35,7 @@ export async function createPreference(items: Item[]) {
   }
 }
 
-export async function add(id: string) {
+export async function addPurchase(id: string) {
   try{
     const purchase = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
     method: 'GET',
@@ -45,9 +45,9 @@ export async function add(id: string) {
   }).then(res => res.json());
 
   const metadata: { user_id: number, items: Item[] } = purchase.metadata;
-  const description = metadata.items.map(({ title, quantity, unit_price }) => (
-    `Producto: ${title}, Cantidad: ${quantity}, Precio: ${unit_price.toFixed(2)} ARS`
-  )).join('\n');
+  const description = `${metadata.items.map(({ title, quantity, unit_price }) => 
+    `Producto: ${title}, Cantidad: ${quantity.toString()}, Precio: ${unit_price.toFixed(2)} ARS`
+  ).join(`\n`)}`;
 
   await prisma.purchase.create({
     data: {
