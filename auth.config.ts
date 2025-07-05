@@ -6,7 +6,7 @@ export const authConfig: NextAuthConfig = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60, 
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
@@ -21,5 +21,5 @@ export const authConfig: NextAuthConfig = {
     }
   },
 
-  providers: [], // Se agregan en el auth.ts
+  providers: [], 
 };
