@@ -4,12 +4,14 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export default async function middleware(req: NextRequest) {
-  const token = await getToken({ req , secret: process.env.AUTH_SECRET});
+  const token = await getToken({ req , secret: process.env.NEXT_AUTH_SECRET});
   const url = req.nextUrl.clone();
   const pathname = req.nextUrl.pathname;
 
-  const privateRoutes = ['/admin', '/cart', '/profile',];
-  if (!privateRoutes.includes(pathname)) {
+  const privateRoutes = ['/admin', '/cart', '/profile'];
+  const isPrivate = privateRoutes.some(route => pathname.startsWith(route));
+
+  if (!isPrivate) {
     return NextResponse.next();
   }
 
