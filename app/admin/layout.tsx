@@ -30,7 +30,7 @@ export default async function AdminLayout({
   const session = await auth()
 
 
-  if(session?.user.role !== 'ADMIN') {
+  if(!session?.user || session?.user.role !== 'ADMIN') {
     redirect("/")
   }
 
