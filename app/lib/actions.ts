@@ -36,7 +36,7 @@ export async function checkout(){
       id: item.product.id.toString(),
       title: item.product.name,
       quantity: item.quantity,
-      unit_price: item.product.price,
+      unit_price: item.product.price/100,
     })));
 
     preferenceUrl = await createPreference(items);
