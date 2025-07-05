@@ -5,13 +5,16 @@ import { Button } from "@/components/ui/button";
 import { checkout } from "@/app/lib/actions";
 import { ShoppingCart, CreditCard } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function CartItems() {
+
     const session = await auth();
     
     const cartItems = await fetchCartByUserID(session!.user!.email!);
     
-    // Calculate total
+    if(!cartItems) throw new Error("No se encontro carrito asociado al usuario")
+
     const totalAmount = cartItems && cartItems.items 
         ? cartItems.items.reduce((total, item) => total + item.quantity * item.product.price, 0)
         : 0;
@@ -28,12 +31,14 @@ export default async function CartItems() {
                     {/* Cart Items */}
                     <div className="space-y-2 mb-8">
                         {cartItems.items.map((item) => (
-                            <CartItem 
-                                key={item.id}
-                                id={item.id}
-                                product={item.product}
-                                quantity={item.quantity}
-                            />
+                      
+                                <CartItem 
+                                    key={item.id}
+                                    id={item.id}
+                                    product={item.product}
+                                    quantity={item.quantity}
+                                />
+                          
                         ))}
                     </div>
                     

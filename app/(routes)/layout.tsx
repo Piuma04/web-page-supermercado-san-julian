@@ -7,6 +7,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import {CategoriesSidebar} from "../components/categoriesSidebar/CategoriesSidebar";
 import { SessionProvider } from "next-auth/react";
 import { Footer } from "../components/Footer";
+import { Suspense } from "react";
 
 
 const geistSans = Geist({
@@ -34,16 +35,28 @@ export default function RootLayout({
     <html lang="en" >
       <link rel="icon" href="/images/favicon.ico" />
       <body className="flex flex-col min-h-screen">
+    
         <SessionProvider>
           <SidebarProvider defaultOpen={false}>
-            <CategoriesSidebar />
+
+            <Suspense>
+              <CategoriesSidebar />
+            </Suspense>
+            
             <SidebarInset>
+      
+
+           
               <HeaderServer />
-              <main className="flex-1 pt-4">{children}</main>
+           
+                <main className="flex-1 pt-4">{children}</main>
+
               <Footer />
+                  
             </SidebarInset>
           </SidebarProvider>
         </SessionProvider>
+  
       </body>
 
     </html>

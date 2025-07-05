@@ -4,6 +4,7 @@ import Google from 'next-auth/providers/google';
 import prisma from '@/app/lib/prisma';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
+import { authConfig } from './auth.config';
 
 async function getUser(email: string) {
   try {
@@ -15,7 +16,7 @@ async function getUser(email: string) {
 }
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
-  
+  ...authConfig,
   providers: [
     Credentials({
       async authorize(credentials) {

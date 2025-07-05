@@ -85,7 +85,7 @@ const productFormSchema = z.object({
   description: z.string().optional(),
   price: z.coerce.number().positive('El precio debe ser positivo'),
   categoryId: z.coerce.number().positive('Categoría es requerida'),
-  image: z.any().optional(),
+  image: z.string().optional(),
 });
 
 
@@ -118,29 +118,33 @@ export async function createProduct(prevState: productState, formData: FormData)
     };
   }
 
-  const { name, description, price, categoryId } = validatedFields.data;
-  const imageUrl = ""; //poner lo de cloudinary aca
+  const { name, description, price, categoryId,image } = validatedFields.data;
+
+ 
+  const priceInCents = price*100; 
 
   try {
     await prisma.product.create({
       data: {
         name,
         description: description === '' ? null : description,
-        price,
+        price : priceInCents,
         categoryId,
-        imageUrl,
+        imageUrl: image === '' ? null: image,
       },
     });
 
     revalidatePath('/admin', 'layout');
     revalidatePath('/(routes)');
-    redirect('/admin/crudProducts');
+    
   } catch (error: any) {
     console.error(error);
     return {
       message: "Error al crear el producto: " + (error?.message || "Error desconocido"),
     };
   }
+
+   redirect('/admin/crudProducts');
 }
 
 export async function updateProduct(id: number, prevState: productState, formData: FormData) {
@@ -157,32 +161,41 @@ export async function updateProduct(id: number, prevState: productState, formDat
       message: "Failed to update product",
       errors: validatedFields.error.flatten().fieldErrors,
     };
+
+
   }
 
-  const { name, description, price, categoryId } = validatedFields.data;
-  const imageUrl = ""; // poner lo de cloudinary aca
+  const { name, description, price, categoryId, image } = validatedFields.data;
+  const priceInCents = price*100; 
 
   try {
+    const existingProduct = await prisma.product.findUnique({
+      where: { id },
+      select: { imageUrl: true }
+    });
+
     await prisma.product.update({
       where: { id },
       data: {
         name,
         description: description === '' ? null : description,
-        price,
+        price:priceInCents,
         categoryId,
-        ...(imageUrl ? { imageUrl } : {}),
+        imageUrl: image && image !== '' ? image : existingProduct?.imageUrl
       },
     });
 
     revalidatePath('/admin', 'layout');
     revalidatePath('/(routes)');
-    redirect('/admin/crudProducts');
+   
   } catch (error: any) {
     console.error(error);
     return {
       message: "No se pudo actualizar el producto: " + (error?.message || "Error desconocido"),
     };
   }
+
+   redirect('/admin/crudProducts');
 }
 
 export async function deleteProduct(id: number) {

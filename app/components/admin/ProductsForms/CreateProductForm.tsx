@@ -11,7 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { createProduct, productState } from '@/app/lib/actions';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
+import { CldUploadButton } from 'next-cloudinary';
 
 type Category = {
   id: number;
@@ -22,13 +23,34 @@ type Props = {
   categories: Category[];
 };
 
+
+import type { CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo } from 'next-cloudinary';
+
 export default function CreateProductForm({ categories }: Props) {
 
   const initialState: productState = { message: null, errors: {} };
   const [state, formAction] = useActionState(createProduct, initialState);
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  const handleUploadSuccess = (results: CloudinaryUploadWidgetResults) => {
+    
+    const info = results.info as CloudinaryUploadWidgetInfo | undefined;
+    if (info && typeof info === 'object' && 'secure_url' in info) {
+      const url = info.secure_url as string;
+      setImageUrl(url);
+      console.log('Imagen subida:', url);
+    }
+  };
+
   
+  const handleFormSubmit = async (formData: FormData) => {
+    const result = await formAction(formData);
+    setImageUrl(""); 
+    return result;
+  };
+
   return (
-    <form action={formAction} >
+    <form action={handleFormSubmit} >
       <Card className="border-red-300 shadow">
         <CardHeader>
           <CardTitle className="text-red-700 text-xl">Agregar producto</CardTitle>
@@ -79,6 +101,7 @@ export default function CreateProductForm({ categories }: Props) {
               name="price" 
               type="number" 
               min="0" 
+              step ="0.01"
               required 
               aria-describedby="price-error"
             />
@@ -93,24 +116,25 @@ export default function CreateProductForm({ categories }: Props) {
           </div>
 
           {/* Imagen */}
-          <div className="space-y-2">
-            <Label htmlFor="image" className="text-red-800">Imagen</Label>
-            <Input 
-              id="image" 
-              name="image" 
-              type="file" 
-              accept="image/*"
-              aria-describedby="image-error"
-            />
-            <div id="image-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.image &&
-                state.errors.image.map((error: string) => (
-                  <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
-                  </p>
-                ))}
+         
+           <div>
+              <CldUploadButton
+                uploadPreset="upload_products"
+                onSuccess={handleUploadSuccess}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-semibold"
+              >
+                Subir Imagen
+              </CldUploadButton>
+              
+              <input type="hidden" name="image" value={imageUrl} />
+              {imageUrl && (
+                <div>
+                  <p>Imagen actual:</p>
+                  <img src={imageUrl} alt="Imagen subida" width="300" />
+                  <p>URL: {imageUrl}</p>
+                </div>
+              )}
             </div>
-          </div>
 
           {/* Categoría */}
           <div className="space-y-2">

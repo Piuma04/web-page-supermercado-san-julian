@@ -15,9 +15,13 @@ import {
   ShoppingBag
 } from "lucide-react"
 
-const categories = await fetchCategories()
 
-export function CategoriesSidebar() {
+
+export async function CategoriesSidebar() {
+
+
+  const categories = await fetchCategories()
+
   return (
     <Sidebar 
       variant="floating" 
