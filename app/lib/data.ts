@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 const ITEMS_PER_PAGE = 10;
 const PURCHASES_PER_PAGE = 3;
 const CATEGORIES_PER_PAGE = 12;
+const DATA_PURCHASES_PER_PAGE = 9;
 export async function fetchFilteredProducts(
     query: string,
     currentPage: number,
@@ -250,7 +251,7 @@ export async function fetchFilteredCategories(currentPage: number) {
     const categories = await prisma.category.findMany({
         include: {
             products: {
-                take: 1 // Only fetch one product per category (if any)
+                take: 1 
             }
         },
         skip: offset,
@@ -258,6 +259,23 @@ export async function fetchFilteredCategories(currentPage: number) {
     });
 
     return categories;
+}
+
+
+export async function fetchFilteredPurchasesPages(
+    query: string,
+) {
+    const totalCount = await prisma.purchase.count({
+        where: {
+            user: {
+                email: {
+                    contains: query,
+                    mode: 'insensitive',
+                }
+            }
+        },
+    });
+    return Math.ceil(totalCount / DATA_PURCHASES_PER_PAGE);
 }
 
 

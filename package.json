@@ -7,7 +7,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "dev_turbopack" : "next dev --turbopack"
+    "dev_turbopack": "next dev --turbopack"
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",
@@ -20,7 +20,7 @@
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
-    "bcryptjs": "^3.0.2", 
+    "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.6.0",
@@ -30,6 +30,7 @@
     "next": "15.3.3",
     "next-auth": "^5.0.0-beta.28",
     "next-cloudinary": "^6.16.0",
+    "next-pwa": "^5.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.1",
