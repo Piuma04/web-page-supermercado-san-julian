@@ -1,23 +1,31 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+
+  disable: process.env.NODE_ENV === 'development',
+
+});
 
 const nextConfig: NextConfig = {
-  
-   images: {
+  images: {
     remotePatterns: [
       {
-          protocol: 'https',
-          hostname: 'picsum.photos'
-        },
-        {
-          protocol: 'https',
-          hostname: 'media.istockphoto.com'
+        protocol: 'https',
+        hostname: 'picsum.photos',
       },
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com', 
+        hostname: 'media.istockphoto.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
       },
     ],
   },
 };
 
-export default nextConfig;
+export default withPWA(nextConfig);
