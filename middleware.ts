@@ -1,11 +1,6 @@
 
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { authConfig } from './auth.config';
 import NextAuth from 'next-auth';
-
-
+import { authConfig } from './auth.config';
 
 export default NextAuth(authConfig).auth
 
