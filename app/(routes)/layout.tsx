@@ -3,39 +3,28 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 
 import HeaderServer from "../components/HeaderServer";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import {CategoriesSidebar} from "../components/categoriesSidebar/CategoriesSidebar";
 import { SessionProvider } from "next-auth/react";
 import { Footer } from "../components/Footer";
 import { Suspense } from "react";
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
-  title: "Supermercado San Julian",
-  keywords: ["supermercado", "productos", "compras", "tienda online"],
-  description: "Supermercado San Julian, mercado que venede distintos tipos de productos",
+  title: "Principal - Supermercado San Julian",
+  description: "Pagina principal del supermercado San Julian",
 };
 
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" >
-      <link rel="icon" href="/images/favicon.ico" />
-      <body className="flex flex-col min-h-screen">
+
     
+      <main className="flex flex-col min-h-screen">
         <SessionProvider>
           <SidebarProvider defaultOpen={false}>
 
@@ -56,9 +45,9 @@ export default function RootLayout({
             </SidebarInset>
           </SidebarProvider>
         </SessionProvider>
-  
-      </body>
 
-    </html>
+      </main>
+  
+    
   );
 }
