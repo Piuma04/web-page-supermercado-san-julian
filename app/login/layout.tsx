@@ -1,4 +1,4 @@
-// app/login/layout.tsx
+
 import type { Metadata } from "next";
 import "../styles/globals.css";
 

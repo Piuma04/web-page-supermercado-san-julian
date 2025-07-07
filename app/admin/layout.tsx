@@ -1,4 +1,4 @@
-// app/login/layout.tsx
+
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import AdminPanelSidenav from "../components/admin/adminSidenav/AdminPanelSidenav";
@@ -17,7 +17,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
 
-  
+
 
   const session = await auth()
 
