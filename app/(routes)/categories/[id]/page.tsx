@@ -38,9 +38,7 @@ export default async function Page(props: {
       <Suspense fallback={<ProductGridSkeleton/>}>
         <ProductGrid query={query} categoryId={categoryId} currentPage={currentPage} sort={sort}/>
       </Suspense>
-      {totalPages > 1 && (
-        <Pagination totalPages={totalPages} />
-      )}
+      <Pagination totalPages={totalPages} />
     </main>
   );
 }

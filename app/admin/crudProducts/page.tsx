@@ -1,6 +1,6 @@
 import { CreateProduct } from "@/app/components/admin/AdminButtons";
 import AdminProductTable from "@/app/components/admin/AdminProductTable";
-import Pagination from "@/app/components/admin/Pagination";
+import Pagination from "@/app/components/Pagination";
 import Search from "@/app/components/admin/Search";
 import { fetchFilteredProductsPages } from "@/app/lib/data";
 
