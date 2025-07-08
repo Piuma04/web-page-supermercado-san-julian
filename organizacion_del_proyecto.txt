@@ -22,7 +22,7 @@
     /cart               ← Vista y resumen del carrito
     /checkout           ← Componente con resumen y botón "Pagar"
     /auth               ← Formulario de login, estado del usuario, logout
-
+ 
   /lib
     auth.ts             ← Config de NextAuth
     prisma.ts               ← Conexión a la base de datos (Prisma o `pg`)
