@@ -111,18 +111,6 @@ export async function fetchCategory(id: String) {
     return category
 }
 
-export async function fetchProducts() {
-    const products = await prisma.product.findMany({
-        include: {
-            category: true
-        }
-    });
-    return products.map(product => ({
-        ...product,
-        price: product.price / 100
-    }));
-}
-
 export async function fetchProduct(id: String) {
     const product = await prisma.product.findUnique({
         where: {
