@@ -7,6 +7,9 @@ const ITEMS_PER_PAGE = 10;
 const PURCHASES_PER_PAGE = 3;
 const CATEGORIES_PER_PAGE = 12;
 const DATA_PURCHASES_PER_PAGE = 9;
+const isInteger = (value: string) => /^\d+$/.test(value);
+
+
 export async function fetchFilteredProducts(
     query: string,
     currentPage: number,
@@ -294,23 +297,39 @@ export async function getTotalRevenue() {
 
 export async function fetchFilteredPurchases(query:string, page:number, orderBy?:{[key:string]: "asc" | "desc"} ){
 
+
+    
+    const orFilters: any[] = [
+    {
+        user: {
+            email: {
+            contains: query,
+            mode: "insensitive",
+            },
+        },
+    },
+    ];
+
+    if (isInteger(query)) {
+        orFilters.push({
+            id: Number(query),
+        });
+    }
+
+    console.log(Number(query))
+
+
      return await prisma.purchase.findMany({
-                    where: {
-                        user: {
-                            email: {
-                                contains: query,
-                                mode: "insensitive",
-                            }
-                        },
-                    },
-                    include:{
-                        user:true,
-        
-                    },
-                    orderBy,
-                    skip: (page - 1) * DATA_PURCHASES_PER_PAGE,
-                    take: DATA_PURCHASES_PER_PAGE,
-                });
+        where: {
+            OR: orFilters,
+        },
+        include: {
+            user: true,
+        },
+        orderBy,
+        skip: (page - 1) * DATA_PURCHASES_PER_PAGE,
+        take: DATA_PURCHASES_PER_PAGE,
+    });
 
 }
 

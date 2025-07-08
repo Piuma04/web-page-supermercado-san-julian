@@ -5,6 +5,7 @@ import { fetchFilteredPurchases, fetchFilteredPurchasesPages, getTotalRevenue } 
 import { Card } from "@/components/ui/card";
 
 
+
 export default async function PageDatos(props: {
         searchParams?: Promise<{
         query?: string;
@@ -25,7 +26,7 @@ export default async function PageDatos(props: {
     const orderBy = sort === 'total' ? { total: order } : undefined;
 
     const totalPages = await fetchFilteredPurchasesPages(query);
-    console.log(totalPages)
+   
     const totalRevenue = await getTotalRevenue();
     const purchases = await fetchFilteredPurchases(query, currentPage, orderBy)
 
