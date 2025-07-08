@@ -21,24 +21,22 @@ export default async function FeaturedProductsCarousel() {
                         <CarouselItem
                             key={product.id}
                             className="
-                                basis-full
-                                sm:basis-1/2
-                                md:basis-1/3
-                                lg:basis-1/4
-                                xl:basis-1/5
-                                h-81
-                                flex items-center justify-center
+                                basis-1/2
+                                sm:basis-1/3
+                                md:basis-1/4
+                                lg:basis-1/5
+                                xl:basis-1/6
+                                h-full
+                                items-center justify-center
                             "
                         >
-                         
-                                <ProductCard
-                                    key={product.id}
-                                    id={product.id}
-                                    name={product.name}
-                                    price={product.price}
-                                    imageUrl={product.imageUrl}
-                                />
-                       
+                            <ProductCard
+                                key={product.id}
+                                id={product.id}
+                                name={product.name}
+                                price={product.price}
+                                imageUrl={product.imageUrl}
+                            />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
