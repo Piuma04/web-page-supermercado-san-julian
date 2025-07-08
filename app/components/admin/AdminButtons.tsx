@@ -33,7 +33,7 @@ export function UpdateProduct({ id }: { id: string }) {
 export function DeleteProduct({ id }: { id: number }) {
    const deleteProductWithId = deleteProduct.bind(null, id);
   return (
-       <AlertDialog>
+      <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="destructive">
           <Trash2 className="mr-2 h-4 w-4" />
