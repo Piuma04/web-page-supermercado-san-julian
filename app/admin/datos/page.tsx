@@ -1,5 +1,5 @@
 import AdminDataTable from "@/app/components/admin/AdminDataTable";
-import Pagination from "@/app/components/admin/Pagination";
+import Pagination from "@/app/components/Pagination";
 import Search from "@/app/components/admin/Search";
 import { fetchFilteredPurchases, fetchFilteredPurchasesPages, getTotalRevenue } from "@/app/lib/data";
 import { Card } from "@/components/ui/card";
