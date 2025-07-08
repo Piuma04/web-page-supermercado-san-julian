@@ -27,8 +27,8 @@ export async function POST(request:NextRequest) {
 
     // Inicializamos el cliente de Gemini
     const genAI = new GoogleGenerativeAI(API_KEY);
-    // Seleccionamos el modelo 'gemini-pro'
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    // Seleccionamos el modelo 'gemini-1.5-flash'
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     // Construimos el prompt
     let prompt = `Genera una descripción de producto atractiva y concisa para el siguiente artículo:\n\n`;
@@ -38,8 +38,8 @@ export async function POST(request:NextRequest) {
       prompt += `\nCategoría: ${category}`;
     }
 
-    prompt += `\n\nLa descripción debe ser ideal para una tienda online, destacando sus beneficios clave.`;
-
+    prompt += `\n\nLa descripción debe ser ideal para una tienda online, destacando sus beneficios clave. Solo pon una descripcion, sin ningun agredado mas, \n`;
+    prompt += `\n pues la respeusta sera puesta en la descripción directamente `;
     // Hacemos la solicitud a la API de Gemini
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -51,7 +51,9 @@ export async function POST(request:NextRequest) {
   } catch (error) {
     console.error('Error calling Gemini API:', error);
     const errorMessage = (error instanceof Error) ? error.message : String(error);
+          console.log(errorMessage);
     return NextResponse.json(
+
       { message: 'Error generating description.', error: errorMessage },
       { status: 500 }
     );

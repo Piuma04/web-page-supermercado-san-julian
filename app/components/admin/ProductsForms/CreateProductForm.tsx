@@ -26,12 +26,15 @@ type Props = {
 
 
 import type { CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo } from 'next-cloudinary';
+import DescriptionIA from './DescriptionIA';
 
 export default function CreateProductForm({ categories }: Props) {
   const initialState: productState = { message: null, errors: {} };
+  
   const [state, formAction] = useActionState(createProduct, initialState);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [notifyUsers, setNotifyUsers] = useState(true);
+  const [description, setDescription] = useState(""); // <-- Add this
 
   const handleUploadSuccess = (results: CloudinaryUploadWidgetResults) => {
     
@@ -43,7 +46,6 @@ export default function CreateProductForm({ categories }: Props) {
     }
   };
 
-  
   const handleFormSubmit = async (formData: FormData) => {
     const result = await formAction(formData);
     setImageUrl(""); 
@@ -83,7 +85,18 @@ export default function CreateProductForm({ categories }: Props) {
           {/* Descripción */}
           <div className="space-y-2">
             <Label htmlFor="description" className="text-red-800">Descripción</Label>
-            <Input id="description" name="description" placeholder="Breve descripción" />
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Breve descripción"
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              rows={3}
+              className="block w-full rounded-md border border-gray-300 p-2 text-sm resize-vertical focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+              style={{ minHeight: '3rem', maxHeight: '12rem', overflowY: 'auto' }}
+            />
+            <DescriptionIA setDescription={setDescription} />
+
             <div id="description-error" aria-live="polite" aria-atomic="true">
               {state.errors?.description &&
                 state.errors.description.map((error: string) => (
