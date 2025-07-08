@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Supermercado San Julian",
+    title: "Root - Supermercado San Julian",
     keywords: ["supermercado", "productos", "compras", "tienda online"],
     description:
         "Supermercado San Julian, mercado que venede distintos tipos de productos",

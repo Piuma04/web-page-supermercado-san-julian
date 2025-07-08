@@ -1,5 +1,3 @@
-
-
 import { Card, CardContent } from '@/components/ui/card';
 import { DeleteProduct, UpdateProduct } from './AdminButtons';
 import { CldImage } from 'next-cloudinary';
@@ -42,16 +40,23 @@ export default function AdminProductCard({ product}: Props) {
 
         <div className="flex flex-col gap-1">
           <h3 className="text-lg font-semibold text-red-800">{product.name}</h3>
-          <p className="text-sm text-muted-foreground">{product.description}</p>
           <p className="text-md font-bold text-red-700">${product.price}</p>
           <p className="text-xs text-gray-500">Categoría: {product.category.name}</p>
         </div>
 
         <div className="flex justify-between gap-2">
-          <UpdateProduct id = {product.id.toString()}/>
-
+          <UpdateProduct id={product.id.toString()} />
           <DeleteProduct id={product.id} />
         </div>
+
+        <details className="mt-2">
+          <summary className="cursor-pointer text-sm font-semibold text-red-700 tracking-wide">
+            Descripción
+          </summary>
+          <p className="text-sm text-muted-foreground mt-1">
+            {product.description || "Sin descripción"}
+          </p>
+        </details>
       </CardContent>
     </Card>
 

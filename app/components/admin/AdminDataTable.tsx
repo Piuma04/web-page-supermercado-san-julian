@@ -44,7 +44,7 @@ export default function AdminDataTable({ purchases }: Props) {
           <TableBody>
             {purchases.map((purchase) => (
               <TableRow key={purchase.id}>
-                <TableCell className="max-w-[120px] sm:max-w-[200px] truncate">
+                <TableCell className="max-w-[120px] sm:max-w-[200px] ">
                   <span title={purchase.email} className="cursor-help">
                     {purchase.email}
                   </span>

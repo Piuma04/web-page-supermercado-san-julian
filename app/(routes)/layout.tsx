@@ -12,8 +12,37 @@ import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
-  title: "Principal - Supermercado San Julian",
-  description: "Pagina principal del supermercado San Julian",
+  title: "Supermercado San Julian",
+  description: "Supermercado San Julián, tu supermercado de confianza",
+  keywords: [
+    "supermercado",
+    "San Julián",
+    "compras",
+    "alimentos",
+    "ofertas",
+    "descuentos",
+  ],
+  //authors: [{ name: "Supermercado San Julián", url: "https://san-julian.com" }],
+  openGraph: {
+    title: "Supermercado San Julian",
+    description: "Supermercado San Julián, tu supermercado de confianza",
+    //url: "https://san-julian.com",
+    siteName: "Supermercado San Julián",
+    /* images: [
+      {
+        url: "https://san-julian.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Supermercado San Julián"
+      }
+    ], */
+    locale: "es_AR",
+    type: "website"
+  },
+  robots: {
+    index: true,
+    follow: true
+  }
 };
 
 export default function MainLayout({
