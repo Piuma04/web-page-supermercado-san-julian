@@ -16,7 +16,7 @@ async function getUser(email: string) {
 }
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
-
+  ...authConfig,
   providers: [
     Credentials({
       async authorize(credentials) {
