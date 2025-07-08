@@ -20,9 +20,9 @@ export async function createPreference(items: Item[]) {
         items,
         metadata: metadata, // Guardamos el ID del usuario que inicia la compra, y datos de los items comprados
         back_urls: {
-          success: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa',
-          failure: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa',
-          pending: 'https://es.wikipedia.org/wiki/Wikipedia:Recurso_del_d%C3%ADa'
+          success: 'https://supermercadosanjulian.vercel.app/',
+          failure: 'https://supermercadosanjulian.vercel.app/',
+          pending: 'https://supermercadosanjulian.vercel.app/'
         },
         auto_return: 'approved',
         notification_url: process.env.NOTIFICATION_URL_MP, // URL para recibir notificaciones
@@ -51,7 +51,7 @@ export async function addPurchase(id: string) {
 
   await prisma.purchase.create({
     data: {
-      total: purchase.transaction_amount!,
+      total: purchase.transaction_amount!*100, // Convertimos a centavos
       description,
       status: purchase.status,
       mercadoPagoId: purchase.id,
