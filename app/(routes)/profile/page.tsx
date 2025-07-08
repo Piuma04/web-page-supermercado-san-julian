@@ -125,14 +125,9 @@ export default async function Profile(
                 <Suspense fallback={<PurchasesListSkeleton/>}>
                   <PurchasesList currentPage={currentPage} />
                 </Suspense>
-                
-                {totalPages > 1 && (
-                  <div className="mt-6">
-                    <Suspense fallback={<div>Loading pagination...</div>}>
-                      <Pagination totalPages={totalPages} />
-                    </Suspense>
-                  </div>
-                )}
+                <div className="mt-6">
+                  <Pagination totalPages={totalPages} />
+                </div>
               </CardContent>
             </Card>
           </div>
