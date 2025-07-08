@@ -1,8 +1,8 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { NextResponse } from 'next/server'; // Importa NextResponse para respuestas JSON
+import { NextRequest, NextResponse } from 'next/server'; // Importa NextResponse para respuestas JSON
 
-export async function POST(request:NextResponse) {
+export async function POST(request:NextRequest) {
   try {
     // Obtenemos los datos del cuerpo de la solicitud
     const { productName, category } = await request.json();
