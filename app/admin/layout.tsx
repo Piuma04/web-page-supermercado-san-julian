@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function AdminLayout({
+export default  function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -44,11 +44,6 @@ export default async function AdminLayout({
 
 
 
-  const session = await auth()
-
-if(!session?.user || session.user.role !== 'ADMIN'){
-  redirect("/")
-}
   
 
   return (
