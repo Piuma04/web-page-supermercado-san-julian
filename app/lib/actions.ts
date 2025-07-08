@@ -9,8 +9,7 @@ import { redirect } from "next/navigation";
 import prisma from "./prisma";
 import { auth } from "@/auth";
 import { z } from 'zod';
-
-
+import webpush from 'web-push';
 
 export async function checkout(){
   let preferenceUrl: string | undefined = undefined;
@@ -86,6 +85,7 @@ const productFormSchema = z.object({
   price: z.coerce.number().positive('El precio debe ser positivo'),
   categoryId: z.coerce.number().positive('Categoría es requerida'),
   image: z.string().optional(),
+  notifyUsers: z.string().optional().transform(val => val === 'true'),
 });
 
 
@@ -109,6 +109,7 @@ export async function createProduct(prevState: productState, formData: FormData)
     price: formData.get('price'),
     categoryId: formData.get('categoryId'),
     image: formData.get('image'),
+    notifyUsers: formData.get('notifyUsers'),
   });
 
   if (!validatedFields.success) {
@@ -118,9 +119,7 @@ export async function createProduct(prevState: productState, formData: FormData)
     };
   }
 
-  const { name, description, price, categoryId,image } = validatedFields.data;
-
- 
+  const { name, description, price, categoryId, image, notifyUsers } = validatedFields.data;
   const priceInCents = price*100; 
 
   try {
@@ -128,11 +127,55 @@ export async function createProduct(prevState: productState, formData: FormData)
       data: {
         name,
         description: description === '' ? null : description,
-        price : priceInCents,
+        price: priceInCents,
         categoryId,
         imageUrl: image === '' ? null: image,
       },
     });
+
+    // Enviar notificación si está activada la opción
+    if (notifyUsers) {
+      try {
+        // Obtener todas las suscripciones de la base de datos
+        const subscriptions = await prisma.pushSubscription.findMany();
+        
+        // Preparar el mensaje
+        const notificationPayload = JSON.stringify({
+          title: '¡Nuevo producto disponible!',
+          body: `Hemos agregado "${name}" a nuestro catálogo`,
+          icon: '/images/icon.png',
+        });
+        
+        // Enviar notificación a cada suscripción
+        const notificationPromises = subscriptions.map(sub => {
+          const pushSubscription = {
+            endpoint: sub.endpoint,
+            keys: {
+              p256dh: sub.p256dh,
+              auth: sub.auth
+            }
+          };
+          
+          return webpush.sendNotification(pushSubscription, notificationPayload)
+            .catch(error => {
+              // Si la suscripción ya no es válida, eliminarla
+              if (error.statusCode === 410) {
+                return prisma.pushSubscription.delete({
+                  where: { endpoint: sub.endpoint }
+                });
+              }
+              console.error(`Error enviando notificación a ${sub.endpoint}:`, error);
+            });
+        });
+        
+        // Esperar a que se envíen todas las notificaciones
+        await Promise.allSettled(notificationPromises);
+        console.log(`Notificaciones enviadas a ${subscriptions.length} suscripciones`);
+      } catch (error) {
+        console.error('Error al enviar notificaciones:', error);
+        // No interrumpir el flujo si falla la notificación
+      }
+    }
 
     revalidatePath('/admin', 'layout');
     revalidatePath('/(routes)');
@@ -144,7 +187,7 @@ export async function createProduct(prevState: productState, formData: FormData)
     };
   }
 
-   redirect('/admin/crudProducts');
+  redirect('/admin/crudProducts');
 }
 
 export async function updateProduct(id: number, prevState: productState, formData: FormData) {
@@ -403,4 +446,73 @@ export async function deleteItemFromCart(cartItemId:number) {
         where: { id: cartItemId },
     });
     revalidatePath("/(routes)/cart");
+}
+
+
+webpush.setVapidDetails(
+  'mailto:baltasarschwerdt@gmail.com',
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+  process.env.VAPID_PRIVATE_KEY!
+)
+ 
+ 
+export async function subscribeUser(sub: webpush.PushSubscription) {
+  const session = await auth();
+  if (!session?.user?.email) {
+    throw new Error("Usuario no autenticado");
+  }
+  
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  });
+  
+  if (!user) {
+    throw new Error("Usuario no encontrado");
+  }
+  
+  // Verificar si ya existe una suscripción con el mismo endpoint, sino se crea una nueva
+  await prisma.pushSubscription.upsert({
+    where: { endpoint: sub.endpoint },
+    update: {
+      p256dh: sub.keys.p256dh,
+      auth: sub.keys.auth
+    },
+    create: {
+      userId: user.id,
+      endpoint: sub.endpoint,
+      p256dh: sub.keys.p256dh,
+      auth: sub.keys.auth
+    }
+  });
+  
+  return { success: true };
+}
+ 
+export async function unsubscribeUser(endpoint: string) {
+  const session = await auth();
+  if (!session?.user?.email) {
+    throw new Error("Usuario no autenticado");
+  }
+  
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  });
+  
+  if (!user) {
+    throw new Error("Usuario no encontrado");
+  }
+  
+  try {
+    // Eliminar la suscripcion con el endpoint proporcionado
+      await prisma.pushSubscription.delete({
+        where: { 
+          endpoint: endpoint,
+          userId: user.id 
+        }
+      });
+    return { success: true };
+  } catch (error) {
+    console.error('Error al cancelar suscripción:', error);
+    return { success: false, error: 'No se pudo cancelar la suscripción' };
+  }
 }

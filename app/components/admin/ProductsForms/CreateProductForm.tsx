@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { createProduct, productState } from '@/app/lib/actions';
 import { useActionState, useState } from 'react';
 import { CldUploadButton } from 'next-cloudinary';
+import { Checkbox } from '@/components/ui/checkbox';
 
 type Category = {
   id: number;
@@ -27,10 +28,10 @@ type Props = {
 import type { CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo } from 'next-cloudinary';
 
 export default function CreateProductForm({ categories }: Props) {
-
   const initialState: productState = { message: null, errors: {} };
   const [state, formAction] = useActionState(createProduct, initialState);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [notifyUsers, setNotifyUsers] = useState(true);
 
   const handleUploadSuccess = (results: CloudinaryUploadWidgetResults) => {
     
@@ -166,7 +167,25 @@ export default function CreateProductForm({ categories }: Props) {
             </div>
           </div>
 
-          
+          {/* Habilitar Notificaciones*/}
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="notifyUsers" 
+              checked={notifyUsers} 
+              onCheckedChange={(checked) => setNotifyUsers(checked as boolean)}
+            />
+            <Label 
+              htmlFor="notifyUsers" 
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Notificar a los clientes de este nuevo producto
+            </Label>
+            <input 
+              type="hidden" 
+              name="notifyUsers" 
+              value={notifyUsers ? 'true' : 'false'} 
+            />
+          </div>
 
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">

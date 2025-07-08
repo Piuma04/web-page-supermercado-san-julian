@@ -9,6 +9,10 @@ import { Suspense } from "react";
 import PurchasesList from "@/app/components/profile/PurchasesList";
 import PurchasesListSkeleton from "@/app/components/profile/PurchasesListSkeleton";
 import Link from "next/link";
+import PushNotificationConfig from "@/app/components/PushNotificationConfig";
+import InstallPrompt from "@/app/components/InstallPrompt";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@radix-ui/react-separator";
 
 
 export default async function Profile(
@@ -64,31 +68,41 @@ export default async function Profile(
                   </div>
                   
                   <hr className="my-4" />
-
-    
                     
-                    <nav className="space-y-4 ">  
-                      <form
-                        action={async () => {
+                    <nav className="space-y-2">  
+                      {/* PWA */}
+                      <InstallPrompt />
+                      <PushNotificationConfig />
+                      {user?.role === userRole.ADMIN && (
+                        <Link href="/admin">
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start hover:bg-purple-50 "
+                          >
+                            <User className="mr-2 h-4 w-4 text-purple-600" />
+                            Panel de Administración
+                          </Button>
+                        </Link>
+                      )}
+                        <hr className="my-4" />
+
+                        <form
+                          action={async () => {
                           'use server';
                           await signOut({ redirectTo: '/' });
-                        }}
-                        className="w-full"
-                      >
-                        <button
-                          type="submit"
-                          className="w-full flex items-center px-3 py-2 text-sm rounded-md text-red-600 hover:bg-red-50 transition-colors"
+                          }}
+                          className="w-full"
                         >
+                          <Button
+                          type="submit"
+                          variant="ghost"
+                          className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-600"
+                          >
                           <LogOut className="mr-2 h-4 w-4" />
                           Cerrar sesión
-                        </button>
-                      </form>
+                          </Button>
+                        </form>
                       
-                      {session?.user.role == userRole.ADMIN && (<Link href = "/admin" className=" w-full  items-center md:mt-0 px-3 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors">
-                      
-                            Acceder al panel de administración
-                        
-                      </Link>)}
                     </nav>
 
                   

@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  passwd      String?  
-  role        userRole @default(CLIENT)  
-  createdAt   DateTime @default(now())
-  cart        Cart?
-  purchases   Purchase[]
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  passwd            String?  
+  role              userRole @default(CLIENT)  
+  createdAt         DateTime @default(now())
+  cart              Cart?
+  purchases         Purchase[]
+  pushSubscriptions PushSubscription[]
 }
 
 enum userRole{
@@ -81,4 +82,14 @@ model Purchase{
   mercadoPagoId BigInt?  @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model PushSubscription {
+id        Int      @id @default(autoincrement())
+userId    Int
+endpoint  String   @unique
+p256dh    String
+auth      String
+user      User     @relation(fields: [userId], references: [id])
+createdAt DateTime @default(now())
 }
