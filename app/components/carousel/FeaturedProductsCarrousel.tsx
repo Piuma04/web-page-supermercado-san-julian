@@ -1,14 +1,13 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { fetchFilteredProducts, fetchProducts } from "../../lib/data";
+import { fetchFilteredProducts} from "../../lib/data";
 import ProductCard from "../ProductCard";
-import { Suspense } from "react";
 
 export default async function FeaturedProductsCarousel() {
     const featuredProducts = await fetchFilteredProducts("",1);
 
     return (
-        <section className="w-full mt-7 ">
-            <h2 className="text-xl font-bold mb-2 text-center">Productos Destacados</h2>
+        <section className="w-full">
+            <h2 className="text-xl font-bold mb-5 text-center">Productos Destacados</h2>
             <Carousel
                 opts={{
                     align: "start",
@@ -23,11 +22,10 @@ export default async function FeaturedProductsCarousel() {
                             className="
                                 basis-1/2
                                 sm:basis-1/3
-                                md:basis-1/4
-                                lg:basis-1/5
-                                xl:basis-1/6
-                                h-full
-                                items-center justify-center
+                                md:basis-1/3
+                                lg:basis-1/4
+                                xl:basis-1/5
+                                pb-2
                             "
                         >
                             <ProductCard

@@ -40,7 +40,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
 
   const imageUrlParsed = (imageUrl === "" || imageUrl === null) ? "https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=2048x2048&w=is&k=20&c=pOl6SlMTFYgl2568V8ALEd7Gz7nE07ECPZOu2e7VHr4=" : imageUrl;
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className=" bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="space-y-3">
         {/* Product Image */}
         <AspectRatio ratio={1}>
