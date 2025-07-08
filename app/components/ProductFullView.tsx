@@ -20,6 +20,7 @@ type ProductFullViewProps =  {
 export default function ProductFullView({ id, name, description, price, imageUrl, category }: ProductFullViewProps) {
   const [quantity, setQuantity] = useState(1);
   const [isPending, setIsPending] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false); // NEW STATE
   const { data: session } = useSession();
 
   const handleAddToCart = async () => {
@@ -38,6 +39,14 @@ export default function ProductFullView({ id, name, description, price, imageUrl
 };
 
   const imageUrlParsed = (imageUrl === "" || imageUrl === null) ? "https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=2048x2048&w=is&k=20&c=pOl6SlMTFYgl2568V8ALEd7Gz7nE07ECPZOu2e7VHr4=" : imageUrl;
+
+  // Helper to truncate description
+  const MAX_DESCRIPTION_LENGTH = 120;
+  const isLongDescription = description && description.length > MAX_DESCRIPTION_LENGTH;
+  const displayedDescription = !showFullDescription && isLongDescription
+    ? description?.slice(0, MAX_DESCRIPTION_LENGTH) + "..."
+    : description;
+
   return (
       <main className="flex flex-col items-center min-h-screen bg-white py-8 px-2">
         <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
@@ -63,7 +72,27 @@ export default function ProductFullView({ id, name, description, price, imageUrl
                 <p className="text-sm text-gray-500 mb-1">
                   Categoría: <span className="font-semibold">{category}</span>
                 </p>
-                <p className="text-md text-gray-700 mt-4">{description}</p>
+                <p className="text-md text-gray-700 mt-4">
+                  {displayedDescription}
+                  {isLongDescription && !showFullDescription && (
+                    <button
+                      className="ml-2 text-blue-600 underline text-sm cursor-pointer"
+                      onClick={() => setShowFullDescription(true)}
+                      type="button"
+                    >
+                      Ver más
+                    </button>
+                  )}
+                  {isLongDescription && showFullDescription && (
+                    <button
+                      className="ml-2 text-blue-600 underline text-sm cursor-pointer"
+                      onClick={() => setShowFullDescription(false)}
+                      type="button"
+                    >
+                      Ver menos
+                    </button>
+                  )}
+                </p>
               </div>
               {/* Quantity & Add to cart */}
               <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-4 space-y-2 sm:space-y-0 items-center mt-6">
