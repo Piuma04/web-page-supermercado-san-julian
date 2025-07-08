@@ -9,8 +9,8 @@ import { Suspense } from "react";
 import PurchasesList from "@/app/components/profile/PurchasesList";
 import PurchasesListSkeleton from "@/app/components/profile/PurchasesListSkeleton";
 import Link from "next/link";
-import PushNotificationConfig from "@/app/components/PushNotificationConfig";
-import InstallPrompt from "@/app/components/InstallPrompt";
+import PushNotificationConfig from "@/app/components/profile/PushNotificationConfig";
+import InstallPrompt from "@/app/components/profile/InstallPrompt";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-separator";
 

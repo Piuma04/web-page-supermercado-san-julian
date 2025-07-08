@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react'
-import { subscribeUser, unsubscribeUser } from '../lib/actions';
+import { subscribeUser, unsubscribeUser } from '../../lib/actions';
 import { Bell, BellOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
