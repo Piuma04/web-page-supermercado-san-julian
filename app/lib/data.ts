@@ -265,6 +265,8 @@ export async function fetchFilteredCategories(currentPage: number) {
 export async function fetchFilteredPurchasesPages(
     query: string,
 ) {
+    
+
     const totalCount = await prisma.purchase.count({
         where: {
             user: {
@@ -289,6 +291,28 @@ export async function getTotalRevenue() {
   return result._sum.total ?? 0; 
 }
 
+
+export async function fetchFilteredPurchases(query:string, page:number, orderBy?:{[key:string]: "asc" | "desc"} ){
+
+     return await prisma.purchase.findMany({
+                    where: {
+                        user: {
+                            email: {
+                                contains: query,
+                                mode: "insensitive",
+                            }
+                        },
+                    },
+                    include:{
+                        user:true,
+        
+                    },
+                    orderBy,
+                    skip: (page - 1) * DATA_PURCHASES_PER_PAGE,
+                    take: DATA_PURCHASES_PER_PAGE,
+                });
+
+}
 
 
 
