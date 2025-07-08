@@ -1,4 +1,4 @@
-// app/api/generate-description/route.js
+
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextResponse } from 'next/server'; // Importa NextResponse para respuestas JSON
 
