@@ -9,6 +9,31 @@ import { redirect } from "next/navigation";
 export const metadata: Metadata = {
   title: "Pagina de Administración - Supermercado San Julian",
   description: "Administra tu supermercado con facilidad",
+  keywords: [
+    "administración",
+    "supermercado",
+    "panel de control",
+    "San Julian",
+    "gestión",
+    "productos",
+    "usuarios",
+    "ventas",
+    "inventario",
+    "dashboard"
+  ],
+   //authors: [{ name: "Supermercado San Julián", url: "https://san-julian.com" }],
+  openGraph: {
+    title: "Pagina de Administración - Supermercado San Julian",
+    description: "Administra tu supermercado con facilidad",
+    siteName: "Supermercado San Julian",
+    //url: "https://san-julian.com",
+    type: "website",
+    locale: "es_AR",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function AdminLayout({
