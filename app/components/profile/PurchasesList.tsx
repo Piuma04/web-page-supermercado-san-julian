@@ -42,7 +42,7 @@ export default async function PurchasesList({ currentPage }: { currentPage: numb
               </div>
             </div>
             <div className="text-right">
-              <p className="font-medium text-red-600">${purchase.total?.toFixed(2) || "0.00"}</p>
+              <p className="font-medium text-red-600">${(purchase.total/100).toFixed(2)}</p>
               <p className={clsx('text-large', {
                 'text-green-600': purchase.status === 'approved',
                 'text-yellow-600': purchase.status === 'pending', 
