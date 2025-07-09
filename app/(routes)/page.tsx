@@ -3,8 +3,11 @@ import FeaturedProductsCarousel from "../components/carousel/FeaturedProductsCar
 
 
 export default function Page() {
+  
   return (
       <main className="p-2">
+        
+        
         <FeaturedPromosCarousel/>
         <FeaturedProductsCarousel/>
       </main>

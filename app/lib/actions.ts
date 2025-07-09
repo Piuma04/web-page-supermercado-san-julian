@@ -273,6 +273,10 @@ const categoryFormSchema = z.object({
   name: z.string().min(1, "El nombre no debe ser vacío"),
 });
 
+
+
+
+
 export async function addCategory(prevState: categoryState, formData: FormData) {
   const validatedFields = categoryFormSchema.safeParse({
     name: formData.get('name'),
@@ -515,4 +519,18 @@ export async function unsubscribeUser(endpoint: string) {
     console.error('Error al cancelar suscripción:', error);
     return { success: false, error: 'No se pudo cancelar la suscripción' };
   }
+}
+
+
+
+/*
+
+BANNER CRUD ACTIONS
+
+*/
+
+
+export default async function createBanner(){
+
+  return null;
 }
