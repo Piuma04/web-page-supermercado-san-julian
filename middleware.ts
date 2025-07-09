@@ -11,7 +11,14 @@ export default async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   const privateRoutes = ['/admin', '/cart', '/profile',];
-  if (!privateRoutes.includes(pathname)) {
+
+
+  const isPrivate = privateRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+
+  if (!isPrivate) {
     return NextResponse.next();
   }
 
