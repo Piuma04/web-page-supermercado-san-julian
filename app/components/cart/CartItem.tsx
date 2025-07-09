@@ -1,6 +1,6 @@
 
 
-import { AddItemButton, SubstractItemButton, DeleteButton } from "./CartButtons";
+import { CartButtons } from "./CartButtons";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
@@ -42,16 +42,7 @@ export default function CartItem({ id, product, quantity }: CartItemProps) {
             </div>
             
             {/* Quantity Controls */}
-            <div className="flex flex-row gap-2 items-center justify-center mt-3 sm:mt-0">
-                <div className="flex items-center gap-2">
-                    <SubstractItemButton cartItemId={id} quantity={quantity} />
-                    <span className="inline-flex items-center justify-center min-w-[2rem] h-8 bg-gray-100 text-gray-800 font-medium text-sm px-2 rounded">
-                        {quantity}
-                    </span>
-                    <AddItemButton cartItemId={id} />
-                </div>
-                <DeleteButton cartItemId={id} />
-            </div>
+            <CartButtons cartItemId={id} quantity={quantity}/>
         </div>
     );
 }

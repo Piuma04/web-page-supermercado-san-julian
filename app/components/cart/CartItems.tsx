@@ -2,10 +2,9 @@ import { auth } from "@/auth";
 import { fetchCartByUserID } from "../../lib/data";
 import CartItem from "./CartItem";
 import { Button } from "@/components/ui/button";
-import { checkout } from "@/app/lib/actions";
-import { ShoppingCart, CreditCard } from "lucide-react";
+import { ShoppingCart} from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
+import CartForm from "./CartForm";
 
 export default async function CartItems() {
 
@@ -59,16 +58,7 @@ export default async function CartItems() {
                         </div>
                     </div>
                     
-                    {/* Checkout Button */}
-                    <form action={checkout} className="text-center">
-                        <Button 
-                            type="submit" 
-                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg w-full sm:w-auto text-base flex items-center justify-center gap-2 shadow-md"
-                        >
-                            <CreditCard size={18} />
-                            Finalizar Compra
-                        </Button>
-                    </form>
+                    <CartForm/>
                 </div>
             ) : (
                 <div className="bg-white rounded-lg p-8 text-center shadow-md">
