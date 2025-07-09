@@ -1,11 +1,12 @@
-import { CreateCategory } from "@/app/components/admin/AdminButtons";
-import AdminCategoryTable from "@/app/components/admin/AdminCategoryTable";
+import { CreateBanner } from "@/app/components/admin/AdminButtons";
+import AdminBannerTable from "@/app/components/admin/Banner/AdminBannerTable";
 import Search from "@/app/components/admin/Search";
 import Pagination from "@/app/components/Pagination";
-import { fetchAdminPageCategoriesPages } from "@/app/lib/data";
+import { fetchBannersPages } from "@/app/lib/data";
 import { Suspense } from "react";
 
-export default async function PageCrudCategories(
+
+export default async function  createBanner(
     props: {
     searchParams?: Promise<{
       query?: string;
@@ -14,11 +15,12 @@ export default async function PageCrudCategories(
   }
 ){
 
+   
 
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const totalPages = await fetchAdminPageCategoriesPages(); 
+    const totalPages = await fetchBannersPages(); 
 
 
     return(
@@ -27,12 +29,11 @@ export default async function PageCrudCategories(
                 <h1 className="text-2xl">Categorias</h1>
                 <Search placeholder="Buscar banner..."/>
             </div>
-            
-            <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                <CreateCategory />
+            <div className="my-4 flex items-center justify-between gap-2 md:mt-8">
+                <CreateBanner />
             </div>
             <Suspense key={ currentPage} >
-                <AdminCategoryTable currentPage={currentPage} />
+                <AdminBannerTable query = {query} currentPage={currentPage} />
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
                 <Pagination totalPages={totalPages} />

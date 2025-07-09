@@ -2,6 +2,7 @@ import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import { Item } from '@/app/lib/types';
 import prisma from '../lib/prisma';
 import { fetchUser } from '../lib/data';
+import { revalidatePath } from 'next/cache';
 
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN || '' });
 const preference = new Preference(client);
@@ -42,13 +43,14 @@ export async function addPurchase(id: string) {
     headers: {
       Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
     }
-  }).then(res => res.json());
+    }).then(res => res.json());
 
   const metadata: { user_id: number, items: Item[] } = purchase.metadata;
   const description = `${metadata.items.map(({ title, quantity, unit_price }) => 
     `Producto: ${title}, Cantidad: ${quantity.toString()}, Precio: ${unit_price.toFixed(2)} ARS`
   ).join(`\n`)}`;
 
+  //Crear la compra
   await prisma.purchase.create({
     data: {
       total: purchase.transaction_amount!*100, // Convertimos a centavos
@@ -58,6 +60,19 @@ export async function addPurchase(id: string) {
       user: { connect: { id: metadata.user_id } }
     }
   });
+
+  // Limpiar el carrito después de procesar el pago
+    await prisma.cartItem.deleteMany({
+      where: {
+        cart: {
+          user: {
+            id: metadata.user_id
+          }
+        }
+      }
+    });
+
+    revalidatePath('/cart');
 
   }catch (error) {
     console.error("Error adding payment:", error);

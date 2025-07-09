@@ -2,7 +2,9 @@
 
 import prisma from "@/app/lib/prisma";
 import { auth } from "@/auth";
+import z from "zod";
 
+const BANNERS_PER_PAGE = 9;
 const ITEMS_PER_PAGE = 10;
 const PURCHASES_PER_PAGE = 3;
 const CATEGORIES_PER_PAGE = 12;
@@ -255,6 +257,8 @@ export async function fetchFilteredCategories(currentPage: number) {
 
 export async function fetchFilteredPurchasesPages(
     query: string,
+    from ?: Date,
+    to ?: Date,
 ) {
     
 
@@ -265,7 +269,15 @@ export async function fetchFilteredPurchasesPages(
                     contains: query,
                     mode: 'insensitive',
                 }
-            }
+            },
+            ...(from || to
+                ? {
+                    createdAt: {
+                        ...(from ? { gte: from } : {}),
+                        ...(to ? { lte: to } : {}),
+                    },
+                }
+                : {}),
         },
     });
     return Math.ceil(totalCount / DATA_PURCHASES_PER_PAGE);
@@ -283,19 +295,36 @@ export async function getTotalRevenue() {
 }
 
 
-export async function fetchFilteredPurchases(query:string, page:number, orderBy?:{[key:string]: "asc" | "desc"} ){
+const fetchPurchasesFormSchema = z.object({
+  query: z.string(),
+  page: z.coerce.number().positive('La página debe ser positiva'),
+  orderBy: z
+    .record(z.enum(["asc", "desc"]))
+    .optional(),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
+});
 
 
-    
+export async function fetchFilteredPurchases(input: unknown) {
+
+    const validatedFields = fetchPurchasesFormSchema.safeParse(input);
+
+    if(!validatedFields.success){
+        throw new Error("Failed the parsing")
+    }
+
+    const { query, page, orderBy, from, to } = validatedFields.data 
+
     const orFilters: any[] = [
-    {
-        user: {
-            email: {
-            contains: query,
-            mode: "insensitive",
+        {
+            user: {
+                email: {
+                    contains: query,
+                    mode: "insensitive",
+                },
             },
         },
-    },
     ];
 
     if (isInteger(query)) {
@@ -304,22 +333,68 @@ export async function fetchFilteredPurchases(query:string, page:number, orderBy?
         });
     }
 
-    console.log(Number(query))
 
-
-     return await prisma.purchase.findMany({
+    return await prisma.purchase.findMany({
         where: {
             OR: orFilters,
+        
+            ...(from || to
+                ? {
+                    createdAt: {
+                        ...(from ? { gte: from } : {}),
+                        ...(to ? { lte: to } : {}),
+                    },
+                }
+                : {}),
         },
         include: {
             user: true,
         },
-        orderBy,
+        ...(orderBy ? { orderBy } : { orderBy: { id: "asc" } }),
         skip: (page - 1) * DATA_PURCHASES_PER_PAGE,
         take: DATA_PURCHASES_PER_PAGE,
     });
+}
+
+
+
+export async function fetchBannersPages(){
+
+    const totalCount = await prisma.banner.count({});
+
+    return Math.ceil(totalCount / BANNERS_PER_PAGE);
 
 }
+
+export async function fetchFilteredBanners(query:string, page:number) {
+    return await prisma.banner.findMany({
+        where:{
+            name: {
+                contains: query,
+                mode: 'insensitive',
+
+            },
+        },
+    }
+    );
+}
+
+
+export async function fetchDisplayedBanners(){
+
+
+    return await prisma.banner.findMany({
+        where:{
+            
+            isOnDisplay: true,
+            
+        },
+    }
+    );
+
+
+}
+
 
 
 
