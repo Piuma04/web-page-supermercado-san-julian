@@ -1,18 +1,10 @@
+import { fetchDisplayedBanners } from "@/app/lib/data";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Image from "next/image";
 
 export default async function FeaturedPromosCarousel() {
-    type Example = {
-        id: number
-        url: string
-    };
-
-    const featuredPromos: Example[] = [
-        { id: 1, url: "https://picsum.photos/id/17/2500/1667" },
-        { id: 2, url: "https://picsum.photos/id/18/2500/1667" },
-        { id: 3, url: "https://picsum.photos/id/22/4434/3729"},
-        { id: 4, url: "https://picsum.photos/id/23/3887/4899"},
-    ]; 
+    
+    const featuredPromos = await fetchDisplayedBanners();
 
     return (
         <Carousel
@@ -37,15 +29,20 @@ export default async function FeaturedPromosCarousel() {
                             shadow-lg
                             transition-all
                             duration-300
+                            flex
+                            items-center
+                            justify-center
                         "
                     >
                         <Image
-                            src={fp.url}
+                            src={fp.imageUrl}
                             alt="Promoción destacada"
-                            fill
-                            className="object-cover"
+                            className="object-contain select-none"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
+                            width={800}
+                            height={400}
                             priority
+                            draggable={false}
                         />
                     </CarouselItem>
                 ))}

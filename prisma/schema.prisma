@@ -100,4 +100,5 @@ model Banner {
   name String
   imageUrl String
   isOnDisplay Boolean
+  createdAt DateTime @default(now())
 }

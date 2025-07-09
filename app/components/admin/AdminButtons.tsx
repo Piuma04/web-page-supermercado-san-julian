@@ -1,9 +1,8 @@
 import { deleteBanner, deleteCategory, deleteProduct, modifyDisplayBanner } from "@/app/lib/actions";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { PencilIcon, PlusIcon, Trash2, TrashIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, ImagePlusIcon, PencilIcon, PlusIcon, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { StringValidation } from "zod";
 
 /*
 
@@ -168,37 +167,36 @@ BANNER BUTTONS
 
 export function CreateBanner() {
   return (
-    <Button asChild className="bg-red-600 hover:bg-red-700 focus-visible:outline-red-600">
+    <Button asChild className="bg-red-600 hover:bg-red-700 text-white font-medium shadow-sm">
       <Link href="/admin/crudBanners/create" className="flex items-center gap-2 px-4 py-2">
+        <ImagePlusIcon className="h-5 w-5" />
         <span className="hidden md:block">Crear banner</span>
-        <PlusIcon className="h-5 w-5" />
       </Link>
     </Button>
   );
 }
 
-
 export function DeleteBanner({ id }: { id: number }) {
-   const deleteBannerWithId = deleteBanner.bind(null, id);
+  const deleteBannerWithId = deleteBanner.bind(null, id);
   return (
-      <AlertDialog>
+    <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">
+        <Button variant="outline" className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800">
           <Trash2 className="mr-2 h-4 w-4" />
           Eliminar
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
-        <form action = {deleteBannerWithId} >
+      <AlertDialogContent className="border-red-100">
+        <form action={deleteBannerWithId}>
           <AlertDialogHeader>
-            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+            <AlertDialogTitle className="text-red-700">¿Estás seguro?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción eliminará el banner.
+              Esta acción eliminará el banner permanentemente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel type="button">Cancelar</AlertDialogCancel>
-            <Button type="submit" variant="destructive">
+            <AlertDialogCancel type="button" className="border-gray-300">Cancelar</AlertDialogCancel>
+            <Button type="submit" variant="destructive" className="bg-red-600 hover:bg-red-700">
               Confirmar eliminación
             </Button>
           </AlertDialogFooter>
@@ -210,10 +208,8 @@ export function DeleteBanner({ id }: { id: number }) {
 
 
 export function ModifyDisplayBannerButton({ id, isOnDisplay }: { id: number; isOnDisplay: boolean }) {
-
-  
   const handleModifyDisplayBanner = async (formData: FormData) => {
-    // We expect a hidden input named "newIsOnDisplay" in the form
+    "use server"
     const newIsOnDisplay = formData.get("newIsOnDisplay") === "true";
     await modifyDisplayBanner(id, newIsOnDisplay);
   };
@@ -222,24 +218,27 @@ export function ModifyDisplayBannerButton({ id, isOnDisplay }: { id: number; isO
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive">
-            <Trash2 className="mr-2 h-4 w-4" />
-            Sacar del roster
+          <Button 
+            variant="outline" 
+            className="w-full border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 hover:text-amber-800"
+          >
+            <EyeOffIcon className="mr-2 h-4 w-4" />
+            Desactivar banner
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <form action={handleModifyDisplayBanner}>
             <input type="hidden" name="newIsOnDisplay" value="false" />
             <AlertDialogHeader>
-              <AlertDialogTitle>Eliminar del roster actual</AlertDialogTitle>
+              <AlertDialogTitle>Desactivar banner</AlertDialogTitle>
               <AlertDialogDescription>
-                El banner actual sera retirado del roster en display
+                El banner será retirado del roster y dejará de mostrarse al público.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel type="button">Cancelar</AlertDialogCancel>
-              <Button type="submit" variant="destructive">
-                Confirmar retiro
+              <Button type="submit" variant="outline" className="border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100">
+                Confirmar desactivación
               </Button>
             </AlertDialogFooter>
           </form>
@@ -251,24 +250,27 @@ export function ModifyDisplayBannerButton({ id, isOnDisplay }: { id: number; isO
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">
-          <Trash2 className="mr-2 h-4 w-4" />
-          Eliminar
+        <Button 
+          variant="outline" 
+          className="w-full border-green-200 bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800"
+        >
+          <EyeIcon className="mr-2 h-4 w-4" />
+          Activar banner
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <form action={handleModifyDisplayBanner}>
           <input type="hidden" name="newIsOnDisplay" value="true" />
           <AlertDialogHeader>
-            <AlertDialogTitle>Poner en el roster</AlertDialogTitle>
+            <AlertDialogTitle>Activar banner</AlertDialogTitle>
             <AlertDialogDescription>
-              Este banner sera puesto en el roster
+              El banner será agregado al roster y se mostrará al público.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel type="button">Cancelar</AlertDialogCancel>
-            <Button type="submit" variant="destructive">
-              Confirmar adición
+            <Button type="submit" variant="outline" className="border-green-200 bg-green-50 text-green-700 hover:bg-green-100">
+              Confirmar activación
             </Button>
           </AlertDialogFooter>
         </form>
