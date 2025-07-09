@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/table";
 import TotalHead from "./TotalHead";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
-
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Info } from "lucide-react";
 
 type Purchase = {
   id: number;
@@ -33,50 +33,95 @@ const formatDate = (date: Date): string => {
 
 export default function AdminDataTable({ purchases }: Props) {
   return (
-    <div className="p-2 ">
-      <div className="overflow-auto">
+    <div className="p-2">
+      <div className="overflow-x-auto -mx-2 sm:mx-0">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="whitespace-nowrap">ID</TableHead>
-              <TableHead className="whitespace-nowrap">Mail</TableHead>
+              <TableHead className="whitespace-nowrap px-2 sm:px-4">ID</TableHead>
+              {/* Email header - hidden on small screens */}
+              <TableHead className="whitespace-nowrap px-2 sm:px-4 hidden sm:table-cell">Mail</TableHead>
               <TotalHead />
-              <TableHead className="whitespace-nowrap">Descripción</TableHead>
-              <TableHead className="whitespace-nowrap">Fecha</TableHead>
+              {/* Description header - hidden on small screens */}
+              <TableHead className="whitespace-nowrap px-2 sm:px-4 hidden sm:table-cell">Descripción</TableHead>
+              <TableHead className="whitespace-nowrap px-2 sm:px-4">Fecha</TableHead>
+              {/* Details header - only on small screens */}
+              <TableHead className="whitespace-nowrap px-2 sm:hidden">Detalles</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {purchases.map((purchase) => (
-              <TableRow key={purchase.id}>
-                <TableCell className="whitespace-nowrap">{purchase.id}</TableCell>
-                <TableCell className=" truncate">
+              <TableRow key={purchase.id} className="hover:bg-gray-50/50">
+                <TableCell className="px-2 sm:px-4">{purchase.id}</TableCell>
+                
+                {/* Email - hidden on small screens */}
+                <TableCell className="px-2 sm:px-4 max-w-[120px] sm:max-w-[200px] truncate hidden sm:table-cell">
                   <span title={purchase.email} className="cursor-help">
                     {purchase.email}
                   </span>
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
+                
+                <TableCell className="px-2 sm:px-4 font-medium">
                   ${purchase.total}
                 </TableCell>
-                <TableCell className="max-w-[180px]">
-                    <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline">Ver Descripción</Button>
-                        </DialogTrigger>
-                        <DialogContent className="">
-                          <DialogTitle>Productos comprados</DialogTitle>
-                          {purchase.description.split('\n').map((line, index) => (
-                            <p key={index} className="mb-1">{line}</p>
-                          ))}
-                          <DialogFooter>
-                            <DialogClose asChild>
-                              <Button variant="outline">Cerrar</Button>
-                            </DialogClose>
-                          </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
+                
+                {/* Description button - hidden on small screens */}
+                <TableCell className="px-2 sm:px-4 hidden sm:table-cell">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full sm:w-auto">Ver</Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-[90vw] sm:max-w-lg">
+                      <DialogTitle>Productos comprados</DialogTitle>
+                      <div className="max-h-[60vh] overflow-auto py-2">
+                        {purchase.description.split('\n').map((line, index) => (
+                          <p key={index} className="mb-1">{line}</p>
+                        ))}
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button variant="outline">Cerrar</Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
+                
+                <TableCell className="px-2 sm:px-4 text-muted-foreground">
                   {formatDate(purchase.date)}
+                </TableCell>
+                
+                {/* Details button - only on small screens */}
+                <TableCell className="px-2 sm:hidden">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="icon" className="h-8 w-8 p-0">
+                        Ver 
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-[90vw]">
+                      <DialogTitle>Detalles de compra</DialogTitle>
+                      <div className="space-y-4 py-2">
+                        <div>
+                          <h4 className="font-semibold mb-1">Email:</h4>
+                          <p className="break-all">{purchase.email}</p>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">Productos comprados:</h4>
+                          <div className="max-h-[40vh] overflow-auto border rounded-md p-2 bg-gray-50">
+                            {purchase.description.split('\n').map((line, index) => (
+                              <p key={index} className="mb-1">{line}</p>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button variant="outline">Cerrar</Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </TableCell>
               </TableRow>
             ))}

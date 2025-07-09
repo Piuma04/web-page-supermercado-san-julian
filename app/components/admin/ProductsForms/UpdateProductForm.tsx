@@ -14,6 +14,9 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo, CldUploadButton } from 'next-cloudinary';
 
+import { Loader2 } from 'lucide-react';
+import DescriptionIA from './DescriptionIA';
+
 type Category = {
   id: number;
   name: string;
@@ -36,9 +39,10 @@ export default function UpdateProductForm({ categories, product }: Props) {
   const updateProductWithID = updateProduct.bind(null, product.id);
   const [state, formAction] = useActionState(updateProductWithID, initialState);
   const [imageUrl, setImageUrl] = useState<string>((product.imageUrl != null) ? product.imageUrl : "");
+  const [productName, setProductName] = useState(product.name);
+  const [description, setDescription] = useState(product.description || '');
 
   const handleUploadSuccess = (results: CloudinaryUploadWidgetResults) => {
-    
     const info = results.info as CloudinaryUploadWidgetInfo | undefined;
     if (info && typeof info === 'object' && 'secure_url' in info) {
       const url = info.secure_url as string;
@@ -49,10 +53,10 @@ export default function UpdateProductForm({ categories, product }: Props) {
 
   const handleFormSubmit = async (formData: FormData) => {
     const result = await formAction(formData);
-    setImageUrl("");
     return result;
   };
 
+  
 
   return (
     <form action={handleFormSubmit}>
@@ -62,7 +66,6 @@ export default function UpdateProductForm({ categories, product }: Props) {
           <CardTitle className="text-red-700 text-xl">Modificar producto</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-
           
           {state.message && (
             <div className="mb-4 text-center text-red-600 font-semibold" aria-live="polite">
@@ -76,7 +79,8 @@ export default function UpdateProductForm({ categories, product }: Props) {
             <Input
               id="name"
               name="name"
-              defaultValue={product.name}
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
               required
               aria-describedby="name-error"
             />
@@ -89,15 +93,22 @@ export default function UpdateProductForm({ categories, product }: Props) {
                 ))}
             </div>
           </div>
-          {/* Descripción */}
+          
+          {/* Descripción con AI */}
           <div className="space-y-2">
             <Label htmlFor="description" className="text-red-800">Descripción</Label>
-            <Input
+            <textarea
               id="description"
               name="description"
-              defaultValue={product.description ?? ''}
-              aria-describedby="description-error"
+              placeholder="Breve descripción"
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              rows={3}
+              className="block w-full rounded-md border border-gray-300 p-2 text-sm resize-vertical focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+              style={{ minHeight: '3rem', maxHeight: '12rem', overflowY: 'auto' }}
             />
+            <DescriptionIA setDescription={setDescription} />
+
             <div id="description-error" aria-live="polite" aria-atomic="true">
               {state.errors?.description &&
                 state.errors.description.map((error: string) => (
@@ -107,6 +118,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
                 ))}
             </div>
           </div>
+          
           {/* Precio */}
           <div className="space-y-2">
             <Label htmlFor="price" className="text-red-800">Precio (ARS)</Label>
@@ -116,7 +128,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
               type="number"
               min="0"
               defaultValue={product.price}
-              step = "0.01"
+              step="0.01"
               required
               aria-describedby="price-error"
             />
@@ -130,30 +142,46 @@ export default function UpdateProductForm({ categories, product }: Props) {
             </div>
           </div>
 
-
-
-
-          {/* Imagen */}
-          <div>
+          {/* Imagen mejorada */}
+          <div className="space-y-4">
+            <Label className="text-red-800">Imagen del producto</Label>
+            <div className="flex flex-col gap-4">
               <CldUploadButton
-                uploadPreset="upload_products"
+                signatureEndpoint="/api/cloudinary-signature"
+                uploadPreset="upload_products_secure"
                 onSuccess={handleUploadSuccess}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-semibold"
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-semibold self-start"
               >
-                Subir Imagen
+                {imageUrl ? "Cambiar imagen" : "Subir imagen"}
               </CldUploadButton>
               
               <input type="hidden" name="image" value={imageUrl} />
-              {imageUrl && (
-                <div>
-                  <p>Imagen actual:</p>
-                  <img src={imageUrl} alt="Imagen subida" width="300" />
-                  <p>URL: {imageUrl}</p>
+              
+              {imageUrl ? (
+                <div className="relative border rounded-md p-2">
+                  <img 
+                    src={imageUrl} 
+                    alt="Vista previa del producto" 
+                    className="w-full max-h-64 object-contain" 
+                  />
+                  <Button 
+                    type="button" 
+                    variant="destructive" 
+                    size="sm"
+                    className="absolute top-2 right-2"
+                    onClick={() => setImageUrl("")}
+                  >
+                    Eliminar
+                  </Button>
+                </div>
+              ) : (
+                <div className="border border-dashed border-gray-300 rounded-md p-12 flex flex-col items-center justify-center text-gray-500">
+                  <p>No hay imagen seleccionada</p>
+                  <p className="text-xs mt-2">Recomendado: 800x800px o similar</p>
                 </div>
               )}
             </div>
-
-
+          </div>
 
           {/* Categoría */}
           <div className="space-y-2">
@@ -184,6 +212,7 @@ export default function UpdateProductForm({ categories, product }: Props) {
                 ))}
             </div>
           </div>
+          
           {/* Acciones */}
           <div className="flex justify-end gap-4 pt-4">
             <Link href="/admin/crudProducts">

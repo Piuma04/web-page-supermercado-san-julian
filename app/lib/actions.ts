@@ -276,6 +276,10 @@ const categoryFormSchema = z.object({
   name: z.string().min(1, "El nombre no debe ser vacío"),
 });
 
+
+
+
+
 export async function addCategory(prevState: categoryState, formData: FormData) {
   const validatedFields = categoryFormSchema.safeParse({
     name: formData.get('name'),
@@ -549,4 +553,94 @@ export async function unsubscribeUser(endpoint: string) {
     console.error('Error al cancelar suscripción:', error);
     return { success: false, error: 'No se pudo cancelar la suscripción' };
   }
+}
+
+
+
+/*
+
+BANNER CRUD ACTIONS
+
+*/
+
+const bannerFormSchema = z.object({
+  name: z.string().min(1,"El nombre no debe ser vacío"),
+  imageUrl: z.string().min(1,"Debe haber una imagen"),
+  isOnDisplay: z.boolean()
+});
+
+
+export type bannerState = {
+  
+  errors?: {
+    name?: string[];
+    imageUrl?: string[];
+    isOnDisplay?: string[];
+    
+  };
+
+  message?: string | null;
+};
+
+
+export default async function createBanner(prevState: bannerState, formData: FormData) {
+  const validatedFields = bannerFormSchema.safeParse({
+    name: formData.get('name'),
+    imageUrl: formData.get('imageUrl'),
+    isOnDisplay: formData.get('isOnDisplay') === 'true',
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: "Error al crear el banner",
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { name, imageUrl, isOnDisplay } = validatedFields.data;
+
+  try {
+    await prisma.banner.create({
+      data: {
+        name,
+        imageUrl,
+        isOnDisplay,
+      },
+    });
+
+    revalidatePath('/admin', 'layout');
+    revalidatePath('/(routes)');
+  } catch (error: any) {
+    console.error(error);
+    return {
+      message: "Error al crear el banner: " + (error?.message || "Error desconocido"),
+    };
+  }
+
+  redirect('/admin/crudBanners');
+}
+
+
+
+export async function deleteBanner(id: number) {
+  
+    await prisma.banner.delete({
+      where: { id },
+    });
+
+    revalidatePath('/admin', 'layout');
+    revalidatePath('/(routes)');
+    redirect('/admin/crudBanners');
+  }
+
+  
+export async function modifyDisplayBanner(bannerId: number, newIsOnDisplay: boolean) {
+  await prisma.banner.update({
+    where: { id: bannerId },
+    data: { isOnDisplay: newIsOnDisplay },
+  });
+
+  revalidatePath('/admin', 'layout');
+  revalidatePath('/(routes)');
+  redirect('/admin/crudBanners');
 }

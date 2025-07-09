@@ -50,9 +50,12 @@ export default function TotalHead() {
     );
 
   return (
-    <TableHead onClick={handleClick} className="whitespace-nowrap cursor-pointer">
-      <div className="flex items-center gap-2">
-        Total {icon}
+    <TableHead 
+      onClick={handleClick} 
+      className="whitespace-nowrap cursor-pointer px-2 sm:px-4"
+    >
+      <div className="flex items-center gap-1 sm:gap-2">
+        <span>Total</span> {icon}
       </div>
     </TableHead>
   );
