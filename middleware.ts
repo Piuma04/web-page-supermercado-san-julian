@@ -7,11 +7,19 @@ export default async function middleware(req: NextRequest) {
 
   const token = await getToken({ req , secret: process.env.AUTH_SECRET});
 
+  console.log("TOKEN IN PROD:", token)
   const url = req.nextUrl.clone();
   const pathname = req.nextUrl.pathname;
 
   const privateRoutes = ['/admin', '/cart', '/profile',];
-  if (!privateRoutes.includes(pathname)) {
+
+
+  const isPrivate = privateRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+
+  if (!isPrivate) {
     return NextResponse.next();
   }
 
