@@ -11,20 +11,23 @@ import { auth } from "@/auth";
 import { z } from 'zod';
 import webpush from 'web-push';
 
-export async function checkout(){
+export async function checkout(
+  prevState: string | undefined,
+  formData: FormData,
+){
   let preferenceUrl: string | undefined = undefined;
-  const session = await auth();
-  
-  if(!session?.user?.email) {
-    throw new Error("User not authenticated");
-  }
-
   try{
+    const session = await auth();
+
+    if(!session?.user?.email) {
+    return "Usuario no autenticado";
+    }
+
     const items: Item[] = await prisma.cartItem.findMany({
       where: {
         cart: {
           user: {
-            email: session?.user?.email!
+            email: session?.user?.email
           }
         }
       },
@@ -39,12 +42,12 @@ export async function checkout(){
     })));
 
     preferenceUrl = await createPreference(items);
+    
+    if (!preferenceUrl) {
+    return "Error al generar la url del pago";
+    }
   } catch (error) {
-    console.error("Error creating payment preference:", error);
-    throw new Error("Failed to create payment preference");
-  }
-  if (!preferenceUrl) {
-    throw new Error("Failed to create payment url");
+    return "Error al crear el pago";
   }
   redirect(preferenceUrl);
 }
@@ -61,9 +64,9 @@ export async function authenticate(
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.';
+          return 'Credenciales no validas.';
         default:
-          return 'Something went wrong.';
+          return 'Ocurrio un error desconocido.';
       }
     }
     throw error;
@@ -429,27 +432,58 @@ export async function addToCart(productId:number, quantity: number) {
 }
 
 
-export async function addItemToCart(cartItemId:number) {
-    await prisma.cartItem.update({
-        where: { id: cartItemId },
-        data: { quantity: { increment: 1 } },
-    });
-    revalidatePath("/(routes)/cart"); 
-}
 
-export async function substractItemFromCart(cartItemId:number) {
-    await prisma.cartItem.update({
-        where: { id: cartItemId },
-        data: { quantity: { decrement: 1 } },
-    });
-    revalidatePath("/(routes)/cart");
-}
 
-export async function deleteItemFromCart(cartItemId:number) {
-    await prisma.cartItem.delete({
-        where: { id: cartItemId },
+export async function modifyCartItem(
+  cartItemId: number,
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    const action = formData.get('action');
+
+    // Verificar que el item existe
+    const existingItem = await prisma.cartItem.findUnique({
+      where: { id: cartItemId },
     });
+
+    if (!existingItem)
+      return "Articulo no encontrado"
+
+    switch (action) {
+      case 'delete':
+        await prisma.cartItem.delete({
+          where: { id: cartItemId },
+        });
+        break;
+      case 'increment':
+        await prisma.cartItem.update({
+          where: { id: cartItemId },
+          data: { quantity: { increment: 1 } },
+        });
+        break;
+      case 'decrement':
+        // Verificar que no quede en cantidad 0 o menos
+        if (existingItem.quantity <= 1) {
+          await prisma.cartItem.delete({
+            where: { id: cartItemId },
+          });
+        } else {
+          await prisma.cartItem.update({
+            where: { id: cartItemId },
+            data: { quantity: { decrement: 1 } },
+          });
+        }
+        break;
+      default:
+        return "Acción no válida"
+    }
+
     revalidatePath("/(routes)/cart");
+  } catch (error: any) {
+    console.error('Error updating cart item:', error);
+    return "Error al actualizar el carrito"
+  }
 }
 
 
