@@ -1,6 +1,11 @@
+import CreateBannerForm from "@/app/components/admin/Banner/CreateBannerForm";
 
 
 
-export default async function  createBanner(){
+export default  function  createBanner(){
 
+
+    return(
+        <CreateBannerForm/>
+    );
 }
