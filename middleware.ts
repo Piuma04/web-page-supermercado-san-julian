@@ -7,6 +7,7 @@ export default async function middleware(req: NextRequest) {
 
   const token = await getToken({ req , secret: process.env.AUTH_SECRET});
 
+  console.log("TOKEN IN PROD:", token)
   const url = req.nextUrl.clone();
   const pathname = req.nextUrl.pathname;
 
