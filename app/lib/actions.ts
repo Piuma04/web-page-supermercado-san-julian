@@ -27,7 +27,7 @@ export async function checkout(
       where: {
         cart: {
           user: {
-            email: session?.user?.email!
+            email: session?.user?.email
           }
         }
       },
