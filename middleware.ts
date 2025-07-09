@@ -1,13 +1,13 @@
 
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from './auth';
 
 
 export default async function middleware(req: NextRequest) {
 
-  const token = await getToken({ req , secret: process.env.AUTH_SECRET});
+  const session = await auth();
 
-  console.log("TOKEN IN PROD:", token)
   const url = req.nextUrl.clone();
   const pathname = req.nextUrl.pathname;
 
@@ -24,13 +24,13 @@ export default async function middleware(req: NextRequest) {
   }
 
 
-  if (!token) {
+  if (!session) {
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
 
-  if (pathname.startsWith('/admin') && token.role !== 'ADMIN') {
+  if (pathname.startsWith('/admin') && session?.user?.role !== 'ADMIN') {
     url.pathname = '/';
     return NextResponse.redirect(url);
   }
