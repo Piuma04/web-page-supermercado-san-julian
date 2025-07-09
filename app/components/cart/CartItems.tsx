@@ -26,23 +26,9 @@ export default async function CartItems() {
             </h2>
             
             {cartItems && cartItems.items && cartItems.items.length > 0 ? (
-                <div>
-                    {/* Cart Items */}
-                    <div className="space-y-2 mb-8">
-                        {cartItems.items.map((item) => (
-                      
-                                <CartItem 
-                                    key={item.id}
-                                    id={item.id}
-                                    product={item.product}
-                                    quantity={item.quantity}
-                                />
-                          
-                        ))}
-                    </div>
-                    
-                    {/* Order Summary */}
-                    <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+                <div className="flex flex-col md:flex-row gap-5 items-start">
+                    {/* Order Summary - Arriba en móvil, derecha en desktop */}
+                    <div className="bg-white p-4 rounded-lg shadow-md mb-6 w-full md:w-1/3 order-first md:order-last">
                         <h3 className="text-lg font-semibold mb-2 border-b pb-2">Resumen de la compra</h3>
                         <div className="flex justify-between py-2">
                             <span className="text-gray-600">Subtotal:</span>
@@ -54,11 +40,22 @@ export default async function CartItems() {
                         </div>
                         <div className="flex justify-between py-3 text-lg font-bold">
                             <span>Total:</span>
-                            <span className="text-red-600">${totalAmount.toFixed(2)}</span> {/* No delivery fee nor taxes for now */}
+                            <span className="text-red-600">${totalAmount.toFixed(2)}</span>
                         </div>
+                        <CartForm/>
                     </div>
                     
-                    <CartForm/>
+                    {/* Cart Items - Abajo en móvil, izquierda en desktop */}
+                    <div className="space-y-2 mb-8 w-full md:w-2/3 order-last md:order-first">
+                        {cartItems.items.map((item) => (
+                            <CartItem 
+                                key={item.id}
+                                id={item.id}
+                                product={item.product}
+                                quantity={item.quantity}
+                            />
+                        ))}
+                    </div>
                 </div>
             ) : (
                 <div className="bg-white rounded-lg p-8 text-center shadow-md">
