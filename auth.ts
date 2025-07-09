@@ -4,7 +4,6 @@ import Google from 'next-auth/providers/google';
 import prisma from '@/app/lib/prisma';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
-import { authConfig } from './auth.config';
 
 async function getUser(email: string) {
   try {
@@ -16,7 +15,14 @@ async function getUser(email: string) {
 }
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
-  ...authConfig,
+  secret: process.env.AUTH_SECRET,
+  pages: {
+    signIn: '/login',
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, 
+  },
   providers: [
     Credentials({
       async authorize(credentials) {
@@ -41,7 +47,19 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     }),
   ],
 
+
   callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+      const isOnUserProfile = nextUrl.pathname.startsWith('/profile');
+      const isOnCart = nextUrl.pathname.startsWith('/cart');
+      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
+      if (isOnUserProfile || isOnCart || isOnAdmin) {
+        return isLoggedIn;
+      }
+      return true;
+    },
+    
     async signIn({ user }) {
       if (!user?.email) return false;
 
@@ -83,6 +101,20 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
       }
       return session;
     },
-  }
+  },
+  cookies: {
+    sessionToken: {
+      name:
+        process.env.NODE_ENV === 'production'
+          ? '__Secure-next-auth.session-token'
+          : 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
 
 });
