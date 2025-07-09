@@ -23,33 +23,25 @@ export default function FeaturedPromosCarousel({featuredPromos} : {featuredPromo
                     stopOnInteraction: true, // Detiene el autoplay al interactuar con el carrusel
                 }
             )]}
-            className="w-full my-2"
+            className="w-full my-2  
+                            "
         >
-            <CarouselContent>
+            <CarouselContent className="">
                 {featuredPromos.map((fp) => (
                     <CarouselItem
                         key={fp.id}
                         className="
-                            relative 
-                            w-full 
-                            h-40 
-                            sm:h-56 
-                            md:h-72 
-                            lg:h-96 
-                            overflow-hidden 
-                            shadow-lg
-                            transition-all
-                            duration-300
-                            flex
-                            items-center
-                            justify-center
-                        "
+                flex items-center justify-center
+                h-40 
+                sm:h-56 
+                md:h-72 
+                lg:h-96 
+            "
                     >
                         <Image
                             src={fp.imageUrl}
                             alt="Promoción destacada"
                             className="object-contain select-none"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
                             width={800}
                             height={400}
                             priority
