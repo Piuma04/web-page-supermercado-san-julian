@@ -93,3 +93,10 @@ auth      String
 user      User     @relation(fields: [userId], references: [id])
 createdAt DateTime @default(now())
 }
+
+
+model Banner {
+  id Int @id @default(autoincrement())
+  imageUrl String
+  isOnDisplay Boolean
+}

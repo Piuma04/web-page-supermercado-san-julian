@@ -60,5 +60,3 @@ export async function POST(request:NextRequest) {
   }
 }
 
-// Puedes añadir otros métodos HTTP si los necesitas (GET, PUT, DELETE, etc.)
-// export async function GET(request) { ... }
