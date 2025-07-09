@@ -1,17 +1,28 @@
-import { fetchDisplayedBanners } from "@/app/lib/data";
+'use client';
+
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay"
 
-export default async function FeaturedPromosCarousel() {
+interface featuredPromos {
+    id: number;
+    imageUrl: string;
+}
+
+export default function FeaturedPromosCarousel({featuredPromos} : {featuredPromos: featuredPromos[]} = {featuredPromos: []}){
     
-    const featuredPromos = await fetchDisplayedBanners();
-
     return (
         <Carousel
             opts={{
                 align: "start",
                 loop: true,
             }}
+            plugins={[Autoplay(
+                {
+                    delay: 5000, // Tiempo en milisegundos entre transiciones
+                    stopOnInteraction: true, // Detiene el autoplay al interactuar con el carrusel
+                }
+            )]}
             className="w-full my-2"
         >
             <CarouselContent>

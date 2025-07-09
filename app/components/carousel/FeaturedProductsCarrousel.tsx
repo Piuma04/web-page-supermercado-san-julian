@@ -1,18 +1,32 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { fetchFilteredProducts} from "../../lib/data";
-import ProductCard from "../ProductCard";
+'use client';
 
-export default async function FeaturedProductsCarousel() {
-    const featuredProducts = await fetchFilteredProducts("",1);
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import ProductCard from "../ProductCard";
+import Autoplay from "embla-carousel-autoplay";
+
+interface featuredProducts {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string | null;
+}
+
+export default function FeaturedProductsCarousel({featuredProducts} : {featuredProducts: featuredProducts[]}) {
 
     return (
         <section className="w-full mt-10">
             <h2 className="text-xl font-bold mb-5 text-center">Productos Destacados</h2>
             <Carousel
                 opts={{
-                    align: "start",
-                    loop: true,
-                }}
+                align: "start",
+                loop: true,
+            }}
+            plugins={[Autoplay(
+                {
+                    delay: 5000, // Tiempo en milisegundos entre transiciones
+                    stopOnInteraction: true, // Detiene el autoplay al interactuar con el carrusel
+                }
+            )]}
                
             >
                 <CarouselContent>
