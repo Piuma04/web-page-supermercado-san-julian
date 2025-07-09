@@ -1,5 +1,6 @@
 import { CreateCategory } from "@/app/components/admin/AdminButtons";
 import AdminCategoryTable from "@/app/components/admin/AdminCategoryTable";
+import Search from "@/app/components/admin/Search";
 import Pagination from "@/app/components/Pagination";
 import { fetchAdminPageCategoriesPages } from "@/app/lib/data";
 import { Suspense } from "react";
@@ -24,7 +25,9 @@ export default async function PageCrudCategories(
         <div className="w-full">
             <div className="flex w-full items-center justify-between">
                 <h1 className="text-2xl">Categorias</h1>
+                <Search placeholder="Buscar banner..."/>
             </div>
+            
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <CreateCategory />
             </div>

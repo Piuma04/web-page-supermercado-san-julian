@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from "clsx";
-import { HomeIcon, ListIcon, PackageSearchIcon, SquareKanbanIcon } from "lucide-react";
+import { HomeIcon, ImagePlusIcon, ListIcon, PackageSearchIcon, SquareKanbanIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,6 +21,11 @@ const links = [
 		name: "Visualización de Datos",
 		href: "/admin/datos",
 		icon: SquareKanbanIcon,
+	},
+	{
+		name: "CRUD Banners",
+		href: "/admin/crudBanners",
+		icon: ImagePlusIcon,
 	},
 ];
 

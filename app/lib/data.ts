@@ -4,6 +4,7 @@ import prisma from "@/app/lib/prisma";
 import { auth } from "@/auth";
 import z from "zod";
 
+const BANNERS_PER_PAGE = 9;
 const ITEMS_PER_PAGE = 10;
 const PURCHASES_PER_PAGE = 3;
 const CATEGORIES_PER_PAGE = 12;
@@ -355,8 +356,43 @@ export async function fetchFilteredPurchases(input: unknown) {
     });
 }
 
-export async function fetchAllBanners() {
-    return await prisma.banner.findMany();
+
+
+export async function fetchBannersPages(){
+
+    const totalCount = await prisma.banner.count({});
+
+    return Math.ceil(totalCount / BANNERS_PER_PAGE);
+
+}
+
+export async function fetchFilteredBanners(query:string, page:number) {
+    return await prisma.banner.findMany({
+        where:{
+            name: {
+                contains: query,
+                mode: 'insensitive',
+
+            },
+        },
+    }
+    );
+}
+
+
+export async function fetchDisplayedBanners(){
+
+
+    return await prisma.banner.findMany({
+        where:{
+            
+            isOnDisplay: true,
+            
+        },
+    }
+    );
+
+
 }
 
 

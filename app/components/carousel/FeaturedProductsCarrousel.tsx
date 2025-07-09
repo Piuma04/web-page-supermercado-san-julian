@@ -6,7 +6,7 @@ export default async function FeaturedProductsCarousel() {
     const featuredProducts = await fetchFilteredProducts("",1);
 
     return (
-        <section className="w-full">
+        <section className="w-full mt-10">
             <h2 className="text-xl font-bold mb-5 text-center">Productos Destacados</h2>
             <Carousel
                 opts={{

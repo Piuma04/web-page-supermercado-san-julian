@@ -70,7 +70,8 @@ export default function CreateBannerForm() {
           {/* Imagen */}
           <div>
             <CldUploadButton
-              uploadPreset="upload_products"
+              signatureEndpoint="/api/cloudinary-signature"
+              uploadPreset="upload_banners_secure"
               onSuccess={handleUploadSuccess}
               className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-semibold"
             >
