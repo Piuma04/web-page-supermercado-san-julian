@@ -1,13 +1,9 @@
-import FeaturedPromosCarousel from "../components/carousel/FeaturedPromosCarousel";
-import FeaturedProductsCarousel from "../components/carousel/FeaturedProductsCarrousel";
+import HomeCarousels from "@/app/components/carousel/HomeCarousels";
 
 export default function Page() {
   return (
     <main className="p-2 flex justify-center">
-      <div className="w-full">
-        <FeaturedPromosCarousel />
-        <FeaturedProductsCarousel />
-      </div>
+      <HomeCarousels />
     </main>
   );
 }
