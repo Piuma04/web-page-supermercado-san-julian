@@ -53,7 +53,7 @@ export default function DateOptions(){
       };
 
     return(
-        <div className="flex flex-col mt-3 gap-4">
+        <div className="flex flex-col md:flex-row mt-3 gap-4">
       <Label htmlFor="from-date" className="px-1">
         Desde
       </Label>

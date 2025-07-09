@@ -56,7 +56,7 @@ export default async function PageDatos(props: {
 
     return (
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-            <div className="mb-4">
+            <div className="mb-4 flex flex-col">
                 <h1 className="text-xl sm:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
                     Panel de Administración
                 </h1>
@@ -67,9 +67,10 @@ export default async function PageDatos(props: {
                             Ganancias totales: <span className="font-bold">${totalRevenue}</span>
                         </p>
                     </div>
+                   
                 </div>
+                 <DateOptions/>
                 
-                <DateOptions/>
             </div>
             
             <Card className="border border-gray-200 shadow-md rounded-lg overflow-hidden">
