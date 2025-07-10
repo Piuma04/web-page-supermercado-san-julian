@@ -1,4 +1,3 @@
-'use client';
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import ProductCard from "../ProductCard";
@@ -21,12 +20,8 @@ export default function FeaturedProductsCarousel({featuredProducts} : {featuredP
                 align: "start",
                 loop: true,
             }}
-            plugins={[Autoplay(
-                {
-                    delay: 5000, // Tiempo en milisegundos entre transiciones
-                    stopOnInteraction: true, // Detiene el autoplay al interactuar con el carrusel
-                }
-            )]}
+            
+            
                
             >
                 <CarouselContent>

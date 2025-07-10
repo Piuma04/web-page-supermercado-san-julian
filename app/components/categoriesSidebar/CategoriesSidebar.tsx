@@ -33,7 +33,7 @@ export async function CategoriesSidebar() {
           <ShoppingBag className="h-5 w-5" />
           <div>
             <h2 className="text-base font-semibold">Categorías</h2>
-            <p className="text-xs text-red-100">Productos por categoría</p>
+            
           </div>
         </div>
       </SidebarHeader>

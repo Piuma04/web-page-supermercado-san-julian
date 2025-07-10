@@ -16,15 +16,15 @@ export default function CategoriesSidebarTrigger({
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
-      className={`hover:bg-transparent ${className}`}
+      className={`hover:bg-transparent cursor-pointer ${className} `}
       onClick={(event) => {
-        onClick?.(event)
-        toggleSidebar()
+      onClick?.(event)
+      toggleSidebar()
       }}
-      
       {...props}
     >
-      <Menu className="size-4 lg:size-8" aria-label="Menú" size={32} />
+      <Menu className="size-4 lg:size-6" aria-label="Menú" size={32} />
+      <span className="hidden md:block text-lg">Categorías</span>
     </Button>
   )
 }

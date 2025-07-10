@@ -16,7 +16,7 @@ export default function HeaderServer() {
             <CategoriesSidebarTrigger/>
           </div>
           {/* Logo centered on mobile, left on desktop */}
-          <Link href="/" className="flex-1 flex justify-center sm:justify-start">
+          <Link href="/" className="flex-1 flex justify-center md:ml-4 sm:justify-start">
             <Image
               src="/images/sanjulian.png"
               alt="Imagen del supermercado San Julian"
