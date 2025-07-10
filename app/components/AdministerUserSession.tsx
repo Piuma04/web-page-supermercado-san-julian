@@ -6,7 +6,7 @@ export default async function AdministerUserSession() {
     const session = await auth();
 
     if (session?.user?.email) {
-        // Show Profile icon on mobile, text on larger screens
+        
         return (
             <Link className="flex flex-col items-center justify-center pt-3" href="/profile">
             <span className="block sm:hidden">
@@ -20,10 +20,10 @@ export default async function AdministerUserSession() {
         );
     }
 
-    // Show user icon on mobile, text on larger screens
+ 
     return (
         <Link
-            className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
+            className="flex flex-col items-center justify-center pt-3"
             href="/login"
         >
             <span className="block sm:hidden">
