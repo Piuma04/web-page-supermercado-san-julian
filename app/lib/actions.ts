@@ -16,12 +16,12 @@ export async function checkout(
   formData: FormData,
 ){
   let preferenceUrl: string | undefined = undefined;
-  try{
-    const session = await auth();
+  const session = await auth();
 
-    if(!session?.user?.email) {
-    return "Usuario no autenticado";
-    }
+  if(!session?.user?.email) {
+    redirect("/login");
+  }
+  try{
 
     const items: Item[] = await prisma.cartItem.findMany({
       where: {
@@ -379,7 +379,7 @@ export async function addToCart(productId:number, quantity: number) {
     const session = await auth();
 
     if(!session?.user?.email) {
-    throw new Error("User not authenticated");
+    redirect("/login");
     }
 
     const user = await prisma.user.findUnique({

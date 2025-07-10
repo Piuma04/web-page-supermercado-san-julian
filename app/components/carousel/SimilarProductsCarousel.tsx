@@ -29,7 +29,7 @@ export default async function SimilarProductsCarousel({ categoryId }: { category
                     {similarProducts.map((product) => (
                         <CarouselItem
                             key={product.id}
-                            className="pl-4 basis-full xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                            className="pl-4 basis-full xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pb-2"
                         >
                             <div className="h-full">
                                 <ProductCard
