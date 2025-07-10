@@ -8,7 +8,7 @@ export default async function AdministerUserSession() {
     if (session?.user?.email) {
         // Show Profile icon on mobile, text on larger screens
         return (
-            <Link className="flex flex-col items-center justify-center pt-3" href="/profile">
+            <Link className="flex flex-col items-center justify-center pt-3" href="/profile" aria-label="Ir al perfil de usuario">
             <span className="block sm:hidden">
                 <User size={25} />
             </span>
@@ -25,6 +25,7 @@ export default async function AdministerUserSession() {
         <Link
             className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
             href="/login"
+            aria-label="Iniciar sesión"
         >
             <span className="block sm:hidden">
                 <LogIn size={25} />
