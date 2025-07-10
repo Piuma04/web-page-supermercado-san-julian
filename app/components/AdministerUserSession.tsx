@@ -8,7 +8,7 @@ export default async function AdministerUserSession() {
     if (session?.user?.email) {
         
         return (
-            <Link className="flex flex-col items-center justify-center pt-3" href="/profile">
+            <Link className="flex flex-col items-center justify-center pt-3" href="/profile" aria-label="Ir al perfil de usuario">
             <span className="block sm:hidden">
                 <User size={25} />
             </span>
@@ -25,6 +25,7 @@ export default async function AdministerUserSession() {
         <Link
             className="flex flex-col items-center justify-center pt-3"
             href="/login"
+            aria-label="Iniciar sesión"
         >
             <span className="block sm:hidden">
                 <LogIn size={25} />
