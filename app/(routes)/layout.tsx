@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 
-import HeaderServer from "../components/HeaderServer";
+import Header from "../components/Header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import {CategoriesSidebar} from "../components/categoriesSidebar/CategoriesSidebar";
 import { SessionProvider } from "next-auth/react";
@@ -61,7 +60,7 @@ export default function MainLayout({
             </Suspense>
             
             <SidebarInset className="overflow-x-hidden">
-              <HeaderServer />
+              <Header />
 		        <div className="flex-1 pt-4">{children}</div>
               <Footer />
             </SidebarInset>
