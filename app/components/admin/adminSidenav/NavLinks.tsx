@@ -23,7 +23,7 @@ const links = [
 		icon: SquareKanbanIcon,
 	},
 	{
-		name: "CRUD Banners",
+		name: "Banners",
 		href: "/admin/crudBanners",
 		icon: ImagePlusIcon,
 	},
