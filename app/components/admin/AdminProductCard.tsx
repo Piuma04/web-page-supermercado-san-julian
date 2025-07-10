@@ -33,14 +33,14 @@ export default function AdminProductCard({ product}: Props) {
               className="object-cover"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-red-100 text-red-600 text-sm">
+            <div className="w-full h-full flex items-center justify-center bg-red-100 text-black text-sm">
               Imagen no disponible
             </div>
           )}
         </div>
 
         <div className="flex flex-col gap-1">
-          <h3 className="text-lg font-semibold text-red-800">{product.name}</h3>
+          <span className="text-lg font-semibold text-red-800">{product.name}</span>
           <p className="text-md font-bold text-red-700">${product.price}</p>
           <p className="text-xs text-gray-500">Categoría: {product.category.name}</p>
         </div>

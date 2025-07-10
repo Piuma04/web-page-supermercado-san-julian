@@ -53,9 +53,9 @@ export default function AdminBannerCard({ banner }: Props) {
         {/* Card body */}
         <div className="p-4">
           <div className="mb-4">
-            <h3 className="text-lg font-semibold text-red-800 mb-1">
+            <span className="text-lg font-semibold text-red-800 mb-1">
               {banner.name}
-            </h3>
+            </span>
             <div className="h-0.5 w-16 bg-red-200 rounded-full"></div>
           </div>
 

@@ -59,12 +59,20 @@ export function Footer() {
             </div>
 
             <div className="flex space-x-4 mt-4">
-              <Link href="https://www.facebook.com/sanjulian.supermercado/" className="text-gray-400 hover:text-white transition-colors">
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="https://www.instagram.com/sanjuliansupermercado/" className="text-gray-400 hover:text-white transition-colors">
-                <Instagram className="h-5 w-5" />
-              </Link>
+                <Link
+                href="https://www.facebook.com/sanjulian.supermercado/"
+                className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Ir a Facebook de Supermercado San Julián"
+                >
+                <Facebook className="h-5 w-5" aria-hidden="true" />
+                </Link>
+                <Link
+                href="https://www.instagram.com/sanjuliansupermercado/"
+                className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Ir a Instagram de Supermercado San Julián"
+                >
+                <Instagram className="h-5 w-5" aria-hidden="true" />
+                </Link>
             </div>
           </div>
         </div>

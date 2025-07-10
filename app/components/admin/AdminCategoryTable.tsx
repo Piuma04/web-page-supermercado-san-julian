@@ -19,7 +19,7 @@ export default async function AdminCategoryTable({  currentPage }: { currentPage
                     className="border-red-200 shadow hover:shadow-md transition-shadow"
                 >
                     <CardContent className="p-4 flex justify-between items-center">
-                    <h3 className="text-lg font-medium text-red-800">{category.name}</h3>
+                    <span className="text-lg font-medium text-red-800">{category.name}</span>
                     <div className="flex space-x-2">
                         <Button 
                         variant="outline" 

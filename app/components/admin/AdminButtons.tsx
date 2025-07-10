@@ -24,7 +24,7 @@ export function CreateProduct() {
 export function UpdateProduct({ id }: { id: string }) {
   return (
     <Link
-      
+      aria-label="Actualizar producto"
       href={`/admin/crudProducts/${id}/update`}
       className="text-red-700 border-red-300 hover:bg-red-100"
     >
@@ -84,7 +84,7 @@ export function CreateCategory() {
 export function UpdateCategory({ id  }: { id: string}) {
   return (
     <Link
-      
+      aria-label="Actualizar categoria"
       href={`/admin/crudCategories/${id}/update`}
       className="text-red-700 border-red-300 hover:bg-red-100"
     >

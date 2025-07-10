@@ -21,9 +21,9 @@ export default function ProfileSidebar({ user }: { user: User }) {
           <Avatar className="h-24 w-24 mb-4">
             <AvatarFallback><User className="h-8 w-8" /></AvatarFallback>
           </Avatar>
-          <CardTitle className="text-2xl font-bold text-center">{user?.email || "Usuario"}</CardTitle>
+          <CardTitle className="text-lg font-bold text-center">{user?.email || "Usuario"}</CardTitle>
           
-          <div className="mt-2">
+          <div>
             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
               user?.role === userRole.ADMIN 
                 ? "bg-purple-100 text-purple-800" 
@@ -38,7 +38,7 @@ export default function ProfileSidebar({ user }: { user: User }) {
           <div className="space-y-4 mt-4">
             <div className="flex items-center text-sm text-gray-600">
               <Calendar className="mr-2 h-4 w-4 text-gray-400" />
-              <span>Se unió {user?.createdAt.toLocaleDateString()}</span>
+               <span>Se unió {user?.createdAt.toLocaleDateString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" })}</span>
             </div>
             
             <hr className="my-4" />

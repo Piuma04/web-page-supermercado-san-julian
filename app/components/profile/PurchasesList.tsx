@@ -32,11 +32,11 @@ function getStatusLabel(status: string) {
 
 function getStatusClass(status: string) {
   return clsx('text-large', {
-    'text-yellow-600': status === 'pending' || status === 'in_process' || status === 'authorized',
-    'text-green-600': status === 'approved',
-    'text-blue-600': status === 'in_mediation',
-    'text-red-600': status === 'rejected' || status === 'cancelled' || status === 'charged_back',
-    'text-gray-600': status === 'refunded' || !status,
+    'text-yellow-700': status === 'pending' || status === 'in_process' || status === 'authorized',
+    'text-green-700': status === 'approved',
+    'text-blue-700': status === 'in_mediation',
+    'text-red-700': status === 'rejected' || status === 'cancelled' || status === 'charged_back',
+    'text-gray-700': status === 'refunded' || !status,
   });
 }
 

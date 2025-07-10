@@ -71,6 +71,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
             <Button 
               variant="outline" 
               size="sm" 
+              aria-label="Aumentar cantidad"
               className="p-1 h-8 w-8 rounded-md" 
               onClick={() => setQuantity(Math.max(1, quantity - 1))} 
               disabled={quantity === 1 || isPending}
@@ -81,6 +82,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
             <Button 
               variant="outline" 
               size="sm" 
+              aria-label="Decrementar cantidad"
               className="p-1 h-8 w-8 rounded-md" 
               onClick={() => setQuantity(quantity + 1)}
               disabled={isPending}
