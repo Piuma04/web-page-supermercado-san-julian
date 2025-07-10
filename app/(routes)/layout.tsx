@@ -62,7 +62,7 @@ export default function MainLayout({
             
             <SidebarInset className="overflow-x-hidden">
               <HeaderServer />
-              <div className="flex-1 pt-4">{children}</div>
+		        <div className="flex-1 pt-4">{children}</div>
               <Footer />
             </SidebarInset>
           </div>

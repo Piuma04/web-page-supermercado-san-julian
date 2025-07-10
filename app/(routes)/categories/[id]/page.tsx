@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Pagination from "@/app/components/Pagination";
 import ProductGridSkeleton from "@/app/components/ProductGridSkeleton";
 import OrderByBar from "@/app/components/OrderByBar";
+import NotFound from "./not-found";
 
 export default async function Page(props: {
     searchParams?: Promise<{
@@ -26,6 +27,11 @@ export default async function Page(props: {
     fetchCategory(id),
     fetchFilteredProductsPages(query, categoryId)
   ]);
+
+
+  if(!category) {
+    NotFound();
+  }
 
   return (
     <main className="p-6">
