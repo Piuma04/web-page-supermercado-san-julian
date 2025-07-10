@@ -1,4 +1,3 @@
-import ProductContent from "@/app/components/ProductContent";
 import { fetchProduct } from "@/app/lib/data";
 import SimilarProductsCarousel from "@/app/components/carousel/SimilarProductsCarousel";
 import SimilarProductsCarouselSkeleton from "@/app/components/carousel/SimilarProductsCarouselSkeleton";

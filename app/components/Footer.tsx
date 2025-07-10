@@ -28,34 +28,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/productos" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/categories" className="text-gray-400 hover:text-white transition-colors">
+                  Categorias
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="text-gray-400 hover:text-white transition-colors">
                   Productos
                 </Link>
               </li>
               <li>
                 <Link href="/profile" className="text-gray-400 hover:text-white transition-colors">
                   Mi Cuenta
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-4">Categorías</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/categoria/frutas-verduras" className="text-gray-400 hover:text-white transition-colors">
-                  Frutas y Verduras
-                </Link>
-              </li>
-              <li>
-                <Link href="/categoria/carnes" className="text-gray-400 hover:text-white transition-colors">
-                  Carnes
-                </Link>
-              </li>
-              <li>
-                <Link href="/categoria/lacteos" className="text-gray-400 hover:text-white transition-colors">
-                  Lácteos
                 </Link>
               </li>
             </ul>
