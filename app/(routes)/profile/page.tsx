@@ -89,7 +89,9 @@ export default async function Profile(
                         <form
                           action={async () => {
                           'use server';
-                          await signOut({ redirectTo: '/' });
+                          await signOut({ redirectTo: '/' }
+                          
+                          );
                           }}
                           className="w-full"
                         >

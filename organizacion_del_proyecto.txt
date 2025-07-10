@@ -28,7 +28,7 @@
     prisma.ts               ← Conexión a la base de datos (Prisma o `pg`)
     mercadoPago.ts      ← SDK y helpers de integración con Mercado Pago
     utils.ts            ← Funciones generales
-    constants.ts        ← Constantes globales
+    constants.ts        ← Constantes globales 
   /styles
     globals.css
     variables.css
