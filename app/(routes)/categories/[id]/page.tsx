@@ -1,9 +1,9 @@
-import ProductGrid from "@/app/components/ProductGrid";
+import ProductGrid from "@/app/components/products/ProductGrid";
 import { fetchFilteredProductsPages, fetchCategory } from "@/app/lib/data";
 import { Suspense } from "react";
 import Pagination from "@/app/components/Pagination";
-import ProductGridSkeleton from "@/app/components/ProductGridSkeleton";
-import OrderByBar from "@/app/components/OrderByBar";
+import ProductGridSkeleton from "@/app/components/products/ProductGridSkeleton";
+import OrderByBar from "@/app/components/products/OrderByBar";
 import NotFound from "./not-found";
 
 export default async function Page(props: {

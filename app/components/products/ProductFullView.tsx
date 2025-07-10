@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Loader2, Minus, Plus, ShoppingCart, CheckCircle } from "lucide-react";
 import { useState } from "react";
-import { addToCart } from "../lib/actions";
+import { addToCart } from "../../lib/actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 

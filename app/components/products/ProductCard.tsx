@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { addToCart } from "../lib/actions";
+import { addToCart } from "../../lib/actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";

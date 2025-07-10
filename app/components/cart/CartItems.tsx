@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { fetchCartByUserID } from "../../lib/data";
+import { fetchCart } from "@/app/lib/data";
 import CartItem from "./CartItem";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart} from "lucide-react";
@@ -7,10 +7,8 @@ import Link from "next/link";
 import CartForm from "./CartForm";
 
 export default async function CartItems() {
-
-    const session = await auth();
     
-    const cartItems = await fetchCartByUserID(session!.user!.email!);
+    const cartItems = await fetchCart();
     
     if(!cartItems) throw new Error("No se encontro carrito asociado al usuario")
 
