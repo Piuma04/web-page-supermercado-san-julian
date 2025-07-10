@@ -153,7 +153,10 @@ export async function fetchCart() {
             items: {
                 include: {
                     product: true
-                }
+                },
+                orderBy: {
+                    id: "desc" 
+                },
             }
         }
     });
