@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import { fetchFilteredProducts } from "../lib/data";
+import { fetchFilteredProducts } from "../../lib/data";
 
 
 export default async function ProductGrid({

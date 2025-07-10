@@ -133,10 +133,16 @@ export async function fetchProduct(id: String) {
 
 
 
-export async function fetchCartByUserID(email: string) {
+export async function fetchCart() {
+    const session = await auth();
+
+    if (!session?.user?.email) {
+        throw new Error("User not authenticated");
+    }
+    
     const user = await prisma.user.findUnique({
         where: {
-            email
+            email: session.user.email
         }
     });
     const cart = await prisma.cart.findUnique({

@@ -1,6 +1,6 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
-import ProductCard from "../ProductCard";
+import ProductCard from "../products/ProductCard";
 import { fetchFilteredProducts } from "@/app/lib/data";
 
 export default async function SimilarProductsCarousel({ categoryId }: { categoryId: number }) {

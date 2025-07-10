@@ -1,9 +1,10 @@
 import Pagination from "@/app/components/Pagination";
-import ProductGrid from "@/app/components/ProductGrid";
-import ProductGridSkeleton from "@/app/components/ProductGridSkeleton";
+import ProductGrid from "@/app/components/products/ProductGrid";
+import ProductGridSkeleton from "@/app/components/products/ProductGridSkeleton";
 import { Suspense } from "react";
 import { fetchFilteredProductsPages } from "@/app/lib/data";
-import OrderByBar from "@/app/components/OrderByBar";
+import OrderByBar from "@/app/components/products/OrderByBar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function Page(
   props: {
@@ -21,7 +22,6 @@ export default async function Page(
   const totalPages = await fetchFilteredProductsPages(query);
 
   return (
-    <Suspense fallback={<div>Loading products page...</div>}>
       <main className="p-6">
         <h1 className="text-2xl font-bold mb-4">Productos</h1>
         {totalPages >= 1 && (
@@ -34,6 +34,5 @@ export default async function Page(
           <Pagination totalPages={totalPages} />
         </div>
       </main>
-    </Suspense>
   );
 }

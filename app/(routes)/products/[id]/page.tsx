@@ -1,7 +1,7 @@
 import { fetchProduct } from "@/app/lib/data";
 import SimilarProductsCarousel from "@/app/components/carousel/SimilarProductsCarousel";
 import SimilarProductsCarouselSkeleton from "@/app/components/carousel/SimilarProductsCarouselSkeleton";
-import ProductFullView from "@/app/components/ProductFullView";
+import ProductFullView from "@/app/components/products/ProductFullView";
 import Link from "next/link";
 import { Suspense } from "react";
 
