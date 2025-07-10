@@ -38,15 +38,17 @@ export default function FeaturedPromosCarousel({featuredPromos} : {featuredPromo
                 lg:h-96 
             "
                     >
+                        <div className="relative w-full h-full">
                         <Image
                             src={fp.imageUrl}
                             alt="Promoción destacada"
-                            className="object-contain select-none"
-                            width={800}
-                            height={400}
+                            className="w-auto h-auto object-contain select-none"
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                             priority
                             draggable={false}
                         />
+                        </div>
                     </CarouselItem>
                 ))}
             </CarouselContent>

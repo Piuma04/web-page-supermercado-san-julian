@@ -13,10 +13,10 @@ export function Footer() {
               <Image
                 src="/images/favicon.ico"
                 alt="Logo"
-                width={150}
-                height={150}
-              >
-                </Image>
+                width={256}
+                height={255}
+                className="h-auto w-auto"
+              />
           </div>
 
           <div>

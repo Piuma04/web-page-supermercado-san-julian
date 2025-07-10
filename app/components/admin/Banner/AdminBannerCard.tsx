@@ -26,6 +26,7 @@ export default function AdminBannerCard({ banner }: Props) {
               src={banner.imageUrl}
               alt={banner.name}
               fill
+              sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw'
               className="object-cover rounded-t-lg"
             />
           ) : (

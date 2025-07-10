@@ -38,21 +38,25 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
     }
   };
 
-  const imageUrlParsed = (imageUrl === "" || imageUrl === null) ? "https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=2048x2048&w=is&k=20&c=pOl6SlMTFYgl2568V8ALEd7Gz7nE07ECPZOu2e7VHr4=" : imageUrl;
+  const imageUrlParsed = (imageUrl === "" || imageUrl === null) ? "/images/stockImage.png" : imageUrl;
   return (
     <div className=" bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="space-y-3">
         {/* Product Image */}
         <AspectRatio ratio={1}>
           <Link href={`/products/${id}`} >
+          <div className="relative size-full">
               <Image
-                src={imageUrlParsed}
+                src = {imageUrlParsed}
                 alt={name}
                 fill
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                 className="h-full w-full rounded-lg object-contain"
               />
-              {/* Subtle overlay on hover */}
-              <div className="absolute inset-0 bg-black/0 hover:bg-black/5 transition-colors duration-300 rounded-lg"></div>
+          </div>
+          {/* Subtle overlay on hover */}
+          <div className="absolute inset-0 bg-black/0 hover:bg-black/5 transition-colors duration-300 rounded-lg"></div>
           </Link>
         </AspectRatio>
 

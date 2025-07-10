@@ -29,6 +29,7 @@ export default function AdminProductCard({ product}: Props) {
               src={product.imageUrl}
               alt={product.name}
               fill
+              sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw'
               className="object-cover"
             />
           ) : (

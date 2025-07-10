@@ -17,14 +17,16 @@ export default function HeaderServer() {
           </div>
           {/* Logo centered on mobile, left on desktop */}
           <Link href="/" className="flex-1 flex justify-center md:ml-4 sm:justify-start">
+            <div className="size-5/6 p-4">
             <Image
               src="/images/sanjulian.png"
               alt="Imagen del supermercado San Julian"
-              width={140}
-              height={140}
-              className="my-2"
+              width={200}
+              height={200}
+              className="w-auto h-auto object-contain"
               priority
             />
+            </div>
           </Link>
           {/* Dummy searchbar on mobile */}
           <div className="flex-1 flex justify-end sm:hidden">
