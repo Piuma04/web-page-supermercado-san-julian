@@ -10,6 +10,7 @@ import TotalHead from "./TotalHead";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
+import clsx from "clsx";
 
 type Purchase = {
   id: number;
@@ -17,6 +18,7 @@ type Purchase = {
   total: number;
   description: string;
   date: Date;
+  status?:string;
 };
 
 type Props = {
@@ -48,6 +50,7 @@ export default function AdminDataTable({ purchases }: Props) {
               
               <TableHead className="whitespace-nowrap px-2 sm:px-4 hidden sm:table-cell">Descripción</TableHead>
               <TableHead className="whitespace-nowrap px-2 sm:px-4">Fecha</TableHead>
+              <TableHead className="whitespace-nowrap px-2 sm:px-4 hidden sm:table-cell">Estado</TableHead>
               
               <TableHead className="whitespace-nowrap px-2 sm:hidden">Detalles</TableHead>
             </TableRow>
@@ -93,7 +96,9 @@ export default function AdminDataTable({ purchases }: Props) {
                 <TableCell className="px-2 sm:px-4 text-muted-foreground">
                   {formatDate(purchase.date)}
                 </TableCell>
-                
+                <TableCell className={clsx("px-2 sm:px-4 hidden sm:table-cell", getStatusClass(purchase.status))}>
+                  {getStatusLabel(purchase.status) || "No se encontro estado"}
+                </TableCell>
                 
                 <TableCell className="px-2 sm:hidden">
                   <Dialog>
@@ -108,6 +113,10 @@ export default function AdminDataTable({ purchases }: Props) {
                         <div>
                           <h4 className="font-semibold mb-1">Email:</h4>
                           <p className="break-all">{purchase.email}</p>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">Estado:</h4>
+                          <p className={getStatusClass(purchase.status)}>{getStatusLabel(purchase.status) || "Pendiente"}</p>
                         </div>
                         <div>
                           <h4 className="font-semibold mb-1">Productos comprados:</h4>
@@ -133,4 +142,41 @@ export default function AdminDataTable({ purchases }: Props) {
       </div>
     </div>
   );
+}
+
+
+
+function getStatusLabel(status?: string) {
+  switch (status) {
+    case 'pending':
+      return 'Pendiente';
+    case 'approved':
+      return 'Completado';
+    case 'authorized':
+      return 'Autorizado';
+    case 'in_process':
+      return 'En revisión';
+    case 'in_mediation':
+      return 'En disputa';
+    case 'rejected':
+      return 'Rechazado';
+    case 'cancelled':
+      return 'Cancelado';
+    case 'refunded':
+      return 'Reembolsado';
+    case 'charged_back':
+      return 'Contracargo';
+    default:
+      return status;
+  }
+}
+
+function getStatusClass(status?: string) {
+  return clsx('text-large', {
+    'text-yellow-700': status === 'pending' || status === 'in_process' || status === 'authorized',
+    'text-green-700': status === 'approved',
+    'text-blue-700': status === 'in_mediation',
+    'text-red-700': status === 'rejected' || status === 'cancelled' || status === 'charged_back',
+    'text-gray-700': status === 'refunded' || !status,
+  });
 }

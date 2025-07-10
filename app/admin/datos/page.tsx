@@ -52,6 +52,7 @@ export default async function PageDatos(props: {
         total: purchase.total,
         description: purchase.description,
         date: purchase.createdAt,
+        status: purchase.status ?? undefined, 
     }));
 
     return (
