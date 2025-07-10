@@ -24,9 +24,9 @@ export async function CategoriesSidebar() {
 
   return (
     <Sidebar 
-      variant="floating" 
+      variant="sidebar"
       side="left" 
-      className="[&_[data-sidebar=sidebar]]:bg-white [&_[data-sidebar=sidebar]]:border-gray-200"
+      className="[&_[data-sidebar=sidebar]]:bg-white [&_[data-sidebar=sidebar]]:border-gray-200 "
     >
       <SidebarHeader className="bg-red-600 text-white border-b border-red-700">
         <div className="flex items-center gap-3 py-3 px-4">

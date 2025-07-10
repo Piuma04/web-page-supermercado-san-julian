@@ -51,32 +51,23 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-
-    
-      <main className="flex flex-col min-h-screen">
-        <SessionProvider>
-          <SidebarProvider defaultOpen={false}>
-
+    <main className="flex flex-col min-h-screen">
+      <SessionProvider>
+        <SidebarProvider defaultOpen={false}>
+          {/* Make these direct siblings wrapped in a flex container */}
+          <div className="flex flex-1 overflow-hidden">
             <Suspense>
               <CategoriesSidebar />
             </Suspense>
             
-            <SidebarInset>
-      
-
-           
+            <SidebarInset className="overflow-x-hidden">
               <HeaderServer />
-           
-                <main className="flex-1 pt-4">{children}</main>
-
+              <div className="flex-1 pt-4">{children}</div>
               <Footer />
-                  
             </SidebarInset>
-          </SidebarProvider>
-        </SessionProvider>
-
-      </main>
-  
-    
+          </div>
+        </SidebarProvider>
+      </SessionProvider>
+    </main>
   );
 }
