@@ -1,8 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { DeleteBanner, ModifyDisplayBannerButton } from '../AdminButtons';
+
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { ImageIcon } from 'lucide-react';
+import { DeleteBanner, ModifyDisplayBannerButton } from '../AdminButtonClientSide';
 
 type Banner = {
   id: number;

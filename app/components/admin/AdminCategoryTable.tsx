@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { DeleteCategory, UpdateCategory } from "./AdminButtons";
+import {  UpdateCategory } from "./AdminButtons";
 import { fetchFilteredCategories } from "@/app/lib/data";
+import { DeleteCategory } from "./AdminButtonClientSide";
 
 export default async function AdminCategoryTable({  currentPage }: { currentPage:number}){
 

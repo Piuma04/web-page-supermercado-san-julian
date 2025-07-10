@@ -1,7 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { DeleteProduct, UpdateProduct } from './AdminButtons';
+import {  UpdateProduct } from './AdminButtons';
 import { CldImage } from 'next-cloudinary';
 import Image from 'next/image';
+import { DeleteProduct } from './AdminButtonClientSide';
+
 
 
 type Product = {

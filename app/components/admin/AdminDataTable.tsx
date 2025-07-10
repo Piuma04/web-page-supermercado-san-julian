@@ -28,6 +28,9 @@ const formatDate = (date: Date): string => {
     day: "2-digit",
     month: "2-digit",
     year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
   }).format(date);
 };
 
@@ -39,13 +42,13 @@ export default function AdminDataTable({ purchases }: Props) {
           <TableHeader>
             <TableRow>
               <TableHead className="whitespace-nowrap px-2 sm:px-4">ID</TableHead>
-              {/* Email header - hidden on small screens */}
+              
               <TableHead className="whitespace-nowrap px-2 sm:px-4 hidden sm:table-cell">Mail</TableHead>
               <TotalHead />
-              {/* Description header - hidden on small screens */}
+              
               <TableHead className="whitespace-nowrap px-2 sm:px-4 hidden sm:table-cell">Descripción</TableHead>
               <TableHead className="whitespace-nowrap px-2 sm:px-4">Fecha</TableHead>
-              {/* Details header - only on small screens */}
+              
               <TableHead className="whitespace-nowrap px-2 sm:hidden">Detalles</TableHead>
             </TableRow>
           </TableHeader>
@@ -54,7 +57,7 @@ export default function AdminDataTable({ purchases }: Props) {
               <TableRow key={purchase.id} className="hover:bg-gray-50/50">
                 <TableCell className="px-2 sm:px-4">{purchase.id}</TableCell>
                 
-                {/* Email - hidden on small screens */}
+                
                 <TableCell className="px-2 sm:px-4 max-w-[120px] sm:max-w-[200px] truncate hidden sm:table-cell">
                   <span title={purchase.email} className="cursor-help">
                     {purchase.email}
@@ -65,7 +68,7 @@ export default function AdminDataTable({ purchases }: Props) {
                   ${purchase.total}
                 </TableCell>
                 
-                {/* Description button - hidden on small screens */}
+                
                 <TableCell className="px-2 sm:px-4 hidden sm:table-cell">
                   <Dialog>
                     <DialogTrigger asChild>
@@ -91,7 +94,7 @@ export default function AdminDataTable({ purchases }: Props) {
                   {formatDate(purchase.date)}
                 </TableCell>
                 
-                {/* Details button - only on small screens */}
+                
                 <TableCell className="px-2 sm:hidden">
                   <Dialog>
                     <DialogTrigger asChild>
