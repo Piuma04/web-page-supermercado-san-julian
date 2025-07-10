@@ -50,7 +50,8 @@ export default function PushNotificationConfig() {
   async function subscribeToPush() {
     try {
       const registration = await navigator.serviceWorker.ready;
-      
+    
+      //Pedir permiso al usuario
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
         return;

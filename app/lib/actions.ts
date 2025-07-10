@@ -126,7 +126,7 @@ export async function createProduct(prevState: productState, formData: FormData)
   const priceInCents = price*100; 
 
   try {
-    await prisma.product.create({
+    const createdProduct = await prisma.product.create({
       data: {
         name,
         description: description === '' ? null : description,
@@ -147,6 +147,7 @@ export async function createProduct(prevState: productState, formData: FormData)
           title: '¡Nuevo producto disponible!',
           body: `Hemos agregado "${name}" a nuestro catálogo`,
           icon: '/images/icon.png',
+          url: `/products/${createdProduct.id}`, // URL del producto, el usuario clica y lo lleva a la página del producto
         });
         
         // Enviar notificación a cada suscripción
@@ -161,7 +162,7 @@ export async function createProduct(prevState: productState, formData: FormData)
           
           return webpush.sendNotification(pushSubscription, notificationPayload)
             .catch(error => {
-              // Si la suscripción ya no es válida, eliminarla
+              // Si la suscripción ya no es válida, eliminarla. 410 (Gone) significa que la suscripción push ya no es válida
               if (error.statusCode === 410) {
                 return prisma.pushSubscription.delete({
                   where: { endpoint: sub.endpoint }
@@ -488,6 +489,12 @@ export async function modifyCartItem(
 }
 
 
+/*
+
+PWA RELATED ACTIONS
+
+*/
+
 webpush.setVapidDetails(
   'mailto:baltasarschwerdt@gmail.com',
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
@@ -496,6 +503,7 @@ webpush.setVapidDetails(
  
  
 export async function subscribeUser(sub: webpush.PushSubscription) {
+  //Es bueno autenticar al usuario asi guardamos la suscripción en su cuenta
   const session = await auth();
   if (!session?.user?.email) {
     throw new Error("Usuario no autenticado");
@@ -528,25 +536,11 @@ export async function subscribeUser(sub: webpush.PushSubscription) {
 }
  
 export async function unsubscribeUser(endpoint: string) {
-  const session = await auth();
-  if (!session?.user?.email) {
-    throw new Error("Usuario no autenticado");
-  }
-  
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email }
-  });
-  
-  if (!user) {
-    throw new Error("Usuario no encontrado");
-  }
-  
   try {
     // Eliminar la suscripcion con el endpoint proporcionado
       await prisma.pushSubscription.delete({
         where: { 
           endpoint: endpoint,
-          userId: user.id 
         }
       });
     return { success: true };
