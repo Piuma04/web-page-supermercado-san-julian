@@ -17,7 +17,7 @@ export default function Header() {
           </div>
          
           <Link href="/" className="flex-1 flex justify-center md:ml-4 sm:justify-start">
-            <div className="size-5/6 p-4">
+            <div className="size-full p-2">
             <Image
               src="/images/sanjulian.png"
               alt="Imagen del supermercado San Julian"
