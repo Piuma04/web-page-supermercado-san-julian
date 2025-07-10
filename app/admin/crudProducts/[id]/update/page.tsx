@@ -20,7 +20,7 @@ export default async function UpdateProduct(props: { params: Promise<{ id: strin
     ])
 
     if (!product) {
-        notFound();
+        return notFound();
     }
 
     const simpleCategories = categories.map(({ id, name }) => ({ id, name }))

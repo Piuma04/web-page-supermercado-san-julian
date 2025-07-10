@@ -16,7 +16,7 @@ export default async function UpdateCategory(props: { params: Promise<{ id: stri
     const category = await fetchCategory(id);
 
     if (!category) {
-        notFound();
+        return notFound();
     }
 
  

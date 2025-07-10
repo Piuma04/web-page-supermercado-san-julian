@@ -30,7 +30,7 @@ export default async function Page(props: {
 
 
   if(!category) {
-    NotFound();
+    return NotFound();
   }
 
   return (
