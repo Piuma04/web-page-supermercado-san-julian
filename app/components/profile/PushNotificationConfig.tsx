@@ -53,7 +53,7 @@ export default function PushNotificationConfig() {
       
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
-        throw new Error('Permiso de notificaciones denegado');
+        return;
       }
       
       const sub = await registration.pushManager.subscribe({
