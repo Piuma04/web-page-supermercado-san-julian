@@ -56,7 +56,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ id: s
             />
             
             <Suspense fallback={<SimilarProductsCarouselSkeleton />}>
-                <SimilarProductsCarousel categoryId={product.categoryId} />
+                <SimilarProductsCarousel categoryId={product.categoryId} productId={product.id} />
             </Suspense>
         </div>
     );

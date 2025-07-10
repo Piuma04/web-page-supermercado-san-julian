@@ -3,7 +3,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import ProductCard from "../ProductCard";
 import { fetchFilteredProducts } from "@/app/lib/data";
 
-export default async function SimilarProductsCarousel({ categoryId }: { categoryId: number }) {
+export default async function SimilarProductsCarousel({ categoryId, productId }: { categoryId: number, productId:number }) {
     // Actually fetch products from the same category instead of generic featured products
     const similarProducts = await fetchFilteredProducts("", 1,categoryId);
     
@@ -26,7 +26,7 @@ export default async function SimilarProductsCarousel({ categoryId }: { category
                 className="w-full"
             >
                 <CarouselContent className="-ml-4">
-                    {similarProducts.map((product) => (
+                    {similarProducts.filter((product) => product.id !== productId).map((product) => (
                         <CarouselItem
                             key={product.id}
                             className="pl-4 basis-full xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pb-2"
