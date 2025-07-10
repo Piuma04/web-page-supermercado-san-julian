@@ -628,7 +628,18 @@ export async function deleteBanner(id: number) {
     redirect('/admin/crudBanners');
   }
 
+  7
+
+
+
   
+export async function modifyDisplayBannerAction(formData: FormData) {
+  const bannerId = Number(formData.get("bannerId"));
+  const newIsOnDisplay = formData.get("newIsOnDisplay") === "true";
+  await modifyDisplayBanner(bannerId, newIsOnDisplay);
+}
+
+
 export async function modifyDisplayBanner(bannerId: number, newIsOnDisplay: boolean) {
   await prisma.banner.update({
     where: { id: bannerId },
