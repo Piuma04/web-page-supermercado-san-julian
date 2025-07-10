@@ -429,6 +429,7 @@ export async function addToCart(productId:number, quantity: number) {
             }
         });
     }
+    revalidatePath("/(routes)/cart");
 }
 
 
