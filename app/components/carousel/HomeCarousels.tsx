@@ -20,11 +20,15 @@ async function ProductsCarouselWithData() {
 // Componente principal que utiliza Suspense para cargar ambos carruseles
 export default function HomeCarousels() {
   return (
-    <div className="w-full">
+    <div className="w-full max-w-full overflow-hidden">
+      
+      
+      
+
       <Suspense fallback={<PromosCarouselSkeleton />}>
         <PromosCarouselWithData />
       </Suspense>
-      
+ 
       <Suspense fallback={<ProductsCarouselSkeleton />}>
         <ProductsCarouselWithData />
       </Suspense>

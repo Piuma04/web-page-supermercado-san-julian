@@ -8,7 +8,7 @@ import SearchBar from './SearchBar';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 w-full bg-white shadow-md z-50 rounded-b-2xl">
+    <header className="sticky top-0 w-full bg-white shadow-md z-10 rounded-b-2xl">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full px-2 sm:px-0">
         <div className="flex items-center justify-between w-full sm:w-auto">
           
