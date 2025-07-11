@@ -61,16 +61,18 @@ export async function addPurchase(id: string) {
     }
   });
 
-  // Limpiar el carrito después de procesar el pago
-    await prisma.cartItem.deleteMany({
-      where: {
-        cart: {
-          user: {
-            id: metadata.user_id
+  // Limpiar el carrito solo si el pago es aprobado o autorizado
+  if(purchase.status === 'approved' || purchase.status === 'authorized') {
+      await prisma.cartItem.deleteMany({
+        where: {
+          cart: {
+            user: {
+              id: metadata.user_id
+            }
           }
         }
-      }
-    });
+      });
+    }
 
     revalidatePath('/cart');
 
