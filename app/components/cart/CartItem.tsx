@@ -20,7 +20,7 @@ export default function CartItem({ id, product, quantity }: CartItemProps) {
     return (
         <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow mb-4 border border-gray-100">
             
-            <div className=" w-full sm:w-32 h-32 relative">
+            <div className=" w-full sm:w-32 h-32 relative flex-shrink-0">
                 <Image
                     src={imageUrlParsed}
                     alt={product.name}

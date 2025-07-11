@@ -24,9 +24,9 @@ export default async function CartItems() {
             </h2>
             
             {cartItems && cartItems.items && cartItems.items.length > 0 ? (
-                <div className="flex flex-col md:flex-row gap-5 items-start">
+                <div className="flex flex-col lg:flex-row gap-5 items-start">
                     {/* Order Summary - Arriba en móvil, derecha en desktop */}
-                    <div className="bg-white p-4 rounded-lg shadow-md mb-6 w-full md:w-1/3 order-first md:order-last">
+                    <div className="bg-white p-4 rounded-lg shadow-md mb-6 w-full lg:w-1/3 order-first lg:order-last">
                         <h3 className="text-lg font-semibold mb-2 border-b pb-2">Resumen de la compra</h3>
                         <div className="flex justify-between py-2">
                             <span className="text-gray-600">Subtotal:</span>
@@ -44,7 +44,7 @@ export default async function CartItems() {
                     </div>
                     
                     {/* Cart Items - Abajo en móvil, izquierda en desktop */}
-                    <div className="space-y-2 mb-8 w-full md:w-2/3 order-last md:order-first">
+                    <div className="space-y-2 mb-8 w-full lg:w-2/3 order-last lg:order-first">
                         {cartItems.items.map((item) => (
                             <CartItem 
                                 key={item.id}
