@@ -53,18 +53,18 @@ export default function MainLayout({
     <main className="flex flex-col min-h-screen">
       <SessionProvider>
         <SidebarProvider defaultOpen={false}>
-          {/* Make these direct siblings wrapped in a flex container */}
-          <div className="flex flex-1 overflow-hidden">
+        
+         
             <Suspense>
               <CategoriesSidebar />
             </Suspense>
             
-            <SidebarInset className="overflow-x-hidden">
+            <SidebarInset>
               <Header />
-		        <div className="flex-1 pt-4">{children}</div>
+		            <main className="flex-1 pt-4">{children}</main>
               <Footer />
             </SidebarInset>
-          </div>
+        
         </SidebarProvider>
       </SessionProvider>
     </main>
