@@ -21,7 +21,7 @@ export default function ProfileSidebar({ user }: { user: User }) {
           <Avatar className="h-24 w-24 mb-4">
             <AvatarFallback><User className="h-8 w-8" /></AvatarFallback>
           </Avatar>
-          <CardTitle className="text-lg font-bold text-center">{user?.email || "Usuario"}</CardTitle>
+          <CardTitle className="text-lg font-bold text-center w-full truncate">{user?.email || "Usuario"}</CardTitle>
           
           <div>
             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -36,9 +36,9 @@ export default function ProfileSidebar({ user }: { user: User }) {
         
         <CardContent>
           <div className="space-y-4 mt-4">
-            <div className="flex items-center text-sm text-gray-600">
-              <Calendar className="mr-2 h-4 w-4 text-gray-400" />
-               <span>Se unió {user?.createdAt.toLocaleDateString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" })}</span>
+            <div className="flex items-center text-sm text-gray-600 w-full">
+              <Calendar className="mr-2 h-4 w-4 flex-shrink-0 text-gray-400" />
+              <span className="truncate">Se unió {user?.createdAt.toLocaleDateString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" })}</span>
             </div>
             
             <hr className="my-4" />
@@ -52,8 +52,8 @@ export default function ProfileSidebar({ user }: { user: User }) {
                     variant="ghost"
                     className="w-full justify-start hover:bg-purple-50"
                   >
-                    <User className="mr-2 h-4 w-4 text-purple-600" />
-                    Panel de Administración
+                    <User className="mr-2 h-4 w-4 text-purple-600 flex-shrink-0" />
+                    <span className="truncate">Panel de Administración</span>
                   </Button>
                 </Link>
               )}
@@ -71,8 +71,8 @@ export default function ProfileSidebar({ user }: { user: User }) {
                   variant="ghost"
                   className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-600"
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Cerrar sesión
+                  <LogOut className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">Cerrar sesión</span>
                 </Button>
               </form>
             </nav>
