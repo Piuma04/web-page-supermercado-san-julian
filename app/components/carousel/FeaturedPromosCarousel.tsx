@@ -23,8 +23,7 @@ export default function FeaturedPromosCarousel({featuredPromos} : {featuredPromo
                     stopOnInteraction: true, // Detiene el autoplay al interactuar con el carrusel
                 }
             )]}
-            className="w-full my-2  
-                            "
+            className="w-full my-2  "
         >
             <CarouselContent className="">
                 {featuredPromos.map((fp) => (

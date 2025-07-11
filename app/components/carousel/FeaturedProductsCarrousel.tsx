@@ -29,6 +29,7 @@ export default function FeaturedProductsCarousel({featuredProducts} : {featuredP
                         <CarouselItem
                             key={product.id}
                             className="
+                            
                                 basis-1/2
                                 sm:basis-1/3
                                 md:basis-1/3

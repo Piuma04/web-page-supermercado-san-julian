@@ -33,6 +33,7 @@ export default async function SimilarProductsCarousel({ categoryId, productId }:
                         >
                             <div className="h-full">
                                 <ProductCard
+                                    key={product.id}
                                     id={product.id}
                                     name={product.name}
                                     price={product.price}

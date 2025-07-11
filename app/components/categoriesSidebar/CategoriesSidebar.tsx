@@ -14,6 +14,7 @@ import Link from "next/link"
 import { 
   ShoppingBag
 } from "lucide-react"
+import ButtonSidebar from "./ButtonSidebar"
 
 
 
@@ -54,12 +55,7 @@ export async function CategoriesSidebar() {
                       asChild 
                       className="hover:bg-red-50 hover:text-red-700 border-transparent hover:border-red-100 transition-colors duration-200"
                     >
-                      <Link 
-                        href={`/categories/${category.id}`}
-                        className="flex items-center gap-3 px-3 py-2.5 text-gray-700"
-                      >
-                        <span className="text-sm font-medium">{category.name}</span>
-                      </Link>
+                     <ButtonSidebar categoryId={category.id} categoryName={category.name}/>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 )
