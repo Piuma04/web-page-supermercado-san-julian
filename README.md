@@ -4,6 +4,8 @@ Bienvenido a **Supermercado San Julián**, tu tienda online para hacer las compr
 
 ¡Empezá a comprar online en San Julián y disfrutá de una experiencia moderna y segura!
 
+Link al deployment: https://supermercadosanjulian.vercel.app/
+
 ## 👤 Acceso al sistema
 
 ### Administrador
@@ -12,27 +14,13 @@ Bienvenido a **Supermercado San Julián**, tu tienda online para hacer las compr
 
 ### Usuarios
 - Es posible ingresar con cualquier cuenta de Google
-- Los usuarios que ingresan por email y contraseña no son registrados en el sistema
+- La unica cuenta registrada que puede acceder por mail y contraseña es la cuenta del admin
 
 
 ## 💳 Integración con Mercado Pago
 ### Notas sobre pagos
-Al principio, utilizamos credenciales de producción (las que estan abajo) porque la pagina de mercado pago da esa
-como recomendada, y no vimos que en el README decía que se usaba sandbox.
-El último dia tratamos de implementarlo, y PUDIMOS. Lo que había que hacer era cambiar la KEY del .env,
-pero en el momento daba un error de CORS. Aparentemente, ese es un error que a veces sucede en algunos dispositivos,
-y justo en la compu que teniamos ocurrió. Cambiamos de compu y funciono bien, al igual que en el deploy.
-Igualmente, dejamos las credenciales aqui abajo, como recuerdo: 
-
-
-### Cuentas de prueba
-**Comprador:**
-- Nombre de usuario: TESTUSER1289921401
-- Contraseña: HC7F9fWzKD
-
-**Vendedor:**
-- Nombre de usuario: TESTUSER807889431
-- Contraseña: AQfRg2UvFB
+Al principio, utilizamos credenciales de producción de cuentas de prueba porque la pagina de mercado pago da la opcion de checkout pro como recomendada y facil de implementar, y no nos dimos cuenta que no estabamos usando sandbox.
+El último dia tratamos de implementarlo, y lo logramos. Lo que había que hacer era cambiar la KEY del .env por las credenciales de prueba, pero en el momento daba un error de CORS. Aparentemente, ese es un error que a veces sucede en algunos dispositivos, y en la computadora que teniamos ocurrió. Cambiamos de computadora y funciono bien, al igual que en el deploy. Por lo que en caso de no funcionar, probablemente el CORS o el dispositivo usado este relacionado.
 
 
 ## 📱 Notificaciones Push
@@ -43,9 +31,10 @@ Igualmente, dejamos las credenciales aqui abajo, como recuerdo:
 ## 🔧 Decisiones de diseño
 - Una categoría con productos asociados no puede ser eliminada
 - Al eliminar un producto, todos los ítems de carrito que lo contengan también serán eliminados
-- Los productos vendidos se guardan como un string en el ítem producto (similar a un ticket de compra)
+- El recibo de la compra se guarda como un string (similar a un ticket de compra)
 - Los banners solo pueden ser creados, eliminados o cambiados de circulación, no modificados
-- La API de Gemini podría no estar disponible en ciertos momentos debido a saturación
+- La API de Gemini podría no estar disponible en ciertos momentos debido a alta demanda
+- Las compras aprobadas o autorizadas borran los items del carrito, el resto de compras no, esto le permite al usuario reintentar la compra.
 
 ## 🔐 Implementación del inicio de sesión
 
