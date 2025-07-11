@@ -50,7 +50,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="flex flex-col min-h-screen">
+    
       <SessionProvider>
         <SidebarProvider defaultOpen={false}>
         
@@ -59,7 +59,7 @@ export default function MainLayout({
               <CategoriesSidebar />
             </Suspense>
             
-            <SidebarInset>
+            <SidebarInset className="overflow-x-hidden">
               <Header />
 		            <main className="flex-1 pt-4">{children}</main>
               <Footer />
@@ -67,6 +67,6 @@ export default function MainLayout({
         
         </SidebarProvider>
       </SessionProvider>
-    </main>
+    
   );
 }
