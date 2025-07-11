@@ -48,3 +48,36 @@ En caso de experimentar problemas, la alternativa sería:
 2. Si hay sesión activa, permitir el acceso normal
 3. Si no hay sesión, redirigir a login
 4. Para el área de administración, verificar tanto la sesión como el rol (que sea 'ADMIN')
+
+
+
+
+## 🤖 Inteligencia Artificial
+La aplicación utiliza la API de Google Gemini para generar descripciones de productos automáticamente:
+
+Funcionalidad: El administrador puede sugerir descripciones para productos basándose en el nombre y categoría
+Implementación: Integración mediante API endpoint /api/gemini/generateDescription
+Interfaz: Implementada a través del componente DescriptionIA con un diálogo modal
+Consideraciones: La disponibilidad del servicio puede variar debido a limitaciones de la API de Google Gemini durante periodos de alta demanda
+
+
+## 🖼️ Gestión de Imágenes
+La aplicación utiliza Cloudinary como servicio de almacenamiento y gestión de imágenes:
+
+Seguridad: Implementación de firmas de autenticación mediante el endpoint /api/cloudinary-signature
+Upload Presets: Configuraciones específicas para diferentes tipos de contenido:
+upload_products_secure: Para imágenes de productos
+upload_banners_secure: Para banners promocionales
+Optimización: Integración con el componente Image de Next.js para carga optimizada y responsiva
+Fallbacks: Imágenes por defecto para productos sin imagen asignada
+
+
+## 🔌 Integración de APIs
+El proyecto implementa varias integraciones de APIs para extender su funcionalidad:
+
+Cloudinary: Gestión segura de imágenes mediante endpoints firmados para prevenir cargas no autorizadas
+Google Gemini: Generación de descripciones de productos con IA
+Mercado Pago: Procesamiento seguro de pagos con manejo de preferencias y notificaciones
+Web Push: Notificaciones push para informar sobre nuevos productos
+Todas las integraciones están implementadas con un enfoque en la seguridad, utilizando variables de entorno para almacenar claves de API y tokens de acceso, asegurando que ninguna credencial sensible esté expuesta en el código del frontend.
+
