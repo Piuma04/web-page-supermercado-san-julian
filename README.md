@@ -4,44 +4,58 @@ Bienvenido a **Supermercado San Julián**, tu tienda online para hacer las compr
 
 ¡Empezá a comprar online en San Julián y disfrutá de una experiencia moderna y segura!
 
+## 👤 Acceso al sistema
+
+### Administrador
+- **Email:** admin@supermercado.com
+- **Contraseña:** admin123
+
+### Usuarios
+- Es posible ingresar con cualquier cuenta de Google
+- Los usuarios que ingresan por email y contraseña no son registrados en el sistema
 
 
-Consideraciones a tener en cuenta y notas de los desarrolladores:
+## 💳 Integración con Mercado Pago
+### Notas sobre pagos
+Al principio, utilizamos credenciales de producción (las que estan abajo) porque la pagina de mercado pago da esa
+como recomendada, y no vimos que en el README decía que se usaba sandbox.
+El último dia tratamos de implementarlo, y PUDIMOS. Lo que había que hacer era cambiar la KEY del .env,
+pero en el momento daba un error de CORS. Aparentemente, ese es un error que a veces sucede en algunos dispositivos,
+y justo en la compu que teniamos ocurrió. Cambiamos de compu y funciono bien, al igual que en el deploy.
+Igualmente, dejamos las credenciales aqui abajo, como recuerdo: 
 
-Cuenta del administrador:
-email: admin@supermercado.com
-contraseña: admin123
 
-Es posible ingresar con cualquier cuenta de google.
+### Cuentas de prueba
+**Comprador:**
+- Nombre de usuario: TESTUSER1289921401
+- Contraseña: HC7F9fWzKD
 
-Relacionado a mercado pago:
-cuenta de comprador:
-nombre de usuario:TESTUSER1289921401
-contraseña:HC7F9fWzKD
+**Vendedor:**
+- Nombre de usuario: TESTUSER807889431
+- Contraseña: AQfRg2UvFB
 
-cuenta de vendedor:
-nombre de usuario:TESTUSER807889431
-contraseña:AQfRg2UvFB
 
-Se utilizaron las credenciales de produccion del vendedor para configurar los pagos.
-Intentamos utilizar el modo sandbox pero daba errores a la hora del pago, rechazaba todos los pagos a pesar de usar las tarjetas de prueba y generar la preferencia correctamente.
-Se cuenta con saldo en la cuenta para hacer varias pruebas.
+## 📱 Notificaciones Push
+- Cada vez que se agrega un nuevo producto, se envía una notificación a los usuarios registrados
+- Esta opción se puede deshabilitar al registrar un nuevo producto
+- Al presionar la notificación, el usuario es dirigido a la página del producto correspondiente
 
-Notificaciones Push:
-Cada vez que un producto nuevo es agregado se envia una notificacion a los usuarios registrados. Esta opcion se puede deshabilitar al registrar el nuevo producto.
-Al presionar la notificacion, el usuario es dirigido a la pagina del producto en cuestion.
+## 🔧 Decisiones de diseño
+- Una categoría con productos asociados no puede ser eliminada
+- Al eliminar un producto, todos los ítems de carrito que lo contengan también serán eliminados
+- Los productos vendidos se guardan como un string en el ítem producto (similar a un ticket de compra)
+- Los banners solo pueden ser creados, eliminados o cambiados de circulación, no modificados
+- La API de Gemini podría no estar disponible en ciertos momentos debido a saturación
 
-Decisiones de diseño adoptadas:
-Si una categoría tiene productos no puede ser eliminada.
-Si un producto es eliminado, todos los ítems de carrito que lo contengan también lo serán.
-Los ítems vendidos en una venta serán guardados en un string en el ítem producto por simplicidad (como si fuera un ticket que dan en el supermercado).
-Hay registro de usuarios únicamente con google, los usuarios que ingresan por mail y contraseña no son registrados.
-Los banners no pueden ser modificados, solo creados, eliminados o puestos dentro/fuera de circulación. 
-La api de gemini podría no funcionar en ciertos momentos por saturación.
+## 🔐 Implementación del inicio de sesión
 
-Aclaración con respecto al inicio de sesión:
+Inicialmente implementamos la autenticación con `getToken`, lo cual funcionaba en desarrollo local (perfecto andaba)pero fallaba al desplegarlo en Vercel. Es decir, al entrar al middleware nunca se obtenia el token.
 
-Primero, tratamos de hacerlo con getToken (poniendo la request y secret), y funcionaba en dev y haciendo build y start, pero al momento de desplegarlo en vercel no funcionaba, no recuperaba el token. Tratamos de solucionarlo de diversas maneras, pero no funcionó. 
-Después, probamos con await auth(), lo cual funcionaba. No obstante, investigamos que, al correr middleware en el edge, a muchos usuarios les traía problemas poner ese auth() dentro del middleware. No obstante, a nosotros nos funcionó, y no hubo problemas en ningún momento del deploy. Hay una manera de desactivar el hecho de que el middleware corra en el edge, pero nosotros no lo hicimos. 
+Posteriormente, implementamos `await auth()`. El problema es que, en muchos casos, hay problema con ejecutar esta función en middleware, porque este corre en el edge. No obstante, nos anduvo perfecto (inclusive en producción).
 
-No obstante, en caso de que hubiesen problemas, lo que habría que hacer es verificar la sesión en el layout (o en la page en el caso de cart y profile), y si hay sesión, deja entrar normalmente buscando el carrito (o accediendo al perfil), sino redirige a login. En el caso de admin, habría que verificar en layout dos cosas: si hay sesión, y si el rol es de admin. 
+En caso de experimentar problemas, la alternativa sería:
+
+1. Verificar la sesión en el layout (o en la page para cart y profile)
+2. Si hay sesión activa, permitir el acceso normal
+3. Si no hay sesión, redirigir a login
+4. Para el área de administración, verificar tanto la sesión como el rol (que sea 'ADMIN')
