@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addToCart } from "../../lib/actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -20,6 +20,15 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
   const [quantity, setQuantity] = useState(1);
   const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
+  const [state, setState] = useState<{ success: boolean; message: string } | null>(null);
+
+  // Oculta el mensaje automáticamente después de 2 segundos
+  useEffect(() => {
+    if (state) {
+      const timer = setTimeout(() => setState(null), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [state]);
 
   const handleAddToCart = async () => {
     if (!session || !session.user || !session.user.email) {
@@ -31,10 +40,11 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
     try {
       await addToCart(id, quantity);
       setQuantity(1);
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-    } finally {
       setIsPending(false);
+      setState({success: true, message:"Agregado al carrito"});
+    } catch (error) {
+      setIsPending(false);
+      setState({success: false, message:"Error al agregar al carrito"});
     }
   };
 
@@ -108,6 +118,13 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductCardPr
                 </>
               )}
             </Button>
+            {state ? (
+              <p className={`text-xs mt-2 ${state.success ? "text-green-600" : "text-red-600"}`}>
+              {state.message}
+              </p>
+            ): (
+              <p className="text-xs mt-2">‎</p>
+              )}
             </div>
         </div>
 

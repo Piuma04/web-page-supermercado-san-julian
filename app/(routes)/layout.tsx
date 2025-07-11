@@ -59,7 +59,7 @@ export default function MainLayout({
               <CategoriesSidebar />
             </Suspense>
             
-            <SidebarInset >
+            <SidebarInset>
               <Header />
 		            <main className="flex-1 pt-4">{children}</main>
               <Footer />
